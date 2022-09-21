@@ -23,7 +23,7 @@ export default class Store {
         try {
             const response = await Registration.registration(email, password);
             console.log(response)
-            if (response.data.msg === 'ok') {
+            if (response.data.status === 'ok') {
                 // <Link to="/login"/>;
                 alert('Ok');
             } else {

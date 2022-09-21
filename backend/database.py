@@ -77,6 +77,14 @@ def create_obj(hash_map: dict, objtype: str) -> Base:
         raise
 
 
+def get_user_by_login(login: str):
+    try:
+        user = session.query(UsersData).filter_by(email=login).one()
+        return True
+    except Exception:
+        return False
+
+
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)

@@ -21,7 +21,7 @@ const Register = () => {
                 type="text" 
                 placeholder="Пароль" 
                 className="type-1"/>
-            <button onClick={() => store.registration(email, passwaord)}>Зарегистрироваться</button>
+            <button onClick={() => store.registration(email, password)}>Зарегистрироваться</button>
         </div>
     )
 }

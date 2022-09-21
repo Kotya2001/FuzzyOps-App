@@ -1,5 +1,5 @@
 from config import DATABASE_PATH, Configuration
-from database import create_obj
+from database import create_obj, get_user_by_login
 
 import datetime as dt
 
@@ -69,6 +69,9 @@ def registration():
     data = request.get_json(force=True)
 
     try:
+        isExist = get_user_by_login(data['email'])
+        if isExist:
+            return jsonify({'status': 'error', 'msg': 'Пользователь уже существует'})
         create_obj(data, 'user')
         return jsonify({'status': 'ok'})
     except Exception as e:
