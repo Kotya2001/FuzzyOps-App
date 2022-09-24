@@ -1,16 +1,41 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Form, Button, Row} from "react-bootstrap";
+import { NavLink, useLocation } from "react-router-dom";
+import { LOGIN_ROUTE, REG_ROUTES } from "../utils/consts";
+import '../Styles.css';
 
-// import '../src/Styles.css';
 
-export default class Login extends Component {
-    render() {
-        return (
-            <div className="inputForm">
-                <input type="text" placeholder="Email" className="type-1"/>
-                <input type="text" placeholder="Пароль" className="type-1"/>
-                <button><Link to='/register'>Register</Link></button>
-            </div>
-        )
-    }
+const Login = () => {
+    const location = useLocation()
+    const isLogin = location.pathname === LOGIN_ROUTE
+    return (
+        <Form className="inputForm">
+            <Form.Control
+                className="type-1"
+                placeholder="Введите email"
+            />
+            <Form.Control
+                className="type-1"
+                placeholder="Введите пароль"
+            />
+            <Row className="registration">
+                {isLogin ?
+                    <div>
+                        Нет аккаунта?, <NavLink to={REG_ROUTES}>Регистрация</NavLink>
+                    </div>
+                    :
+                    <div>
+                        Есть аккаунт?, <NavLink to={LOGIN_ROUTE}>Войдите</NavLink>
+                    </div>
+                    }   
+               
+                <Button className="auth-buttons">
+                    {isLogin ? 'Войти': 'Регистрация'}
+                </Button>
+            </Row>
+
+        </Form>
+    )
 }
+
+export default Login;

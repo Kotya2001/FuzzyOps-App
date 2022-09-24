@@ -8,41 +8,6 @@ export default class Base extends Component {
     render() {
         return (
             <div>
-                <header>
-                    <div className='bg-pink'>
-                        <div className='wrapper'>
-                            <div className='header'>
-                                <div className='name'>FuzzyOps</div>
-                                <div className='buttons'>
-                                    <nav>
-                                        <ul className='nav'>
-                                            
-                                            <li>
-                                                <form action="/" target='_blank'>
-                                                    <button className='buttons'>GitHub</button>
-                                                </form>
-                                            </li>
-                                            
-                                            <li>
-                                                <NavLink to='/resources'>
-                                                    <button className='buttons'>Ресурсы</button>
-                                                </NavLink>
-                                            </li>
-
-                                            <li>
-                                                <NavLink to='/register'>
-                                                    <button className='buttons'>Войти</button>
-                                                </NavLink>
-                                            </li>
-
-                                        </ul>
-                                    </nav>
-                        
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
                 <section className='description'>
                     <div className='wrapper'>
                         <p className='title'>Платформа нечетких</p>

@@ -2,21 +2,18 @@ import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Store from './store/store';
+import UserStore from './store/UserStore';
 // import './firebase';
+
+export const Context = createContext()
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = new Store();
-
-export const Context = createContext({
-  store,
-})
 
 root.render(
   <React.StrictMode>
     <Context.Provider value={{
-      store
+      user: new UserStore()
     }}>
       <App />
     </Context.Provider>
