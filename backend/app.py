@@ -61,6 +61,7 @@ def authorization(func):
             logger.error(f'[ERROR]: {e}')
             return abort(403)
 
+    inner.__name__ = func.__name__
     return inner
 
 
@@ -159,6 +160,21 @@ def login():
         session['jwt-token'] = jwt_token
 
         logger.info('token adn secret key were written in session successfully')
+        return jsonify({'status': 'ok', 'msg': 'ok'})
+    except Exception as e:
+        logger.error(f'[ERROR]: {e}')
+        return jsonify({'status': 'error', 'msg': str(e)})
+
+
+@app.route('/logout', methods=['GET'])
+@authorization
+def logout():
+    try:
+        logger.debug('Got request to logout')
+        # удаляем данные из сессии
+        session.pop('jwt-token')
+        session.pop('secret_key')
+        logger.info('User logged out')
         return jsonify({'status': 'ok', 'msg': 'ok'})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')
