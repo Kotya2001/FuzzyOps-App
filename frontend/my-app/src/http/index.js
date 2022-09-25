@@ -1,10 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const API_URL = 'http://localhost:5000'
-
-const $api = axios.create({
-    withCredentials: true,
-    baseURL: API_URL
+const $host = axios.create({
+    baseURL: "http://localhost:5000"
 })
 
-export default $api;
+const $authHost = axios.create({
+    baseURL: "http://localhost:5000"
+})
+
+export {
+    $host,
+    $authHost
+}
