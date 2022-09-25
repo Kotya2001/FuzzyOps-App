@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import {Context} from '../index';
 import { NavLink } from "react-router-dom";
-import { BASE_ROUTES, LOGIN_ROUTE } from "../utils/consts";
+import { MAIN_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import '../Styles.css'
 
@@ -31,7 +31,7 @@ const NavBar = observer(() => {
                                         
                                         <li>
                                             { user.isAuth ?
-                                                <NavLink to={BASE_ROUTES}>
+                                                <NavLink to={MAIN_ROUTE}>
                                                     <button className='buttons'>Выйти</button>
                                                 </NavLink>
                                                 :

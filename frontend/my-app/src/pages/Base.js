@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Carousel from 'react-elastic-carousel';
 import {Item, Name, Button} from './Item';
 import { NavLink } from "react-router-dom";
+import {REG_ROUTES} from "../utils/consts"
 import '../Styles.css'
 
 export default class Base extends Component {
@@ -26,7 +27,7 @@ export default class Base extends Component {
                                     <p className='caption'>в нечектой информационной среде</p>
                                 </Name>
                                 <Button>
-                                    <NavLink to='/register'>
+                                    <NavLink to={REG_ROUTES}>
                                         <button className='start'>Начать работу</button>
                                     </NavLink>
                                 </Button>
@@ -39,7 +40,7 @@ export default class Base extends Component {
                                     <p className='caption'>Метод деффаззификации</p>
                                 </Name>
                                 <Button>
-                                    <NavLink to='/register'>
+                                    <NavLink to={REG_ROUTES}>
                                         <button className='start'>Начать работу</button>
                                     </NavLink>
                                 </Button>
@@ -50,7 +51,7 @@ export default class Base extends Component {
                                     <p className='caption'>Нечеткие отношения доминировние</p>
                                 </Name>
                                 <Button>
-                                    <NavLink to='/register'>
+                                    <NavLink to={REG_ROUTES}>
                                         <button className='start'>Начать работу</button>
                                     </NavLink>
                                 </Button>

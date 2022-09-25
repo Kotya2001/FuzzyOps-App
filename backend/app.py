@@ -159,7 +159,7 @@ def login():
         session['jwt-token'] = jwt_token
 
         logger.info('token adn secret key were written in session successfully')
-        return jsonify({'status': 'ok', 'msg': 'ok', 'jwt_token': jwt_token})
+        return jsonify({'status': 'ok', 'msg': 'ok'})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')
         return jsonify({'status': 'error', 'msg': str(e)})
