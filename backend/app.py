@@ -1,3 +1,5 @@
+from crypt import methods
+from lib2to3.pgen2 import token
 from config import DATABASE_PATH, Configuration
 from logger import logger
 from database import create_obj, get_user_by_login, generate_jwt_token
@@ -32,34 +34,22 @@ SESSION = None
 def authorization(func):
     def inner(*args, **kwargs):
         token = None
-        if 'jwt-token' in session:
-            token = session['jwt-token']
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
         if not token:
-            logger.info('Not access')
             return abort(403)
+        
         try:
-            logger.debug('Got session to check token for validation')
-            secret_key = session['secret_key']
-            decoded_token = jwt.decode(token, key=secret_key, algorithm="HS256",
-                                       options={"verify_signature": False})
-            tokens_dt = dt.datetime.strptime(decoded_token['data_time_created'], "%m/%d/%Y, %H:%M:%S")
-            diff = dt.datetime.now() - tokens_dt
+            token_data = jwt.decode(token, Configuration.JWT_SECRET_KEY, algorithm="HS256", 
+            options={"verify_signature": False})
 
-            if diff.seconds <= decoded_token['exp']:
-                logger.info('Token is active')
-                return func(*args, **kwargs)
-            else:
-                secret_key = generate_secrete_key()
-                new_token = generate_jwt_token(decoded_token['id'], decoded_token['email'],
-                                               key=secret_key,
-                                               data_time_created=dt.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-                session['jwt-token'] = new_token
-                session['secret_key'] = secret_key
-                logger.info('Token was changed')
-                return func(*args, **kwargs)
+            curr_user = get_user_by_login(token_data['email'], get_row_obj=True)
+        
         except Exception as e:
             logger.error(f'[ERROR]: {e}')
             return abort(403)
+        
+        return func(curr_user, *args, **kwargs)        
 
     inner.__name__ = func.__name__
     return inner
@@ -75,14 +65,14 @@ def before_first_request():
     SESSION = DBSession()
 
 
-@app.before_request
-def make_session_permanent():
-    """
-    Установка времени жизни сессии
-    """
-    session.permanent = True
-    app.permanent_session_lifetime = dt.timedelta(hours=24)
-    session.modified = True
+# @app.before_request
+# def make_session_permanent():
+#     """
+#     Установка времени жизни сессии
+#     """
+#     session.permanent = True
+#     app.permanent_session_lifetime = dt.timedelta(hours=24)
+#     session.modified = True
 
 
 @app.route('/')
@@ -125,6 +115,7 @@ def registration():
             return jsonify({'status': 'error', 'msg': 'Пользователь уже существует'})
 
         create_obj({'email': email, 'password': password}, 'user')
+
         logger.info('User was created')
         return jsonify({'status': 'ok', 'msg': 'registered'})
     except Exception as e:
@@ -152,36 +143,19 @@ def login():
             logger.info('Not correct password')
             return jsonify({'status': 'error', 'msg': 'Неверный пароль'})
 
-        secret_key = generate_secrete_key()
-        jwt_token = generate_jwt_token(user.Id, email, secret_key,
-                                       data_time_created=dt.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-
-        session['secret_key'] = secret_key
-        session['jwt-token'] = jwt_token
+        jwt_token = generate_jwt_token(user.Id, email, Configuration.JWT_SECRET_KEY)
 
         logger.info('token adn secret key were written in session successfully')
-        return jsonify({'status': 'ok', 'msg': 'ok'})
+        return jsonify({'status': 'ok', 'msg': 'ok', 'jwt_token': jwt_token})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')
         return jsonify({'status': 'error', 'msg': str(e)})
 
 
-@app.route('/logout', methods=['GET'])
-@authorization
-def logout():
-    try:
-        logger.debug('Got request to logout')
-        # удаляем данные из сессии
-        session.pop('jwt-token')
-        session.pop('secret_key')
-        logger.info('User logged out')
-        return jsonify({'status': 'ok', 'msg': 'ok'})
-    except Exception as e:
-        logger.error(f'[ERROR]: {e}')
-        return jsonify({'status': 'error', 'msg': str(e)})
+
 
 
 @app.route('/main', methods=['POST'])
 @authorization
-def main():
+def main(curr_user):
     return jsonify({'ok': 'ok'})

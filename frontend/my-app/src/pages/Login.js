@@ -21,7 +21,6 @@ const Login = observer(() => {
                 const response = await login(email, password)
                 if (response.data.status === 'ok') {
                     user.setAuth(true)
-                    console.log(user._isAuth)
                     navigate(MAIN_ROUTE)
                 } else {
                     alert(response.data.msg)

@@ -12,4 +12,5 @@ LOG_FORMAT = "%(asctime)s: %(name)s - %(" "levelname)s  | %(message)s"
 # общие настройки
 class Configuration(object):
     SECRET_KEY = secrets.token_urlsafe(100)
+    JWT_SECRET_KEY = secrets.token_urlsafe(100)
     DEVELOPMENT = True
