@@ -1,7 +1,6 @@
-from crypt import methods
-from lib2to3.pgen2 import token
 from config import DATABASE_PATH, Configuration
 from logger import logger
+from middleware import middleware
 from database import create_obj, get_user_by_login, generate_jwt_token
 from utils import generate_secrete_key
 
@@ -18,6 +17,8 @@ import jwt
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
+app.wsgi_app = middleware(app.wsgi_app)
+
 CORS(app, supports_credentials=True)
 
 logger = logger('MAIN')
@@ -31,30 +32,6 @@ Base.metadata.bind = engine
 SESSION = None
 
 
-def authorization(func):
-    def inner(*args, **kwargs):
-        token = None
-        if 'Authorization' in request.headers:
-            token = request.headers['Authorization']
-        if not token:
-            return abort(403)
-        
-        try:
-            token_data = jwt.decode(token, Configuration.JWT_SECRET_KEY, algorithm="HS256", 
-            options={"verify_signature": False})
-
-            curr_user = get_user_by_login(token_data['email'], get_row_obj=True)
-        
-        except Exception as e:
-            logger.error(f'[ERROR]: {e}')
-            return abort(403)
-        
-        return func(curr_user, *args, **kwargs)        
-
-    inner.__name__ = func.__name__
-    return inner
-
-
 @app.before_first_request
 def before_first_request():
     """
@@ -63,16 +40,6 @@ def before_first_request():
     global SESSION
     DBSession = sessionmaker(bind=engine)
     SESSION = DBSession()
-
-
-# @app.before_request
-# def make_session_permanent():
-#     """
-#     Установка времени жизни сессии
-#     """
-#     session.permanent = True
-#     app.permanent_session_lifetime = dt.timedelta(hours=24)
-#     session.modified = True
 
 
 @app.route('/')
@@ -152,10 +119,12 @@ def login():
         return jsonify({'status': 'error', 'msg': str(e)})
 
 
-
-
-
-@app.route('/main', methods=['POST'])
-@authorization
-def main(curr_user):
-    return jsonify({'ok': 'ok'})
+@app.route('/check', methods=['GET'])
+def check():
+    try:
+        new_token = generate_jwt_token(request.environ['user']['id'], request.environ['user']['email'],
+                                       key=Configuration.JWT_SECRET_KEY)
+        return jsonify({'status': 'ok', 'msg': 'ok', 'jwt-token': new_token})
+    except Exception as e:
+        logger.error(f'[ERROR]: {e}')
+        return jsonify({'status': 'error', 'msg': str(e)})

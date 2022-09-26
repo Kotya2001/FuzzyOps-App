@@ -73,10 +73,10 @@ def get_user_by_login(login: str, get_row_obj=False):
         return False
 
 
-def generate_jwt_token(Id: int, email: str, key: str, exp: int = 10800):
+def generate_jwt_token(Id: int, email: str, key: str, exp: int = 30):
     return jwt.encode(payload={'id': Id,
-     'email': email, 
-     "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=exp)},
+                               'email': email,
+                               "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=exp)},
                       key=key,
                       algorithm="HS256")
 
