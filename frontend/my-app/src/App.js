@@ -1,9 +1,9 @@
 import { BrowserRouter as Router} from 'react-router-dom';
 import AppRouter from './components/AppRoute'
 import NavBar from './components/NavBar';
+import { observer } from "mobx-react-lite";
 
-
-const App = () => {
+const App = observer(() => {
     return (
         <Router>
             <div>
@@ -13,6 +13,6 @@ const App = () => {
         </Router>
 
     )
-}
+})
 
 export default App;

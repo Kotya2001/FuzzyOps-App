@@ -9,7 +9,6 @@ const Item = styled.div`
     justify-content: left;
     position: relative;
  
-
 `
 
 const Name = styled.div`

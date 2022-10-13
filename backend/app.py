@@ -1,23 +1,18 @@
 from config import DATABASE_PATH, Configuration
 from logger import logger
-from middleware import middleware
-from database import create_obj, get_user_by_login, generate_jwt_token
-from utils import generate_secrete_key
-
-import datetime as dt
+from database import create_obj, get_user_by_login, generate_tokens
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from flask import Flask, jsonify, abort, request, session
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 
-import jwt
+import datetime as dt
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
-app.wsgi_app = middleware(app.wsgi_app)
 
 CORS(app, supports_credentials=True)
 
@@ -40,6 +35,16 @@ def before_first_request():
     global SESSION
     DBSession = sessionmaker(bind=engine)
     SESSION = DBSession()
+
+
+@app.before_request
+def make_session_permanent():
+    """
+    Установка времени жизни сессии
+    """
+    session.permanent = True
+    app.permanent_session_lifetime = dt.timedelta(hours=24)
+    session.modified = True
 
 
 @app.route('/')
@@ -103,28 +108,28 @@ def login():
 
         user = get_user_by_login(email, get_row_obj=True)
         if user is None:
-            logger.info('User doe not exist')
+            logger.info('User does not exist')
             return jsonify({'status': 'error', 'msg': 'Пользователя не существует'})
 
         if not user.check_password(password):
             logger.info('Not correct password')
             return jsonify({'status': 'error', 'msg': 'Неверный пароль'})
+        uid = user.Id
 
-        jwt_token = generate_jwt_token(user.Id, email, Configuration.JWT_SECRET_KEY)
+        user_tokens = get_user_by_login(email, table='token', user_id=user.Id, get_row_obj=True)
+        if user_tokens is not None:
+            access_token, refresh_token = user_tokens.access_token, user_tokens.refresh_token
+            session['user'] = {'access_token': access_token, 'refresh_token': refresh_token, 'uid': uid}
+            response = {'uid': uid}
+        else:
+            access_token, refresh_token = generate_tokens(), generate_tokens()
+            create_obj({'access_token': access_token, 'refresh_token': refresh_token, 'user_id': uid,
+                        'dt_created': dt.datetime.now()}, 'token')
+            response = {'uid': uid}
+            session['user'] = {'access_token': access_token, 'refresh_token': refresh_token, 'uid': uid}
 
         logger.info('token adn secret key were written in session successfully')
-        return jsonify({'status': 'ok', 'msg': 'ok', 'jwt_token': jwt_token})
-    except Exception as e:
-        logger.error(f'[ERROR]: {e}')
-        return jsonify({'status': 'error', 'msg': str(e)})
-
-
-@app.route('/check', methods=['GET'])
-def check():
-    try:
-        new_token = generate_jwt_token(request.environ['user']['id'], request.environ['user']['email'],
-                                       key=Configuration.JWT_SECRET_KEY)
-        return jsonify({'status': 'ok', 'msg': 'ok', 'jwt-token': new_token})
+        return jsonify({'status': 'ok', 'msg': 'ok', 'tokens': response})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')
         return jsonify({'status': 'error', 'msg': str(e)})

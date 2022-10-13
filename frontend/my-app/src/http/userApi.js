@@ -1,4 +1,4 @@
-import { $authHost, $host } from "./index";
+import { $host } from "./index";
 
 export const registration = async (email, password) => {
     const response = await $host.post('/registration', {email, password})
@@ -7,10 +7,5 @@ export const registration = async (email, password) => {
 
 export const login = async (email, password) => {
     const response = await $host.post('/login', {email, password})
-    return response
-}
-
-export const logout = async () => {
-    const response = await $host.get('/logout', {})
     return response
 }

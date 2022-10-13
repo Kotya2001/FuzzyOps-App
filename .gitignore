@@ -2,3 +2,6 @@
 /.history/
 /logs/
 /__pycache__/
+.idea/FuzzyOps-App.iml
+.idea/*.xml
+.idea/inspectionProfiles/profiles_settings.xml

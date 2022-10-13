@@ -1,7 +1,7 @@
 from config import DATABASE_PATH
 from logger import logger
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, DATETIME
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -10,8 +10,7 @@ from sqlalchemy import create_engine
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
-import jwt
-import datetime
+import secrets
 
 logger = logger('DB')
 
@@ -40,12 +39,36 @@ class UsersData(Base):
         return check_password_hash(user_hash, password)
 
 
+class Tokens(Base):
+    __tablename__ = 'tokens'
+    Id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.Id'))
+    access_token = Column(String(100), unique=True)
+    refresh_token = Column(String(100), unique=True)
+    dt_created = Column(DATETIME)
+
+    def get_info(self):
+        return ({
+            'user_id': self.user_id,
+            'access_token': self.access_token,
+            'refresh_token': self.refresh_token,
+            'dt_created': self.dt_created
+        })
+
+
 def create_obj(hash_map: dict, objtype: str) -> Base:
     if objtype == 'user':
         hash_map['password'] = generate_password_hash(hash_map['password'])
         new_obj = UsersData(
             email=hash_map.get('email'),
             password=hash_map.get('password')
+        )
+    elif objtype == 'token':
+        new_obj = Tokens(
+            user_id=hash_map.get('user_id'),
+            access_token=hash_map.get('access_token'),
+            refresh_token=hash_map.get('refresh_token'),
+            dt_created=hash_map.get('dt_created')
         )
 
     else:
@@ -61,30 +84,34 @@ def create_obj(hash_map: dict, objtype: str) -> Base:
         raise
 
 
-def get_user_by_login(login: str, get_row_obj=False):
+def get_user_by_login(login: str, get_row_obj=False, table: str = 'user', user_id=None):
     try:
-        user = session.query(UsersData).filter_by(email=login).one()
-        if get_row_obj:
-            return user
-        return True
+        if table == 'user':
+            user = session.query(UsersData).filter_by(email=login).one()
+            if get_row_obj:
+                return user
+            return True
+        elif table == 'token':
+            user = session.query(Tokens).filter_by(user_id=user_id).one()
+            if get_row_obj:
+                return user
+            return True
     except Exception:
         if get_row_obj:
             return None
         return False
 
 
-def generate_jwt_token(Id: int, email: str, key: str, exp: int = 30):
-    return jwt.encode(payload={'id': Id,
-                               'email': email,
-                               "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=exp)},
-                      key=key,
-                      algorithm="HS256")
+def generate_tokens(n: int = 100) -> str:
+    return secrets.token_urlsafe(n)
 
 
 def get_obj_by_n(Id: int, obj_type: str, get_row_obj=False):
     try:
         if obj_type == 'user':
             obj = session.query(UsersData).filter_by(Id=Id).one()
+        elif obj_type == 'token':
+            obj = session.query(Tokens).filter_by(user_id=Id).one()
         else:
             raise KeyError(f'Передан несуществующий object type')
 
@@ -94,6 +121,20 @@ def get_obj_by_n(Id: int, obj_type: str, get_row_obj=False):
     except Exception as e:
         logger.error(f'Exception: {e}')
         return None
+
+
+def update_tokens(user_id: int, hashmap: dict) -> None:
+    obj = session.query(Tokens).filter_by(user_id=user_id).one()
+    if 'refresh_token' not in hashmap:
+        obj.access_token = hashmap['access_token']
+        obj.dt_created = hashmap['dt_created']
+    else:
+        obj.access_token = hashmap['access_token']
+        obj.dt_created = hashmap['dt_created']
+        obj.refresh_token = hashmap['refresh_token']
+
+    session.add(obj)
+    session.commit()
 
 
 Base.metadata.create_all(engine)

@@ -1,26 +1,22 @@
 import React, { useContext } from "react";
 import {Context} from '../index';
 import { NavLink, useNavigate } from "react-router-dom";
-import { LOGIN_ROUTE } from "../utils/consts";
+import { LOG_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
-import { logout } from "../http/userApi";
-import '../Styles.css'
+import '../Styles.css';
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
     const navigate = useNavigate()
     const logOut = async () => {
-        try {
-            const response = await logout()
-            if (response.data.status === 'ok') {
-                user.setAuth(false)
-            } else {
-                alert(response.data.msg)
-            }
-        } catch (e) {
-            alert(e)
-        }
+        user.setIsAuth(false)
+        user.setUser({})
+        localStorage.removeItem('auth')
+        localStorage.removeItem('uid')
+        navigate(LOG_ROUTE)
     }
+
+    const auth = localStorage.getItem('auth')
     return (
         <div>
             <header>
@@ -44,10 +40,10 @@ const NavBar = observer(() => {
                                         </li>
                                         
                                         <li>
-                                            { user.isAuth ?
+                                            { auth ?
                                                 <button className='buttons' onClick={() => logOut()}>Выйти</button>
                                                 :
-                                                <button className='buttons' onClick={() => navigate(LOGIN_ROUTE)}>Войти</button>
+                                                <button className='buttons' onClick={() => navigate(LOG_ROUTE)}>Войти</button>
                                             }
 
                                         </li>
