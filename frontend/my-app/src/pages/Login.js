@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useState } from "react";
+import React, {useContext, useState } from "react";
 import { Form, Button, Row} from "react-bootstrap";
 import { NavLink, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { LOG_ROUTE, REG_ROUTE, MAIN_ROUTE } from "../utils/consts";
