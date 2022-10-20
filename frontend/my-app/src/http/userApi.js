@@ -9,8 +9,3 @@ export const login = async (email, password) => {
     const response = await $host.post('/login', {email, password})
     return response
 }
-
-export const fuzzyNumber = async () => {
-    const response = await $host.post('/main/fuzzu_number', )
-    return response
-}

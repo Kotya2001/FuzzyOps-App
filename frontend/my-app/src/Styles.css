@@ -214,7 +214,7 @@ input {
   width: 120px;
   height: 35px;
   border-radius: 20px;
-  margin-right: 65px;
+  margin-right: 75px;
   margin-top: 10px;
   margin-left: 35px;
   text-decoration: none;
@@ -302,6 +302,28 @@ input {
   font-family: "Rounded Mplus 1c Medium";
   border: 2px #000000;
 }
+
+.file-upload {
+  margin-top: 17px;
+  text-align: center;
+}
+
+.inputFile {
+  width: 0.1px;
+  height: 0.1px;
+  opacitу: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputFile + label {
+  font-family: "Rounded Mplus 1c Medium";
+  font-size: 16px;
+  display: inline-block;
+  cursor: pointer;
+}
+
 
 
 @font-face {
