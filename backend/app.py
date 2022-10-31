@@ -6,6 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from fuzzyLogicOps import app_fuzzy_logic
+
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 
@@ -13,6 +15,8 @@ import datetime as dt
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
+
+app.register_blueprint(app_fuzzy_logic)
 
 CORS(app, supports_credentials=True)
 
@@ -129,6 +133,7 @@ def login():
             session['user'] = {'access_token': access_token, 'refresh_token': refresh_token, 'uid': uid}
 
         logger.info('token adn secret key were written in session successfully')
+        # print(session)
         return jsonify({'status': 'ok', 'msg': 'ok', 'tokens': response})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')

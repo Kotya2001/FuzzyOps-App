@@ -197,7 +197,7 @@ input {
   padding: 25px;
   border-radius: 12px;
   background-color: #fff;
-  width: 55vw;
+  width: 70vw;
   transform: scale(0.5);
   transition: 0.4s all;
 
@@ -239,32 +239,42 @@ input {
   display: flex;
   justify-content: center;
   list-style-type: none;
-  margin-top: -25px;  
+  margin-top: -25px;
 }
 
-.outp {
-  background-color: #D9D9D9;
-  width: 30vw;
-  height: 6vh;
-  border-radius: 10px;
-  margin-top: 25px;
-  font-size: 18px;
+.switcher {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.switcher .btns {
+  border-radius:30px;
+  background: #77273A;
+  width: 90px;
+  height: 25px;
+  margin-right: 25px;
+  color: #fff;
   font-family: "Rounded Mplus 1c Medium";
+  font-size: 15px;
   text-align: center;
+  text-decoration: none;
+  border: none;
 }
 
 .tooltip {
   float: right;
   position: relative;
-  margin-right: 65px;
-  margin-top: 10px;
+  margin-right: 130px;
+  margin-top: 7px;
   margin-left: 35px;
 
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 250px;
+  width: 330px;
   /* height: 50px; */
   background-color: #D9D9D9;
   color: #000000;
@@ -273,12 +283,20 @@ input {
   padding: 5px 0;
 
   position: absolute;
+  /* position: relative; */
 
   opacity: 0;
   transition: opacity 0.3s;
 
   font-size: 18px;
   font-family: "Rounded Mplus 1c Medium";
+}
+
+.toolunity {
+  font-size: 16px;
+  font-family: "Rounded Mplus 1c Medium";
+  font-style: oblique;
+  opacity: 0.6;
 }
 
 .tooltip .tooltiptext::after {

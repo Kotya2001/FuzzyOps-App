@@ -22,7 +22,7 @@ def user_access(func):
 
             access_token = user.get('access_token')
             refresh_token = user.get('refresh_token')
-            uid = user.get('uid')
+            uid = int(user.get('uid'))
 
             saved_tokens = get_obj_by_n(uid, 'token', get_row_obj=True)
             # Проверка токена в сессии с токеном в таблице
@@ -59,7 +59,6 @@ def user_access(func):
                         # обновим оба
                         update_tokens(uid, update_all_tokens)
                         logger.info('all tokens were updated')
-
                         update_all_tokens.pop('dt_created')
                         new_cookies = update_all_tokens
                         new_cookies['user_id'] = uid
@@ -81,8 +80,19 @@ def user_access(func):
     return inner
 
 
-
-
+def define_points(arr_len: int):
+    points = None
+    if arr_len <= 500:
+        points = 100
+    elif 500 < arr_len <= 1000:
+        points = 150
+    elif 1000 < arr_len <= 1500:
+        points = 250
+    elif 1500 < arr_len <= 2500:
+        points = 400
+    else:
+        points = 550
+    return points
 
 
 

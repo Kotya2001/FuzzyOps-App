@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { fuzzynumber } from "../http/FuzzyLogicApi";
+import { observer } from "mobx-react-lite";
+import { Context } from "../index";
+import { paginationParams } from "../utils/consts";
 
-const FuzzyNumberButtons = () => {
 
+const FuzzyNumberButtons = observer(() => {
+    const {fuzzylogic} = useContext(Context);
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileStatus, setFileStatus] = useState(false);
+    
 
     const changeName = (status) => {
         if (status) {
@@ -15,13 +20,13 @@ const FuzzyNumberButtons = () => {
     }
 
     const handleChange = (e) => {
-        console.log(e.target.files[0].name.split('.'))
         if (e.target.files[0].name.split('.')[1] !== 'json') {
             alert('Неверное расширение файл, допустимый json')
             return;
         }
         setSelectedFile(e.target.files[0]);
         setFileStatus(true);
+        fuzzylogic.setFuzzyNumberFile(e.target.files[0]);
     };
 
     const click = async () => {
@@ -30,9 +35,21 @@ const FuzzyNumberButtons = () => {
             return;
         } else {
             const formData = new FormData();
+            const user = localStorage.getItem('uid')
+
             formData.append('file', selectedFile)
-            
+            formData.append('data', JSON.stringify(paginationParams))
+            formData.append('user', JSON.stringify(user))
+
             const response = await fuzzynumber(formData)
+            if (response.data.status === 'ok') {
+                const data = {result: response.data.result,
+                                m: response.data.params.max,
+                                mi: response.data.params.min,
+                                all_pages: response.data.all_pages}
+                fuzzylogic.setFuzzyNumber(data);
+                fuzzylogic.setIsData(true);
+            } 
         }
     }
 
@@ -60,6 +77,6 @@ const FuzzyNumberButtons = () => {
             </ul>
         </div>
     )
-}
+});
 
 export default FuzzyNumberButtons;

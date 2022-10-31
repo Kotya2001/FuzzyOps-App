@@ -6,3 +6,5 @@ export const MAIN_ROUTE = '/main';
 export const REG_ROUTE = '/registration';
 export const LOG_ROUTE = '/login';
 
+export const paginationParams = {currentPage: 0, points: 100};
+
