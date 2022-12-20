@@ -1,0 +1,16 @@
+.formStyle {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	gap: 15px;
+	box-sizing: border-box;
+	margin-left: 20px;
+}
+
+.inputStyle {
+	border-radius: 5px;
+	border: 1px solid var(--gray-light);
+	font-size: 16px;
+	background: var(--gray-light);
+	text-align: center;
+	font-style: italic;
+}

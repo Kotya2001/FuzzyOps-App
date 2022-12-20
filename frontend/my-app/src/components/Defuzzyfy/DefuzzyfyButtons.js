@@ -1,30 +1,40 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../..";
 import { useContext } from "react";
 import { Button } from "react-bootstrap";
+import { defnumber } from "../../http/FuzzyLogicApi";
+import FileLoader from "../Elements/FileLoader";
 
-const DeffuzzyfyButtons = observer(() => {
+const DefuzzyfyButtons = observer(() => {
 
     const {defuzznumber} = useContext(Context);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [fileStatus, setFileStatus] = useState(false);
+    const one = "fileD";
+    const selectedFile = defuzznumber.DefuzzufyNumberFile;
 
-    const changeName = (status) => {
-        if (status) {
-            return 'Загружено'
-        }
-        return 'Загрузить'
-    }
+    const click = async () => {
 
-    const handleChange = (e) => {
-        if (e.target.files[0].name.split('.')[1] !== 'json') {
-            alert('Неверное расширение файл, допустимый json')
-            return;
+        try {
+            if (!selectedFile) {
+                alert('Загрузите файл');
+                return;
+            } else {
+                const formData = new FormData();
+
+                formData.append('file', selectedFile)
+
+                const response = await defnumber(formData)
+                if (response.data.status === 'ok') {
+                    const data = response.data;
+                    defuzznumber.setDefNumber(data);
+                    defuzznumber.setIsData(true);
+                } else {
+                    alert(response.data.msg)
+                }
+            }
+        } catch(e) {
+            alert(e)
         }
-        setSelectedFile(e.target.files[0]);
-        setFileStatus(true);
-        defuzznumber.setDefuzFile(e.target.files[0]);
     };
 
     return (
@@ -33,29 +43,16 @@ const DeffuzzyfyButtons = observer(() => {
 
                 <li>
                     <Button className="manage-buttons"
-                            >Посчитать</Button>
+                            onClick={click}>Посчитать</Button>
                 </li>
 
                 <li>
-                    <div className="file-upload">
-                        <input type="file" onChange={handleChange}
-                             name="file"
-                             className="inputFile"
-                             id="file"
-                             />
-                        <label for="file"><span>{changeName(fileStatus)}</span></label>
-                    </div>
+                    <FileLoader name={one} i={one} f={one} state={defuzznumber} n={"Загрузить"}/>
                 </li>
 
             </ul>
         </div>
     )
-
-    const methods = ['cgrav', 'lmax', 'rmax', 'cmax']
-    return (
-        <div>
-        </div>
-    )
 });
 
-export default DeffuzzyfyButtons;
+export default DefuzzyfyButtons;

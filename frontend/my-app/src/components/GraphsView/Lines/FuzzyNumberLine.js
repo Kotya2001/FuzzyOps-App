@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Dropdown } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import {
     Chart,
     ChartTitle,
@@ -83,7 +83,7 @@ const FuzzyNumberLine = (data) => {
 
     return (
         <div>
-            <Chart style={{width: "500px"}} pannable zoomable={{mousewheel: {rate: 0.027}}}>
+            <Chart style={{width: "600px"}} pannable zoomable={{mousewheel: {rate: 0.027}}}>
                 <ChartTitle text="Нечеткое число" />
                 <ChartTooltip format="y: {1}, x: {0}"/>
                 <ChartSeries>

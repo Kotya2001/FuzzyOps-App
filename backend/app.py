@@ -1,6 +1,7 @@
-from config import DATABASE_PATH, Configuration
+from config import DATABASE_PATH, Configuration, redis_config, create_file, fuzzy_logic
 from logger import logger
-from database import create_obj, get_user_by_login, generate_tokens
+from utils import ForFuzzyLogic, ForFuzzyOps, ForDefuzz
+# from database import create_obj, get_user_by_login, generate_tokens
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -67,74 +68,31 @@ def page_ping():
     return jsonify({'status': 'ok', 'msg': 'Service Working'})
 
 
-@app.route('/registration', methods=['POST'])
-def registration():
-    """
-    Функция для регистрации пользователей
-
-    :return: response, status of request
-    """
+@app.route('/api/fuzzyops/find', methods=["POST"])
+def api_find():
     data = request.get_json(force=True)
-    email, password = data.get('email', ''), data.get('password', '')
+    firstCategory = data.get('firstCategory')
+
+    if firstCategory is None:
+        return jsonify({"status": "error"})
 
     try:
-        logger.debug('Got data for registration')
-        # проверка на корректность ввода данных
-        if email == '' or password == '':
-            logger.info('Not correct data')
-            return jsonify({'status': 'error', 'msg': 'Некорректные данные'})
-
-        isExist = get_user_by_login(email)
-        # проверка на уникальность логина
-        if isExist:
-            logger.info('User already exist')
-            return jsonify({'status': 'error', 'msg': 'Пользователь уже существует'})
-
-        create_obj({'email': email, 'password': password}, 'user')
-
-        logger.info('User was created')
-        return jsonify({'status': 'ok', 'msg': 'registered'})
+        firstCategory = int(firstCategory)
+        if firstCategory == 0:
+            return jsonify(create_file)
+        elif firstCategory == 1:
+            return jsonify(fuzzy_logic)
     except Exception as e:
         logger.error(f'[ERROR]: {e}')
         return jsonify({'status': 'error', 'msg': str(e)})
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json(force=True)
-    email, password = data.get('email', ''), data.get('password', '')
-
-    try:
-        logger.debug('Got data for authorization')
-        if email == '' or password == '':
-            logger.info('Not correct data')
-            return jsonify({'status': 'error', 'msg': 'Некорректные данные'})
-
-        user = get_user_by_login(email, get_row_obj=True)
-        if user is None:
-            logger.info('User does not exist')
-            return jsonify({'status': 'error', 'msg': 'Пользователя не существует'})
-
-        if not user.check_password(password):
-            logger.info('Not correct password')
-            return jsonify({'status': 'error', 'msg': 'Неверный пароль'})
-        uid = user.Id
-
-        user_tokens = get_user_by_login(email, table='token', user_id=user.Id, get_row_obj=True)
-        if user_tokens is not None:
-            access_token, refresh_token = user_tokens.access_token, user_tokens.refresh_token
-            session['user'] = {'access_token': access_token, 'refresh_token': refresh_token, 'uid': uid}
-            response = {'uid': uid}
-        else:
-            access_token, refresh_token = generate_tokens(), generate_tokens()
-            create_obj({'access_token': access_token, 'refresh_token': refresh_token, 'user_id': uid,
-                        'dt_created': dt.datetime.now()}, 'token')
-            response = {'uid': uid}
-            session['user'] = {'access_token': access_token, 'refresh_token': refresh_token, 'uid': uid}
-
-        logger.info('token adn secret key were written in session successfully')
-        # print(session)
-        return jsonify({'status': 'ok', 'msg': 'ok', 'tokens': response})
-    except Exception as e:
-        logger.error(f'[ERROR]: {e}')
-        return jsonify({'status': 'error', 'msg': str(e)})
+@app.route('/api/fuzzyops/byAlias/<alias>', methods=["GET"])
+def get_by_alias(alias):
+    print('in')
+    if alias == 'ForFuzzyLogic':
+        return jsonify(ForFuzzyLogic)
+    elif alias == 'ForDefuzz':
+        return jsonify(ForDefuzz)
+    elif alias == 'ForFuzzyOps':
+        return jsonify(ForFuzzyOps)

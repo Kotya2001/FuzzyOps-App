@@ -1,0 +1,34 @@
+[
+  {
+    "_id": {
+      "secondCategory": "Нечеткие числа"
+    },
+    "pages": [
+      {
+        "alias": "FuzzyNumber",
+        "title": "Нечеткое число",
+        "_id": "3",
+        "category": "Нечеткое число"
+      },
+
+      {
+        "alias": "DefuzzNumber",
+        "title": "Дефаззификация",
+        "_id": "4",
+        "category": "Дефаззификация"
+      }
+    ]
+  },
+
+  {
+    "_id": {
+      "secondCategory": "Нечеткая арифметика"
+    },
+    "pages": {
+      "alias": "FuzzyOps",
+      "title": "Нечеткая арифметика",
+      "_id": "5",
+      "category": "Нечеткая арифметика"
+    }
+  }
+]

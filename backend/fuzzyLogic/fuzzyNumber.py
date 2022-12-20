@@ -27,6 +27,12 @@ class FuzzyNumber:
     def maybe(self):
         return FuzzyNumber(self._x, np.power(self._values, 0.5))
 
+    def get_x(self):
+        return self._x
+
+    def get_values(self):
+        return self._values
+
     def extend_values(self, fset: np.array, inplace=False):
         #  return new fnum shaped to fit given range
         assert fset[0] <= self._x[0] and fset[-1] >= self._x[-1], "New set must include previous range"
@@ -73,7 +79,7 @@ class FuzzyNumber:
             center = self.center_of_grav()
         return np.sum(self._values * np.square(self._x - center))
 
-    def defuzz(self, by='default'):
+    def defuzz(self, by=DEFAULT_DEFUZZ):
         if by == 'default':
             by = DEFAULT_DEFUZZ
         if by == 'lmax':
@@ -85,7 +91,7 @@ class FuzzyNumber:
         elif by == 'cgrav':
             return self.center_of_grav()
         else:
-            raise ValueError('defuzzification can be made by lmax, rmax, cmax, cgrav of default')
+            raise ValueError('Дефаззификация может быть выполнена методами lmax, rmax, cmax, cgrav of default')
 
     # magic
     def __str__(self):

@@ -1,0 +1,30 @@
+.dropdown {
+
+	/* user-select: none; */
+	font-size: 14px;
+	color: var(--gray);
+}
+
+.dropdownContent {
+	position: absolute;
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	padding: 10px;
+	gap: 15px;
+	box-sizing: border-box;
+	margin-left: 20px;
+
+	text-align: center;
+	border: none;
+	border-radius: 5px;
+	height: 41px;
+}
+
+
+.dropdownItem {
+	cursor: pointer;
+}
+
+.dropdownItem:hover {
+	color: var(--primary);
+}

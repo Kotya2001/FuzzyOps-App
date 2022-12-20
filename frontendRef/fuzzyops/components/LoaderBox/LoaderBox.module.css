@@ -1,0 +1,81 @@
+
+
+.headerH1 {
+
+	font-weight: 500;
+	font-size: 26px;
+	line-height: 39px;
+
+}
+
+.headerH2 {
+
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 27px;
+	cursor: pointer;
+		
+}
+
+.headerH2Active,
+.headerH2:hover {
+	color: var(--primary);
+}
+
+
+.wrapper {
+	margin-top: 22px;
+	margin-left: 30px;
+}
+
+.block {
+	padding: 20px;
+}
+
+.blockBoxHeader {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 20px;
+}
+
+.LoadContent {
+	display: grid;
+	grid-template-columns: 150px;
+	gap: 30px;
+
+	margin-top: 25px;
+}
+
+.KindNumberContent {
+	display: grid;
+	grid-template-columns: 150px auto;
+}
+
+.slider {
+	display: grid;
+	grid-template-columns: repeat(200px 3);
+	gap: 15px;
+}
+
+.Prompt {
+	display: grid;
+	grid-template-columns: 200px 550px;
+	gap: 15px;
+}
+
+.Par {
+	font-size: 18px;
+	font-style: italic;
+	opacity: 0.8;
+}
+
+
+.Par:hover {
+	color: var(--primary);
+}
+
+.btns {
+	display: grid;
+	grid-template-columns: 150px 150px auto;
+	gap: 20px
+}

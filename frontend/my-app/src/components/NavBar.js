@@ -35,7 +35,7 @@ const NavBar = observer(() => {
                                                 
                                         <li>
                                             <NavLink to='/resources'>
-                                                <button className='buttons'>Ресурсы</button>
+                                                <button className='buttons'>Помощь</button>
                                             </NavLink>
                                         </li>
                                         

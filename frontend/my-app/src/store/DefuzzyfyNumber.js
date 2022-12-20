@@ -4,10 +4,11 @@ export default class DefuzzyfyNumber {
     constructor() {
         this._DefuzzufyFile = {}
         this._isData = false
-        // thiz._Number = {}
+        this._Number = {}
+        makeAutoObservable(this)
     }
 
-    setDefuzFile(data) {
+    setFileData(data) {
         this._DefuzzufyFile = data
     }
 
@@ -15,11 +16,18 @@ export default class DefuzzyfyNumber {
         this._isData = bool
     }
 
+    setDefNumber(data) {
+        this._Number = data
+    }
     get Flag() {
         return this._isData
     }
 
-    get File() {
+    get DefuzzufyNumberFile() {
         return this._DefuzzufyFile
+    }
+
+    get DefNumber() {
+        return this._Number
     }
 }

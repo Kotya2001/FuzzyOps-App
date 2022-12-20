@@ -1,0 +1,13 @@
+.sidebar {
+	display: grid;
+	align-content: start;
+	gap: 10px;
+}
+
+.logo {
+	/* padding-top: 20px; */
+	color: var(--primary);
+	font-weight: 800;
+	font-size: 30px;
+	line-height: 45px;
+}

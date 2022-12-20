@@ -2,7 +2,7 @@ import React from "react";
 import Carousel from 'react-elastic-carousel';
 import {Item, Name, Button} from './Item';
 import { NavLink } from "react-router-dom";
-import { LOG_ROUTE} from "../utils/consts";
+import { LOG_ROUTE, RES_ROUTES} from "../utils/consts";
 import '../Styles.css'
 
 const Base = () => {
@@ -18,6 +18,7 @@ const Base = () => {
             <section className='description'>
                 <div className='wrapper'>
                     <Carousel>
+
                         <Item>
                             <Name>
                                 <p>FuzzyOps</p>
@@ -31,6 +32,7 @@ const Base = () => {
                                 </NavLink>
                             </Button>
                         </Item>
+
                         <Item>
                             <Name>
                                 <p>Нечеткая логика</p>
@@ -44,6 +46,7 @@ const Base = () => {
                                 </NavLink>
                             </Button>
                         </Item>
+
                         <Item>
                             <Name>
                                 <p>Нечеткие графы</p>
@@ -52,6 +55,18 @@ const Base = () => {
                             <Button>
                                 <NavLink to={LOG_ROUTE}>
                                     <button className='start'>Начать работу</button>
+                                </NavLink>
+                            </Button>
+                        </Item>
+
+                        <Item>
+                            <Name>
+                                <p>Помощь</p>
+                                <p className='caption'>Формат подаваемых данных</p>
+                            </Name>
+                            <Button>
+                                <NavLink to={RES_ROUTES}>
+                                    <button className='start'>Посмотреть</button>
                                 </NavLink>
                             </Button>
                         </Item>

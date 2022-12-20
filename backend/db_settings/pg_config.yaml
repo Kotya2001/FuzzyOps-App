@@ -1,0 +1,6 @@
+connection:
+  database_host: localhost
+  database_port: 5432
+  database_name: FuzzyOps
+  database_user: test
+  database_password: 123456
