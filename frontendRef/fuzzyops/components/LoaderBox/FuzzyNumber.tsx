@@ -126,6 +126,8 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 		anchor.click();
 		anchor.remove();
 
+		URL.revokeObjectURL(url);
+
 	};
 
 
