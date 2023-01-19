@@ -35,12 +35,12 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				paginationParams
 			};
 			const response = await fuzzynumber(formData);
-			if (response.data.status === 'ok') {
+			if (response.data.status === 200) {
 				const data = {
-					result: response.data.result,
-					all_pages: response.data.all_pages,
-					params: response.data.params,
-					file_hash: response.data.file_hash
+					result: response.data.data.result,
+					all_pages: response.data.data.all_pages,
+					params: response.data.data.params,
+					file_hash: response.data.data.file_hash
 				};
 				dispatch(setFuzzyNumberResult(data));
 				dispatch(setAllPages(data));
@@ -63,12 +63,12 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				paginationParams
 			};
 			const response = await fuzzynumber(formData);
-			if (response.data.status === 'ok') {
+			if (response.data.status === 200) {
 				const data = {
-					result: response.data.result,
-					all_pages: response.data.all_pages,
-					params: response.data.params,
-					file_hash: response.data.file_hash
+					result: response.data.data.result,
+					all_pages: response.data.data.all_pages,
+					params: response.data.data.params,
+					file_hash: response.data.data.file_hash
 				};
 				dispatch(setFuzzyNumberResult(data));
 				dispatch(setAllPages(data));
@@ -92,12 +92,13 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 		const formData = { fuzzyNumber, paginationParams };
 
 		const response = await fuzzynumber(formData);
-		if (response.data.status === 'ok') {
+		console.log(response);
+		if (response.data.status === 200) {
 			const data = {
-				result: response.data.result,
-				all_pages: response.data.all_pages,
-				params: response.data.params,
-				file_hash: response.data.file_hash
+				result: response.data.data.result,
+				all_pages: response.data.data.all_pages,
+				params: response.data.data.params,
+				file_hash: response.data.data.file_hash
 
 			};
 			dispatch(setFuzzyNumberResult(data));
@@ -114,8 +115,9 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 
 
 		const response = await getFile(file_hash);
+		console.log(response);
 
-		const data = response.data.file;
+		const data = response.data.data.file;
 		const str = JSON.stringify(data);
 		const blob = new Blob([str]);
 		const url = URL.createObjectURL(blob);

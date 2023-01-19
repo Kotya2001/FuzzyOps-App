@@ -159,33 +159,7 @@ class FuzzyNumber:
         return self.defuzz()
 
 
-# memberships
-def trianglemf(x, a, b, c):
-    assert a <= b <= c, "a <= b <= c"
-    y = np.zeros(len(x))
-    if a != b:
-        idx = np.argwhere((a < x) & (x < b))
-        y[idx] = (x[idx] - a) / float(b - a)
-    if b != c:
-        idx = np.argwhere((b < x) & (x < c))
-        y[idx] = (c - x[idx]) / float(c - b)
-    idx = np.nonzero(x == b)
-    y[idx] = 1
-    return y
 
-
-def trapezoidalmf(x, a, b, c, d):
-    assert a <= b <= c, "a <= b <= c <= d"
-    y = np.zeros(len(x))
-    if a != b:
-        idx = np.argwhere((a < x) & (x < b))
-        y[idx] = (x[idx] - a) / float(b - a)
-    idx = np.nonzero(np.logical_and(b < x, x < c))[0]
-    y[idx] = 1
-    if c != d:
-        idx = np.argwhere((c < x) & (x < d))
-        y[idx] = (d - x[idx]) / float(d - c)
-    return y
 
 
 # ops
@@ -282,11 +256,11 @@ def fuzzy_or_prob(fnum1: FuzzyNumber, fnum2: FuzzyNumber):
 
 
 # fuzz-defuzz
-def fuzzify(*x, mf=trianglemf, method='minimax'):
-    assert method == 'minimax' or method == 'prob', "Unknown method. Known methods are 'minimax' and 'prob'"
-    y = mf(x)
-
-    return FuzzyNumber(x, y, method)
+# def fuzzify(*x, mf=trianglemf, method='minimax'):
+#     assert method == 'minimax' or method == 'prob', "Unknown method. Known methods are 'minimax' and 'prob'"
+#     y = mf(x)
+#
+#     return FuzzyNumber(x, y, method)
 
 
 def defuzzify(f_num: FuzzyNumber, by='max'):
