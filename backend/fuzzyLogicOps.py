@@ -2,7 +2,6 @@ import math
 
 from logger import logger
 from flask import Blueprint, request, jsonify
-from utils import define_points
 from fuzzyLogic.fuzzyNumber import trianglemf, trapezoidalmf, FuzzyNumber, \
     fuzzy_unite, fuzzy_intersect, fuzzy_difference
 from redis_db import get_cache, set_cache
@@ -29,10 +28,10 @@ def fuzzyNumber():
         d = data
 
         arr = d.get('data')
+
         if arr is None:
             return jsonify({"status": "error", "msg": "Отсутствие универсальных множеств"})
         arr = np.array(arr)
-
         unity = d.get('key')
 
         if unity is None:
@@ -46,7 +45,7 @@ def fuzzyNumber():
             try:
                 processed_unity = trianglemf(arr, *unity_number)\
                     if unity[1] == 'triangle' else trapezoidalmf(arr, *unity_number)
-                set_cache(file_hash, {"result": {"result": processed_unity.tolist()}})
+                set_cache(file_hash, {"result": {"result": processed_unity.tolist()}, "x": arr.tolist()})
             except Exception as e:
                 logger.error(f'[ERROR]: {e}')
                 return jsonify({'status': 'error', 'msg': str(e)})
@@ -55,16 +54,20 @@ def fuzzyNumber():
         # TODO: добавить ползунок для alpha_cut и выклбчатель для энтропии
         processed_unity = np.array(processed_unity)
         m, mi = np.max(arr), np.min(arr)
+        # full_arr = arr.copy()
         arr = arr[currentPage * points: (currentPage + 1) * points]
 
         if len(processed_unity) != 0:
             processed_unity = np.round(processed_unity, 3)
+            # full_processed_unity = processed_unity.copy()
             processed_unity = processed_unity[currentPage * points: (currentPage + 1) * points]
             result = np.vstack((arr, processed_unity)).transpose()
+            # full_result
             res = [{"x": elem[0], "y": elem[1]} for elem in result.tolist()]
             return jsonify({"status": "ok", "result": res,
                             "params": {"max": float(m), "min": float(mi)},
-                            "all_pages": all_pages})
+                            "all_pages": all_pages,
+                            "file_hash": file_hash})
         return jsonify({"status": "error", "msg": "Отсутствуют данные в в файле"})
     except Exception as e:
         logger.error(f'[ERROR]: {e}')

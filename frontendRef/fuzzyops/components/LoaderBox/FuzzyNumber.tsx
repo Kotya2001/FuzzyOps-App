@@ -9,9 +9,10 @@ import { Button } from '../Button/Button';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { fuzzynumber } from '../../http/FuzzyLogicApi';
-import { setFuzzyNumberResult, setAllPages, setParams } from '../../redux/reducers/ResultReducers/FuzzyNumberResultSlice';
+import { setFuzzyNumberResult, setAllPages, setParams, setFileHash } from '../../redux/reducers/ResultReducers/FuzzyNumberResultSlice';
 import { Plot } from '../Plot/Plot';
 import { useState } from 'react';
+import { getFile } from '../../http/CommonApi';
 
 
 
@@ -20,7 +21,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 
 	const dispatch = store.dispatch;
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
-	const { result, all_pages, params } = useAppSelector(state => state.FuzzyNumberResultReducer);
+	const { result, all_pages, params, file_hash } = useAppSelector(state => state.FuzzyNumberResultReducer);
 
 	const [count, setCount] = useState(0);
 
@@ -38,11 +39,13 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				const data = {
 					result: response.data.result,
 					all_pages: response.data.all_pages,
-					params: response.data.params
+					params: response.data.params,
+					file_hash: response.data.file_hash
 				};
 				dispatch(setFuzzyNumberResult(data));
 				dispatch(setAllPages(data));
 				dispatch(setParams(data));
+				dispatch(setFileHash(data));
 
 			} else {
 				alert(response.data.msg);
@@ -51,7 +54,6 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 	};
 
 	const clickDown = async () => {
-		console.log(count);
 		if (count > 0) {
 			setCount(count - 1);
 
@@ -65,11 +67,13 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				const data = {
 					result: response.data.result,
 					all_pages: response.data.all_pages,
-					params: response.data.params
+					params: response.data.params,
+					file_hash: response.data.file_hash
 				};
 				dispatch(setFuzzyNumberResult(data));
 				dispatch(setAllPages(data));
 				dispatch(setParams(data));
+				dispatch(setFileHash(data));
 
 			} else {
 				alert(response.data.msg);
@@ -92,16 +96,36 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 			const data = {
 				result: response.data.result,
 				all_pages: response.data.all_pages,
-				params: response.data.params
+				params: response.data.params,
+				file_hash: response.data.file_hash
 
 			};
 			dispatch(setFuzzyNumberResult(data));
 			dispatch(setAllPages(data));
 			dispatch(setParams(data));
+			dispatch(setFileHash(data));
 
 		} else {
 			alert(response.data.msg);
 		}
+	};
+
+	const downloadFile = async () => {
+
+
+		const response = await getFile(file_hash);
+
+		const data = response.data.file;
+		const str = JSON.stringify(data);
+		const blob = new Blob([str]);
+		const url = URL.createObjectURL(blob);
+		const anchor = document.createElement('a');
+		anchor.href = url;
+		anchor.download = 'fuzzynumber.json';
+		document.body.append(anchor);
+		anchor.click();
+		anchor.remove();
+
 	};
 
 
@@ -136,6 +160,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 					<div className={styles.btns}>
 						<Button appearance='primary' onClick={clickDown}>Назад</Button>
 						<Button appearance='primary' onClick={clickUp}>Вперед</Button>
+						{file_hash && <Button appearance='primary' onClick={downloadFile}>Скачать</Button>}
 					</div>
 				</Box>
 			</div>

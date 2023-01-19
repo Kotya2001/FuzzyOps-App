@@ -23,7 +23,7 @@ export const Plot = ({ result, params }: PlotProps) => {
                                 <XAxis type="number" dataKey="x" name="Универсальное множество" min={params.mi} max={params.m}/>
                                 <YAxis type="number" dataKey="y" name="Степень уверенности"/>
                                 <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                                <Scatter name="Нечеткое число" data={result} fill="#8884d8" isAnimationActive={false}/>
+                                <Scatter name="Нечеткое число" data={result} fill="#7653FC" isAnimationActive={false} line/>
                         </ScatterChart>
                 </div>
         );
