@@ -4,35 +4,76 @@ import { Button } from '../Button/Button';
 import { useState } from 'react';
 import { store } from '../../redux/store';
 import { setKeyFuzz, setNumbersFuzz } from '../../redux/reducers/FileReducers/CreateKindSlice';
-import { setKind } from '../../redux/reducers/MethodsSlice';
+import { setKind, setLingVar, setName, setIsName, setIsLingVar } from '../../redux/reducers/MethodsSlice';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { useAppSelector } from '../../redux/hooks';
 
 
-export const Input = ({ selected }: InputProps): JSX.Element => {
+export const Input = ({ keyValue }: InputProps): JSX.Element => {
+
+
+
 	const dispatch = store.dispatch;
-	const prompt = selected === 'Треугольный вид' ? 'a <= b <= c' : 'a <= b <= c <= d';
-	const [nums, setNums] = useState("");
+	const { isLingVar, isName } = useAppSelector(state => state.methodsReducer);
+	const key = keyValue[0];
+	const value = keyValue[1];
 
+	const [data, setData] = useState("");
+
+	const set = (data: string, setter: ActionCreatorWithPayload<string>, msg: string) => {
+		dispatch(setter(data));
+		setData("");
+		dispatch(setKind(""));
+		alert(msg);
+	};
 
 	const Create = () => {
-		if (nums === "") {
-			alert("Введите границы для числа!");
+		if (key === 'ling') {
+			if (/^[А-яёA-z\s]*$/.test(data)) {
+				key === 'ling' && set(data, setLingVar, 'Квантификатор добавлен');
+				dispatch(setIsLingVar(!isLingVar));
+			}
+		
+		
+
+		} else if (key === 'name') {
+			if (/^[А-яёA-z\s]*$/.test(data)) {
+				key === 'name' && set(data, setName, 'Имя добавлено');
+				dispatch(setIsName(!isName));
+			}
+		}
+		else {
+			if (/^[0-9\s]*$/.test(data)) {
+				dispatch(setKeyFuzz(key));
+				dispatch(setNumbersFuzz(data));
+				setData("");
+				dispatch(setKind(""));
+				alert("Вид числа добавлен");
+			}
+
+		}
+	};
+
+	const dataHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (key === 'ling' || key === 'name') {
+			const re = /^[А-яёA-z\s]*$/;
+			if (re.test(e.target.value)) {
+				setData(e.target.value);
+			}
 		} else {
-			const k = selected === 'Треугольный вид' ? 'triangle' : 'trap';
-			dispatch(setKeyFuzz(k));
-			dispatch(setNumbersFuzz(nums));
-			setNums("");
-			dispatch(setKind(""));
-			alert("Вид числа добавлен");
+			const re = /^[0-9\s]*$/;
+			if (re.test(e.target.value)) {
+				setData(e.target.value);
+			}
 		}
 	};
 
 
-	return (
 
+	return (
 		<form onSubmit={e => e.preventDefault()} className={styles.formStyle}>
-			<input value={nums} maxLength={10000000000} placeholder={prompt} onChange={e => setNums(e.target.value)}
-				className={styles.inputStyle}
-			/>
+				<input value={data} maxLength={10000000000} placeholder={value} name={key} onChange={e => dataHandler(e)}
+					className={styles.inputStyle}/>
 			<Button appearance='primary' onClick={Create}>Создать</Button>
 		</form>
 	);

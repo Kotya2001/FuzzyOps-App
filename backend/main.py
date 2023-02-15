@@ -1,7 +1,7 @@
 """
 Исполняемый файл, точка входа
 """
-from backend.transport import app
+from transport import app
 from config import SERVER_PORT, SERVER_HOST, DEBUG
 # производим запуск приложения в зависимоти от режима работы
 if __name__ == '__main__':

@@ -16,10 +16,6 @@ export const Dropdown = ({elems, forWhat}: DropdownProps): JSX.Element => {
 				dispatch(setKindOfNumber(!kindOfNumber));
 				dispatch(setKind(elem));
 				return;
-			// case 'kindInput':
-			// 	dispatch(setKindOfNumbeInput(!kindOfNumberInput));
-			// 	dispatch(setKindInput(elem));
-			// 	return;
 			default:
 				return;
 			

@@ -1,6 +1,7 @@
 
 import { setKeyFuzz, setNumbersFuzz } from '../../redux/reducers/FileReducers/CreateKindSlice';
 import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
+import { setLingVar } from '../../redux/reducers/MethodsSlice';
 import { store } from '../../redux/store';
 import { Button } from '../Button/Button';
 import { defaultFuzzyLoaderNumberName } from '../LoaderBox/consts';
@@ -32,6 +33,7 @@ export const Downloader = ({ file, forWhat }: DownloaderProps) => {
 				dispatch(setFuzzyNumberUnity([]));
 				dispatch(setKeyFuzz(""));
 				dispatch(setNumbersFuzz(""));
+				dispatch(setLingVar(""));
 		}
 
 	};

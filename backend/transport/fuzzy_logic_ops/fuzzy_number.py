@@ -25,11 +25,12 @@ def fuzzy_number_handler():
 
     pagination_params: dict = full_data.get("paginationParams")
     data: dict = full_data.get("fuzzyNumber")
-    hash_str = str(data) + 'fazzification'
+    hash_str = str(data) + 'fuzzification'
     file_hash = sha256(bytes(hash_str, 'UTF-8')).hexdigest()
     currentPage, points = pagination_params.get("currentPage"), pagination_params.get("points")
     arr: List[float] = data.get('data')
     unity: List[str] = data.get('key')
+    var: str = data.get('variable')
 
     if not arr or not unity:
         response = create_response(
@@ -64,6 +65,7 @@ def fuzzy_number_handler():
         data={"result": res,
               "params": {"max": float(m), "min": float(mi)},
               "all_pages": all_pages,
-              "file_hash": file_hash}
+              "file_hash": file_hash,
+              "variable": var}
     )
     return response

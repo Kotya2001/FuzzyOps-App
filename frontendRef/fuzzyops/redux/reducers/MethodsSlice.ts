@@ -6,20 +6,22 @@ export interface MethodsState {
 	kind: string,
 	by: string,
 	kindOfNumber: boolean,
-
-	// kindInput: string,
+	lingVar: string,
+	isLingVar: boolean
 	byInput: string,
-	// kindOfNumberInput: boolean, 
+	isName: boolean,
+	name: string
 }
 
 const InitialMethodsState: MethodsState = {
 	kind: '',
 	by: '',
 	kindOfNumber: false,
-
-	// kindInput: '',
+	lingVar: 'Нет квантификатора',
+	isLingVar: false,
 	byInput: '',
-	// kindOfNumberInput: false, 
+	isName: false,
+	name: ''
 
 };
 
@@ -39,21 +41,29 @@ export const methodsSlice = createSlice({
 			state.kindOfNumber = action.payload;
 		},
 
-		// setKindInput: (state, action: PayloadAction<string>) => {
-		// 	state.kindInput = action.payload;
-		// },
-
 		setByInput: (state, action: PayloadAction<string>) => {
 			state.byInput = action.payload;
 		},
 
-		// setKindOfNumbeInput: (state, action: PayloadAction<boolean>) => {
-		// 	state.kindOfNumberInput = action.payload;
-		// }
+		setLingVar: (state, action: PayloadAction<string>) => {
+			state.lingVar = action.payload;
+		},
+
+		setIsLingVar: (state, action: PayloadAction<boolean>) => {
+			state.isLingVar = action.payload;
+		},
+
+		setName: (state, action: PayloadAction<string>) => {
+			state.name = action.payload;
+		},
+
+		setIsName: (state, action: PayloadAction<boolean>) => {
+			state.isName = action.payload;
+		}
 	}
 });
 
-export const { setKind, setBy, setKindOfNumber, setByInput  } = methodsSlice.actions;
+export const { setKind, setBy, setKindOfNumber, setByInput, setLingVar, setIsLingVar, setName, setIsName } = methodsSlice.actions;
 
 
 export default methodsSlice.reducer;

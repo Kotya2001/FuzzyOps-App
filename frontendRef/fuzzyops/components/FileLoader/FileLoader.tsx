@@ -58,7 +58,13 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 			const res = reader.result;
 			if (typeof res === 'string') {
 				const arr = JSON.parse(res);
-				sateToStore(arr);
+				const values = Object.values(arr);
+				if (JSON.stringify(arr) === JSON.stringify(values)){
+					sateToStore(arr);
+				} else {
+					alert('Неверный формат файла, необходимо загрузить массив чисел в файле');
+				}
+				
 			} else {
 				alert('Файл пуст');
 			}
