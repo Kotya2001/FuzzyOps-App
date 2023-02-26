@@ -1,10 +1,12 @@
 from backend.database import get_cache
-from typing import Dict, List
+from typing import Dict, List, Union
 
 
 # получаем данные из кэша
-def create_file(file_hash: str) -> Dict[str, List[float]]:
+def create_file(file_hash: str) -> Union[Dict[str, List[float]], None]:
     res = get_cache(file_hash)
-    x, unity = res['x'], res['result']['result']
-    file = {"x": x, "unity": unity}
-    return file
+    if res:
+        x, unity = res['x'], res['result']['result']
+        file = {"x": x, "unity": unity}
+        return file
+    return None

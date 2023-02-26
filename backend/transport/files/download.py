@@ -11,9 +11,16 @@ def download_file(file_hash: str):
     """
 
     file = create_file(file_hash)
+    if file:
+        response = create_response(
+            status=status.HTTP_200_OK,
+            message='ok',
+            data={"file": file}
+        )
+        return response
     response = create_response(
-        status=status.HTTP_200_OK,
-        message='ok',
-        data={"file": file}
+        status=status.HTTP_409_CONFLICT,
+        message="error",
+        data={}
     )
     return response

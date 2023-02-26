@@ -30,7 +30,8 @@ def fuzzy_number_handler():
     currentPage, points = pagination_params.get("currentPage"), pagination_params.get("points")
     arr: List[float] = data.get('data')
     unity: List[str] = data.get('key')
-    var: str = data.get('variable')
+    name: str = data.get('name')
+    ling: str = data.get('ling')
 
     if not arr or not unity:
         response = create_response(
@@ -42,11 +43,12 @@ def fuzzy_number_handler():
 
     array: np.ndarray = np.array(arr)
     unity_number: List[float] = [float(u) for u in unity[0].split(" ")]
+    type_of_number = unity[1]
     all_pages = math.ceil(array.shape[0] / points)
     m, mi = np.max(array), np.min(array)
 
-    processed_unity = get_fuzzy_number(file_hash=file_hash, array=array,
-                                       unity_number=unity_number, unity=unity)
+    processed_unity, defuz_value = get_fuzzy_number(file_hash=file_hash, array=array,
+                                                    unity_number=unity_number, type_of_number=type_of_number)
     if isinstance(processed_unity, bool):
         response = create_response(
             status=status.HTTP_409_CONFLICT,
@@ -58,6 +60,7 @@ def fuzzy_number_handler():
     processed_unity = processed_unity[currentPage * points: (currentPage + 1) * points]
     result = np.vstack((array, processed_unity)).transpose()
     res = [{"x": elem[0], "y": elem[1]} for elem in result.tolist()]
+    defuz_value = defuz_value if not np.isnan(defuz_value) else None
 
     response = create_response(
         status=status.HTTP_200_OK,
@@ -66,6 +69,8 @@ def fuzzy_number_handler():
               "params": {"max": float(m), "min": float(mi)},
               "all_pages": all_pages,
               "file_hash": file_hash,
-              "variable": var}
+              "name": name,
+              "ling": ling,
+              "defuz_value": defuz_value}
     )
     return response
