@@ -3,15 +3,15 @@ import styles from './FileLoader.module.css';
 import { store } from '../../redux/store';
 import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
-import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber } from '../LoaderBox/consts';
+import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber } from '../../blocks/LoaderBox/consts';
 import { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 
 export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 
 	const dispatch = store.dispatch;
-	const {fuzzyNumberUnity} = useAppSelector(state => state.createUnityReducer);
-	const {fuzzyNumber} = useAppSelector(state => state.CreateFuzzyNumberReducer);
+	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
+	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
 	const [fileStatus, setFileStatus] = useState(false);
 
 	const sateToStore = (data: number[]) => {
@@ -41,7 +41,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 				}
 				return n;
 
-			
+
 			case defaultFuzzyNumber:
 				if (status && Object.keys(fuzzyNumber).length !== 0) {
 					return 'Загружено';
@@ -65,12 +65,12 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 			if (typeof res === 'string') {
 				const arr = JSON.parse(res);
 				sateToStore(arr);
-				
+
 			} else {
 				alert('Файл пуст');
 			}
 		};
-		
+
 
 	};
 

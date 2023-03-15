@@ -1,24 +1,24 @@
 import { LoaderBoxProps } from './LoaderBox.props';
 import cn from 'classnames';
 import styles from './LoaderBox.module.css';
-import { Htag } from '../Htag/Htag';
-import { Box } from '../Box/Box';
-import { FileLoader } from '../FileLoader/FileLoader';
+import { Htag } from '../../components/Htag/Htag';
+import { Box } from '../../components/Box/Box';
+import { FileLoader } from '../../components/FileLoader/FileLoader';
 import { defType, defaultFuzzyLoaderNumberName, defaultFuzzyNumber, elems } from './consts';
-import { Button } from '../Button/Button';
+import { Button } from '../../components/Button/Button';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { fuzzynumber } from '../../http/FuzzyLogicApi';
 import { setFuzzyNumberResult, setAllPages, setParams, setFileHash, setLing, setName, setDefuzValue, FuzzyNumberResultSlice } from '../../redux/reducers/ResultReducers/FuzzyNumberResultSlice';
 import { setOperation, setValue } from '../../redux/reducers/OpsReducers/OpsSlice';
-import { Plot } from '../Plot/Plot';
+import { Plot } from '../../components/Plot/Plot';
 import { useState } from 'react';
 import { getFile } from '../../http/CommonApi';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
-import { Input } from '../Input/Input';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+import { Input } from '../../components/Input/Input';
 import { fuzzynumberOps } from '../../http/FuzzyOpsApi';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { Dropdown } from '../Dropdown/Dropdown';
+import { Dropdown } from '../../components/Dropdown/Dropdown';
 import { setKindOfNumber } from '../../redux/reducers/MethodsSlice';
 import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setKeyFuzz, setNumbersFuzz } from '../../redux/reducers/FileReducers/CreateKindSlice';
@@ -30,9 +30,9 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 
 	const dispatch = store.dispatch;
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
-	const { kindOfNumber, kind} = useAppSelector(state => state.methodsReducer);
+	const { kindOfNumber, kind } = useAppSelector(state => state.methodsReducer);
 	const { result, all_pages, params, file_hash, name, ling, defuz_value } = useAppSelector(state => state.FuzzyNumberResultReducer);
-	const {n, operation} = useAppSelector(state => state.FuzzyOpsReducer);
+	const { n, operation } = useAppSelector(state => state.FuzzyOpsReducer);
 	const [count, setCount] = useState(0);
 	const [modalActive, setModalActive] = useState(false);
 	const [comminBtnActive, setCommonBtnActive] = useState(false);
@@ -78,7 +78,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 		}
 	};
 
-	const checkCalc = async() => {
+	const checkCalc = async () => {
 		if (isCalc) {
 			setIsPagination(true);
 			await calc();
@@ -92,7 +92,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 		if (count < all_pages - 1) {
 			setCount(count + 1);
 			await checkCalc();
-	
+
 		}
 	};
 
@@ -196,7 +196,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 
 
 	return (
-		
+
 		<div className={styles.wrapper}>
 			<div>
 				<Htag tag={tag} className={styles.headerH1}>
@@ -222,13 +222,13 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 					</div>
 
 					<div>
-						{Object.keys(result).length !== 0 && <Plot 
-																result={result} 
-																all_pages={all_pages} 
-																params={params} 
-																name={name}
-																ling={ling}
-							defuz_value={defuz_value}/>}
+						{Object.keys(result).length !== 0 && <Plot
+							result={result}
+							all_pages={all_pages}
+							params={params}
+							name={name}
+							ling={ling}
+							defuz_value={defuz_value} />}
 					</div>
 					<div className={styles.btns}>
 						<Button appearance='primary' onClick={clickDown}>Назад</Button>
@@ -238,7 +238,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 						{file_hash && <Button appearance='primary' onClick={() => btnOperationClick("-")}>-</Button>}
 						{file_hash && <Button appearance='primary' onClick={() => btnOperationClick("*")}>*</Button>}
 					</div>
-					{modalActive && 
+					{modalActive &&
 						<ModalWindow active={modalActive} setActive={setModalActive}>
 							<div className={styles.btnsModal}>
 								<Button appearance='primary' onClick={openCommon}>Обычное число</Button>
@@ -246,15 +246,15 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 								{isNum(n) && <Button appearance='primary' onClick={calc}>Посчитать</Button>}
 								<Button appearance='primary' onClick={openFuzzy}>Нечеткое число</Button>
 								{
-									fuzzyBtnActive && 
+									fuzzyBtnActive &&
 									<div className={styles.KindNumberContent}>
 										<Button appearance='primary' onClick={() => click(kindOfNumber, setKindOfNumber)}>Вид числа</Button>
 										{kindOfNumber && <Dropdown elems={elems} forWhat={'kind'} />}
 										{!kindOfNumber && kind !== "" && <Input keyValue={defType(kind)} />}
-									</div>									
+									</div>
 								}
 								{
-									fuzzyBtnActive && 
+									fuzzyBtnActive &&
 									<FileLoader name={defaultFuzzyLoaderNumberName} i={defaultFuzzyLoaderNumberName} f={defaultFuzzyLoaderNumberName} n="Загрузить" />
 								}
 								{

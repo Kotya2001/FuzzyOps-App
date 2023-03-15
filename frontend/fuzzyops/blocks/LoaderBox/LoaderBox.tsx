@@ -1,17 +1,17 @@
-import { Box } from '../Box/Box';
-import { Htag } from '../Htag/Htag';
+import { Box } from '../../components/Box/Box';
+import { Htag } from '../../components/Htag/Htag';
 import styles from './LoaderBox.module.css';
 import { LoaderBoxProps } from './LoaderBox.props';
 import cn from 'classnames';
-import { Button } from '../Button/Button';
-import { Dropdown } from '../Dropdown/Dropdown';
+import { Button } from '../../components/Button/Button';
+import { Dropdown } from '../../components/Dropdown/Dropdown';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { setKindOfNumber, setIsLingVar, setIsName } from '../../redux/reducers/MethodsSlice';
-import { Input } from '../Input/Input';
-import { FileLoader } from '../FileLoader/FileLoader';
+import { Input } from '../../components/Input/Input';
+import { FileLoader } from '../../components/FileLoader/FileLoader';
 import { defType, defaultFuzzyLoaderNumberName, elems, example } from './consts';
-import { Downloader } from '../Downloader/Downloader';
+import { Downloader } from '../../components/Downloader/Downloader';
 import { useState } from 'react';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
@@ -20,9 +20,9 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
 
 	const dispatch = store.dispatch;
-	const {kindOfNumber, kind, isLingVar, lingVar, isName, name } = useAppSelector(state => state.methodsReducer);
-	const {fuzzyNumberUnity} = useAppSelector(state => state.createUnityReducer);
-	const {numbersFuzz, keyFuzz} = useAppSelector(state => state.createKindReducer);
+	const { kindOfNumber, kind, isLingVar, lingVar, isName, name } = useAppSelector(state => state.methodsReducer);
+	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
+	const { numbersFuzz, keyFuzz } = useAppSelector(state => state.createKindReducer);
 
 	const [loadData, setLoadData] = useState(false);
 
@@ -34,7 +34,7 @@ export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
 		setLoadData(!loadData);
 	};
 
-	
+
 
 	return (
 		<div className={styles.wrapper}>
@@ -55,7 +55,7 @@ export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
 						})} click={onHeaderClick}>Подсказка</Htag>
 
 					</div>
-					{loadData ? 
+					{loadData ?
 						<div className={styles.LoadContent}>
 							<div className={styles.KindNumberContent}>
 								<Button appearance='primary' onClick={() => click(kindOfNumber, setKindOfNumber)}>Вид числа</Button>
@@ -65,7 +65,7 @@ export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
 
 							<div className={styles.KindNumberContent}>
 								<Button appearance='primary' onClick={() => click(isName, setIsName)}>Имя переменной</Button>
-								{isName && <Input keyValue={defType('name')}/>}
+								{isName && <Input keyValue={defType('name')} />}
 							</div>
 
 							<div className={styles.KindNumberContent}>
@@ -73,13 +73,13 @@ export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
 								{isLingVar && <Input keyValue={defType('ling')} />}
 							</div>
 
-							<FileLoader name={defaultFuzzyLoaderNumberName} i={defaultFuzzyLoaderNumberName} f={defaultFuzzyLoaderNumberName}  n="Загрузить" />
-							{fuzzyNumberUnity.length !== 0  && numbersFuzz && keyFuzz && name && <Downloader file={{
+							<FileLoader name={defaultFuzzyLoaderNumberName} i={defaultFuzzyLoaderNumberName} f={defaultFuzzyLoaderNumberName} n="Загрузить" />
+							{fuzzyNumberUnity.length !== 0 && numbersFuzz && keyFuzz && name && <Downloader file={{
 								data: fuzzyNumberUnity,
 								key: [numbersFuzz, keyFuzz],
 								name,
 								ling: lingVar
-							}} forWhat={defaultFuzzyLoaderNumberName}/>}
+							}} forWhat={defaultFuzzyLoaderNumberName} />}
 						</div>
 						:
 						<div className={styles.LoadContent}>

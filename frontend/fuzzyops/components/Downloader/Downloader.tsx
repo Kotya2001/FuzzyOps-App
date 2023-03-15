@@ -4,7 +4,7 @@ import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUni
 import { setLingVar } from '../../redux/reducers/MethodsSlice';
 import { store } from '../../redux/store';
 import { Button } from '../Button/Button';
-import { defaultFuzzyLoaderNumberName } from '../LoaderBox/consts';
+import { defaultFuzzyLoaderNumberName } from '../../blocks/LoaderBox/consts';
 import { DownloaderProps } from './Downloader.props';
 
 
