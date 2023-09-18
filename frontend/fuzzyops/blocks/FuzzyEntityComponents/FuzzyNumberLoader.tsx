@@ -1,7 +1,7 @@
 import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
-import styles from './LoaderBox.module.css';
-import { LoaderBoxProps } from './LoaderBox.props';
+import styles from './FuzzyEntityComponents.module.css';
+import { FuzzyProps } from './FuzzyEntityComponents.props';
 import cn from 'classnames';
 import { Button } from '../../components/Button/Button';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
@@ -17,7 +17,7 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 
 
-export const LoaderBox = ({ header, tag }: LoaderBoxProps) => {
+export const FuzzuNumberLoader = ({ header, tag }: FuzzyProps) => {
 
 	const dispatch = store.dispatch;
 	const { kindOfNumber, kind, isLingVar, lingVar, isName, name } = useAppSelector(state => state.methodsReducer);

@@ -3,7 +3,8 @@ import styles from './FileLoader.module.css';
 import { store } from '../../redux/store';
 import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
-import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber } from '../../blocks/LoaderBox/consts';
+import { setGraphData, Root } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
+import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber, defaultFuzzyGraphCreate } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 
@@ -12,6 +13,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 	const dispatch = store.dispatch;
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
+	const { graph_data } = useAppSelector(state => state.CreateFuzzyGraphReducer);
 	const [fileStatus, setFileStatus] = useState(false);
 
 	const sateToStore = (data: number[]) => {
@@ -33,6 +35,10 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 		}
 	};
 
+	const saveGraphData = (data: Root) => {
+		dispatch(setGraphData(data));
+	};
+
 	const changeName = (status: boolean, n: string, name: string) => {
 		switch (name) {
 			case defaultFuzzyLoaderNumberName:
@@ -44,6 +50,12 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 
 			case defaultFuzzyNumber:
 				if (status && Object.keys(fuzzyNumber).length !== 0) {
+					return 'Загружено';
+				}
+				return n;
+			
+			case defaultFuzzyGraphCreate:
+				if (status && graph_data.length !== 0) {
 					return 'Загружено';
 				}
 				return n;
@@ -63,8 +75,17 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 		reader.onload = function () {
 			const res = reader.result;
 			if (typeof res === 'string') {
-				const arr = JSON.parse(res);
-				sateToStore(arr);
+				try {
+					const arr = JSON.parse(res);
+					if (name === defaultFuzzyLoaderNumberName || name === defaultFuzzyNumber) {
+						sateToStore(arr);
+					} else if (name === defaultFuzzyGraphCreate) {
+						saveGraphData(arr);
+					}
+				} catch(e) {
+					alert("Ошибка парсинга json");
+				}
+				
 
 			} else {
 				alert('Файл пуст');

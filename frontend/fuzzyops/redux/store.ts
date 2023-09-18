@@ -6,6 +6,12 @@ import sliderReducer from './reducers/SliderSlice';
 import CreateFuzzyNumberReducer from './reducers/FileReducers/CreateFuzzyNumberSlice';
 import FuzzyNumberResultReducer from './reducers/ResultReducers/FuzzyNumberResultSlice';
 import FuzzyOpsReducer from './reducers/OpsReducers/OpsSlice';
+import CreateFuzzyGraphReducer from './reducers/FileReducers/CreateFuzzyGraphSlice';
+import FuzzyGraphAlgsReducer from './reducers/ResultReducers/FuzzyGraphAlgsSlice';
+import LinearOptReducer from './reducers/OptimizationReducers/LinearOptSlice';
+import LinOptResultReducer from './reducers/ResultReducers/FuzzuLinOptResult';
+import MetaOptReducer from './reducers/OptimizationReducers/MetaOptSlice';
+import MetaOptResultReducer  from './reducers/ResultReducers/FuzzuMetaOptResultSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -15,7 +21,13 @@ export const store = configureStore({
 		sliderReducer,
 		CreateFuzzyNumberReducer,
 		FuzzyNumberResultReducer,
-		FuzzyOpsReducer
+		FuzzyOpsReducer,
+		CreateFuzzyGraphReducer,
+		FuzzyGraphAlgsReducer,
+		LinearOptReducer,
+		LinOptResultReducer,
+		MetaOptReducer,
+		MetaOptResultReducer
 	}
 });
 

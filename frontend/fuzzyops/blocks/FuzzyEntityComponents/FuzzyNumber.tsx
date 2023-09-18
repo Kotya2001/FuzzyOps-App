@@ -1,6 +1,6 @@
-import { LoaderBoxProps } from './LoaderBox.props';
+import { FuzzyProps } from './FuzzyEntityComponents.props';
 import cn from 'classnames';
-import styles from './LoaderBox.module.css';
+import styles from './FuzzyEntityComponents.module.css';
 import { Htag } from '../../components/Htag/Htag';
 import { Box } from '../../components/Box/Box';
 import { FileLoader } from '../../components/FileLoader/FileLoader';
@@ -26,7 +26,7 @@ import { setKeyFuzz, setNumbersFuzz } from '../../redux/reducers/FileReducers/Cr
 
 
 
-export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
+export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 
 	const dispatch = store.dispatch;
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
@@ -72,6 +72,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				defuz_value: response.data.data.defuz_value
 			};
 			setData(data);
+			localStorage.setItem("data", JSON.stringify(data));
 
 		} else {
 			alert(response.data.msg);
@@ -166,6 +167,7 @@ export const FuzzyNumber = ({ header, tag }: LoaderBoxProps) => {
 				defuz_value: resp.data.data.defuz_value
 			};
 			setData(data);
+			localStorage.setItem("data", JSON.stringify(data));
 
 		} else {
 			alert(resp.data.msg);

@@ -1,5 +1,5 @@
-import { FuzzyNumber } from '../blocks/LoaderBox/FuzzyNumber';
-import { LoaderBox } from '../blocks/LoaderBox/LoaderBox';
+import { FuzzyNumber } from '../blocks/FuzzyEntityComponents/FuzzyNumber';
+import { FuzzuNumberLoader } from '../blocks/FuzzyEntityComponents/FuzzyNumberLoader';
 import { withLayout } from '../layout/Layout';
 
 
@@ -7,7 +7,7 @@ import { withLayout } from '../layout/Layout';
 const FuzzyMath = () => {
 
 	return <div>
-		<LoaderBox header='Нечеткое число' tag='h1' />;
+		<FuzzuNumberLoader header='Нечеткое число' tag='h1' />;
 		<FuzzyNumber header='Вычисление нечеткого числа' tag='h1' />;
 	</div>;
 };
