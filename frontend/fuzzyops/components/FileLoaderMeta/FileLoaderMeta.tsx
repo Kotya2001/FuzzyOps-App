@@ -1,9 +1,10 @@
 import { FileLoaderMetaProps } from './FileLoaderMeta.props'; 
 import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
-import { defaultFuzzyMetaOptName } from '../../blocks/FuzzyEntityComponents/consts';
+import { defaultFuzzyMetaOptName, defaultGraphAssignment } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
-import { setParams } from '../../redux/reducers/ResultReducers/FuzzyNumberResultSlice';
+import { setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
+import { setTasks, setWorkers, setFuzzyCosts } from '../../redux/reducers/FileReducers/AddAssignmentsSlice';
 
 export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 
@@ -16,6 +17,12 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 	const changeName = (status: boolean, n: string, name: string) => {
 		switch (name) {
 			case defaultFuzzyMetaOptName:
+				if (status) {
+					return 'Загружено';
+				}
+				return n;
+
+			case defaultGraphAssignment:
 				if (status) {
 					return 'Загружено';
 				}
@@ -38,8 +45,14 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 			if (typeof res === 'string') {
 				try {
 					const arr = JSON.parse(res);
-					console.log(arr);
-					dispatch(setParams(arr));
+					if (name == defaultFuzzyMetaOptName) {
+						dispatch(setParams(arr));
+					} else if (name == defaultGraphAssignment) {
+						dispatch(setTasks(arr.tasks));
+						dispatch(setWorkers(arr.workers));
+						dispatch(setFuzzyCosts(arr.fuzzyCosts));
+
+					}
 				} catch(e) {
 					alert("Ошибка парсинга json");
 				}

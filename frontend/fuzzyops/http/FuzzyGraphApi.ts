@@ -19,3 +19,8 @@ export const getClusters = async (uploadedFile: object) => {
 	const response = await $host.post('/main/fuzzyGraph/Cluster/Get', uploadedFile);
 	return response;
 };
+
+export const getAssignment = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyGraph/Assignment/Get', uploadedFile);
+	return response;
+};

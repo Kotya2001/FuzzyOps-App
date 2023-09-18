@@ -12,6 +12,8 @@ import LinearOptReducer from './reducers/OptimizationReducers/LinearOptSlice';
 import LinOptResultReducer from './reducers/ResultReducers/FuzzuLinOptResult';
 import MetaOptReducer from './reducers/OptimizationReducers/MetaOptSlice';
 import MetaOptResultReducer  from './reducers/ResultReducers/FuzzuMetaOptResultSlice';
+import AddAssignmentsReducer from './reducers/FileReducers/AddAssignmentsSlice';
+import AssignmenstReducer from './reducers/ResultReducers/AssignmenstSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -27,7 +29,9 @@ export const store = configureStore({
 		LinearOptReducer,
 		LinOptResultReducer,
 		MetaOptReducer,
-		MetaOptResultReducer
+		MetaOptResultReducer,
+		AddAssignmentsReducer,
+		AssignmenstReducer
 	}
 });
 

@@ -3,8 +3,8 @@ from app import logger
 from typing import Union, List
 import numpy as np
 
-from fuzzyops._domain import Domain
-from fuzzyops.fuzzify.mf import memberships
+from fuzzyops.fuzzy_numbers import Domain
+from fuzzyops.fuzzy_numbers import memberships
 
 
 def center_of_grav(x: np.ndarray, values: np.ndarray):

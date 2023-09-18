@@ -8,8 +8,12 @@ import { GraphInput } from '../../components/Input/GraphInput';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { setPath, setPathLoop, setGroups, setDominatingRes } from '../../redux/reducers/ResultReducers/FuzzyGraphAlgsSlice';
-import { getClusters, shortestPath, chechDominating } from '../../http/FuzzyGraphApi';
+import { getClusters, shortestPath, chechDominating, getAssignment } from '../../http/FuzzyGraphApi';
+import { defaultGraphAssignment } from './consts';
 import { P } from '../../components/P/P';
+import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
+import { setAssResult, setCostResult } from '../../redux/reducers/ResultReducers/AssignmenstSlice';
+
 
 export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
@@ -18,6 +22,10 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 	const [isOpendCluster, setIsOpendCluster] = useState(false);
 	const [isOpendDomin, setIsOpendDomin] = useState(false);
 	const { path, dominating, cluster, pathLoop, groups, dominatingRes } = useAppSelector(state => state.FuzzyGraphAlgsReducer);
+	const { graphSettings } = useAppSelector(state => state.CreateFuzzyGraphReducer);
+	const { tasks, workers, fuzzyCosts } = useAppSelector(state => state.AddAssignmentsReducer);
+	const { assignments, costs } = useAppSelector(state => state.AssignmenstReducer);
+
 
 	const apiBody = async (data: string, fileHash: string) => {
 		if (data == "path") {
@@ -44,8 +52,19 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 			} else {
 				alert(response.data.message);
 			}
+		} else if (data == "assignment") {
+			const response = await getAssignment({graphSettings: graphSettings, tasks: tasks, workers: workers, fuzzyCosts: fuzzyCosts});
+			if (response.data.status == 200) {
+				const data = response.data.data;
+				console.log(data);
+				dispatch(setAssResult(data.assignments));
+				dispatch(setCostResult(data.cost));
+
+			} else {
+				alert(response.data.message);
 		}
-	};
+	}
+};
 
 
 	const calc = async (data: string) => {
@@ -98,6 +117,24 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 							{isOpendDomin && <GraphInput keyValue={["dominating", "Indexes of nodes"]} />}
 							{dominating && <Button appearance='primary' onClick={() => calc("dominating")}>Проверить</Button>}
 							{dominatingRes && <P size='m'>{dominatingRes}</P>}
+
+						</div>
+					</div>
+
+
+					<div className={styles.blockBoxHeader}>
+
+
+						<div className={styles.LoadContent}>
+							<FileLoaderMeta name={defaultGraphAssignment} i={defaultGraphAssignment} f={defaultGraphAssignment} n="Загрузить" />
+							{graphSettings.edgeType && graphSettings.edgeNumberEqType &&
+								graphSettings.edgeNumberMathType && tasks && workers && fuzzyCosts &&
+								<Button appearance='primary' onClick={() => calc("assignment")}>Рассчитать</Button>}
+
+							{assignments.length != 0 && assignments.map(
+								(elem => <P size='m'> {`${elem[0]} -> ${elem[1]}`} </P>)
+							)}
+							{costs.length != 0 && <P size='m'> {JSON.stringify(costs, null, 4)} </P>}
 
 						</div>
 					</div>

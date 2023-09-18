@@ -1,23 +1,12 @@
 from fuzzyops.graphs.fuzzgraph.graph import FuzzyGraph
 from backend.database import set_cache, get_cache
+from backend.utils import edge_types, edge_number_eq_types, edge_number_math_types
 import pickle
 import base64
-
-edge_number_math_types = {"Максимум": "max",
-                          "Минимум": "min",
-                          "Среднее": "mean",
-                          "Сумма": "sum"}
-edge_number_eq_types = {"Максимум": "max",
-                        "Минимум": "min",
-                        "Базовый": "base"}
-
-edge_types = {"Неориентированный": "undirected",
-              "Ориентированный": "directed"}
 
 
 def create_fuzzy_graph(graph_data: list[dict], graph_settings: dict,
                        file_hash: str) -> None:
-
     f = get_cache(file_hash)
 
     if not f:
@@ -35,7 +24,6 @@ def create_fuzzy_graph(graph_data: list[dict], graph_settings: dict,
             graph.add_node()
 
         for edge in graph_data:
-            print(edge["start"], edge["end"], edge["values"])
             graph.add_edge(edge["start"], edge["end"], edge["values"])
 
         pickled_graph = pickle.dumps(graph)
@@ -44,5 +32,3 @@ def create_fuzzy_graph(graph_data: list[dict], graph_settings: dict,
 
     else:
         return
-
-

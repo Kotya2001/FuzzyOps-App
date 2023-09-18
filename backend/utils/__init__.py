@@ -1,5 +1,7 @@
 from .create_response import create_response
 from .json_parse import parse_json_from_request
 from .messages import Message
+from .graph_settings import edge_types, edge_number_math_types, edge_number_eq_types
 
-__all__ = ['create_response', 'parse_json_from_request', 'Message']
+__all__ = ['create_response', 'parse_json_from_request', 'Message',
+           'edge_types', 'edge_number_math_types', 'edge_number_eq_types']

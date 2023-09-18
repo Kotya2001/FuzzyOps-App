@@ -5,6 +5,7 @@ export const defaultFuzzyGraphCreate = "createGraph";
 export const defaultFuzzyLinearOptName = "LinearOpt";
 export const defaultFuzzyMetaOptName = "MetaOpt";
 export const defaultFuzzyMetaOptNameCSV = "MetaOptCSV";
+export const defaultGraphAssignment = "GraphAssignment";
 
 export const paginationParams = { currentPage: 0, points: 75 };
 

@@ -1,7 +1,7 @@
 from backend.database import set_cache, get_cache
 
-from fuzzyops._domain import Domain
-from fuzzyops.fuzzify.mf import memberships
+from fuzzyops.fuzzy_numbers import Domain
+from fuzzyops.fuzzy_numbers import memberships
 
 from typing import Union, List
 import numpy as np
