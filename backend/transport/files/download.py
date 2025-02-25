@@ -1,6 +1,6 @@
 from app import app
-from backend.service import create_file
-from backend.utils import create_response
+from service import create_file
+from utils import create_response
 from flask_api import status
 
 

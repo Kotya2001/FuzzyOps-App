@@ -1,6 +1,6 @@
 from app import app
-from backend.utils import Message, create_response, parse_json_from_request
-from backend.service import get_fuzzy_number
+from utils import Message, create_response, parse_json_from_request
+from service import get_fuzzy_number
 
 from flask import request
 from flask_api import status
@@ -12,6 +12,7 @@ from typing import List
 
 
 # TODO: добавить ползунок для alpha_cut и выклбчатель для энтропии
+# TODO: use torch.Tensor instead np.array in line 45
 @app.route('/main/fuzzyLog/GetNumber', methods=['POST'])
 def fuzzy_number_handler():
     (full_data, error) = parse_json_from_request(request)

@@ -1,6 +1,6 @@
 from fuzzyops.graphs.fuzzgraph.graph import FuzzyGraph
-from backend.database import set_cache, get_cache
-from backend.utils import edge_types, edge_number_eq_types, edge_number_math_types
+from database import set_cache, get_cache
+from utils import edge_types, edge_number_eq_types, edge_number_math_types
 import pickle
 import base64
 

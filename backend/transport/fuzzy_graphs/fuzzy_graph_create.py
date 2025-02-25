@@ -1,6 +1,6 @@
 from app import app
-from backend.utils import Message, create_response, parse_json_from_request
-from backend.service import create_fuzzy_graph
+from utils import Message, create_response, parse_json_from_request
+from service import create_fuzzy_graph
 from flask import request
 from flask_api import status
 from hashlib import sha256

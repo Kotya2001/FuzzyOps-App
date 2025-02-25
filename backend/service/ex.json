@@ -1,0 +1,11 @@
+{
+	"domain": {"start": 0,  "stop": 101, "step": 1},
+	"numType": "triangular",
+	"data": [
+		[{"range": [1, 2, 3], "name": "x11"}, {"range": [1, 2, 3], "name": "x21"}],
+		[{"range": [1, 2, 3], "name": "x12"}, {"range": [1, 2, 3], "name": "x22"}],
+		[{"range": [1, 2, 3], "name": "x13"}, {"range": [1, 2, 3], "name": "x23"}],
+		[{"range": [1, 2, 3], "name": "x14"}, {"range": [1, 2, 3], "name": "x24"}]
+	]
+
+}

@@ -1,0 +1,14 @@
+{
+	"domain": {"start": 0,  "stop": 101, "step": 1},
+	"numType": "triangular",
+	"data": {"criteria_weights": [
+		{"range": [1, 5, 11], "name": "w1"},
+	 	{"range": [3, 5, 7], "name": "w2"},
+		{"range": [0, 9, 12], "name": "w3"}],
+
+		"alternatives_scores": [
+			[{"range": [4, 5, 7], "name": "a1"}, {"range": [3, 6, 13], "name": "a2"}, {"range": [2, 7, 10], "name": "a3"}],
+			[{"range": [5, 6, 7], "name": "b1"}, {"range": [1, 4, 11], "name": "b2"}, {"range": [3, 6, 14], "name": "b3"}],
+			[{"range": [4, 5, 7], "name": "c1"}, {"range": [3, 6, 13], "name": "c2"}, {"range": [1, 2, 8], "name": "c3"}]]}
+
+}

@@ -1,6 +1,6 @@
 from app import app
-from backend.utils import Message, create_response, parse_json_from_request
-from backend.service import calc_number_with_fuzzy_number, calc_fnum_with_fnum
+from utils import Message, create_response, parse_json_from_request
+from service import calc_number_with_fuzzy_number, calc_fnum_with_fnum
 
 import numpy as np
 from flask_api import status

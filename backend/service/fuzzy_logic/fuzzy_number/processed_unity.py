@@ -1,4 +1,4 @@
-from backend.database import set_cache, get_cache
+from database import set_cache, get_cache
 from app import logger
 from typing import Union, List
 import numpy as np

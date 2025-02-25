@@ -1,6 +1,6 @@
 from app import app
-from backend.utils import Message, create_response, parse_json_from_request
-from backend.service import get_assignment_result
+from utils import Message, create_response, parse_json_from_request
+from service import get_assignment_result
 from flask import request
 from flask_api import status
 

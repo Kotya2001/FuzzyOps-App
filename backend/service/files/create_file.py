@@ -1,4 +1,4 @@
-from backend.database import get_cache
+from database import get_cache
 from typing import Dict, List, Union
 
 

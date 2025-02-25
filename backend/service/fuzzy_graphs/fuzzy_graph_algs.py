@@ -1,4 +1,4 @@
-from backend.database import get_cache
+from database import get_cache
 import base64
 import pickle
 

@@ -1,4 +1,4 @@
-from backend.utils import edge_number_eq_types, edge_number_math_types
+from utils import edge_number_eq_types, edge_number_math_types
 
 from fuzzyops.graphs.fuzzgraph.graph import FuzzyGraph
 from fuzzyops.sequencing_assignment.solver import FuzzySASolver

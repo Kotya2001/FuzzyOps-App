@@ -1,4 +1,4 @@
-from backend.database import set_cache, get_cache
+from database import set_cache, get_cache
 
 from fuzzyops.fuzzy_numbers import Domain
 from fuzzyops.fuzzy_numbers import memberships
