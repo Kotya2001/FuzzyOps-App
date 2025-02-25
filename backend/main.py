@@ -10,7 +10,6 @@
 
 from transport import app
 from config import SERVER_PORT, SERVER_HOST, DEBUG
-from pprint import pprint
 
 # root_path = Path(os.path.abspath(__file__))
 # src_dir = root_path.parents[3]

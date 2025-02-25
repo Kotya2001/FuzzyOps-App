@@ -1,0 +1,13 @@
+{
+	"REDIS_PORT_DEV": 6379,
+	"REDIS_HOST_DEV": "localhost",
+	"DB": 0,
+	"REDIS_PORT_PROD": 6379,
+	"REDIS_HOST_PROD": "0.0.0.0",
+	"SERVER_HOST_DEV": "0.0.0.0",
+	"SERVER_PORT_DEV": 5000,
+	"FLASK_ENV_DEV": "development",
+	"SERVER_PORT_PROD": 5000,
+	"SERVER_HOST_PROD": "0.0.0.0",
+	"FLASK_ENV_PROD": "production"
+}

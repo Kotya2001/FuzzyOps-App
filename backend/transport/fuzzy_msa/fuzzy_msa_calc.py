@@ -18,7 +18,7 @@ def fuzzy_msa_handler():
 
     task_type = full_data.get("taskType")
     data = full_data.get("msa_data")
-    error = validate_data(data, task_type)
+    error, _ = validate_data(data, task_type)
     if error:
         response = create_response(
             status=status.HTTP_400_BAD_REQUEST,

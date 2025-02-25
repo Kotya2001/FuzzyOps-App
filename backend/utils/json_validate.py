@@ -88,6 +88,41 @@ schema_fuzzy_sum = {
     "required": ["domain", "numType", "data"]
 }
 
+fuzzy_number_create_schema = {
+    "type": "object",
+    "properties": {
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            }
+        },
+        "key": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "name": {
+            "type": "string"
+        },
+        "ling": {
+            "type": "string"
+        },
+        "defuzz_type": {
+            "type": "string"
+        },
+        "use_gpu": {
+            "type": "boolean"
+        },
+        "method": {
+            "type": "string"
+        }
+    },
+    "required": ["data", "key", "name", "ling", "defuzz_type", "use_gpu", "method"]
+}
+
+
 params_schema = {
     "type": "object",
     "properties": {
@@ -113,15 +148,17 @@ params_schema = {
 }
 
 
-def validate_data(data: dict, task_type: str):
+def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
     try:
         if task_type == "Граница Паретто":
             schema = schema_paretto
         elif task_type == "Взвешенная сумма":
             schema = schema_fuzzy_sum
+        elif task_type == "Создание нечеткого числа":
+            schema = fuzzy_number_create_schema
         else:
             schema = params_schema
         validate(instance=data, schema=schema)
-        return None
-    except ValidationError:
-        return True
+        return None, ""
+    except ValidationError as e:
+        return True, e.message

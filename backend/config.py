@@ -1,38 +1,42 @@
 import secrets
 import logging
 import os
+import json
 
 LOG_LEVEL = logging.DEBUG
 DIRECTORY_OF_LOGS = os.path.abspath('../logs')
 LOG_FORMAT = "%(asctime)s: %(name)s - %(" "levelname)s  | %(message)s"
 IS_PROD = False
 
+with open("sets.json", encoding="utf-8") as f:
+    sets = json.loads(f.read())
+
 
 # общие настройки
 class Configuration(object):
     SECRET_KEY = secrets.token_urlsafe(100)
     DEVELOPMENT = True
-    DB = os.getenv("DB")
+    DB = sets.get("DB")
 
 
 # настройки режима разработки
 class DevConfig(Configuration):
-    ENV = os.getenv("FLASK_ENV_DEV")
+    ENV = sets.get("FLASK_ENV_DEV")
     DEVELOPMENT = True
-    SERVER_HOST = os.getenv("SERVER_HOST_DEV")
-    SERVER_PORT = os.getenv("SERVER_PORT_DEV")
-    REDIS_PORT = os.getenv("REDIS_PORT_DEV")
-    REDIS_HOST = os.getenv("REDIS_HOST_DEV")
+    SERVER_HOST = sets.get("SERVER_HOST_DEV")
+    SERVER_PORT = sets.get("SERVER_PORT_DEV")
+    REDIS_PORT = sets.get("REDIS_PORT_DEV")
+    REDIS_HOST = sets.get("REDIS_HOST_DEV")
 
 
 # найстройки режима деплоя
 class ProdConfig(Configuration):
-    ENV = os.getenv("FLASK_ENV_PROD")
+    ENV = sets.get("FLASK_ENV_PROD")
     DEVELOPMENT = False
-    SERVER_HOST = os.getenv("SERVER_HOST_PROD")
-    SERVER_PORT = os.getenv("SERVER_PORT_PROD")
-    REDIS_PORT = os.getenv("REDIS_PORT_PROD")
-    REDIS_HOST = os.getenv("REDIS_HOST_PROD")
+    SERVER_HOST = sets.get("SERVER_HOST_PROD")
+    SERVER_PORT = sets.get("SERVER_PORT_PROD")
+    REDIS_PORT = sets.get("REDIS_PORT_PROD")
+    REDIS_HOST = sets.get("REDIS_HOST_PROD")
 
 
 # установим настройки режимов работы
