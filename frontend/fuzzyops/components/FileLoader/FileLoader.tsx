@@ -4,9 +4,11 @@ import { store } from '../../redux/store';
 import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
 import { setGraphData, Root } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
-import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber, defaultFuzzyGraphCreate } from '../../blocks/FuzzyEntityComponents/consts';
+import { setJsonData, MsaParams } from '../../redux/reducers/FileReducers/CreateMSASlice';
+import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber, defaultFuzzyGraphCreate, defaultFuzzyMSA, defaultFuzzyCluster } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
+import { ClusterParams, setClusterParams } from '../../redux/reducers/FileReducers/FuzzyClusterSlice';
 
 export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 
@@ -14,6 +16,8 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
 	const { graph_data } = useAppSelector(state => state.CreateFuzzyGraphReducer);
+	const { msa_data } = useAppSelector(state => state.CreateMSAReducer);
+	const { params } = useAppSelector(state => state.FuzzyClusterReducer);
 	const [fileStatus, setFileStatus] = useState(false);
 
 	const sateToStore = (data: number[]) => {
@@ -39,6 +43,14 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 		dispatch(setGraphData(data));
 	};
 
+	const saveMsaData = (data: MsaParams) => {
+		dispatch(setJsonData(data));
+	};
+
+	const saveClusterData = (data: ClusterParams) => {
+		dispatch(setClusterParams(data));
+	};
+
 	const changeName = (status: boolean, n: string, name: string) => {
 		switch (name) {
 			case defaultFuzzyLoaderNumberName:
@@ -53,9 +65,22 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 					return 'Загружено';
 				}
 				return n;
-			
+
 			case defaultFuzzyGraphCreate:
 				if (status && graph_data.length !== 0) {
+					return 'Загружено';
+				}
+				return n;
+
+			case defaultFuzzyMSA:
+				if (status && Object.keys(msa_data.domain).length > 0 &&
+					msa_data.numType !== "" && msa_data.data) {
+					return 'Загружено';
+				}
+				return n;
+
+			case defaultFuzzyCluster:
+				if (status && params.error !== 0 && params.m !== 0 && params.maxiter !== 0 && params.nCluster !== 0) {
 					return 'Загружено';
 				}
 				return n;
@@ -81,11 +106,15 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 						sateToStore(arr);
 					} else if (name === defaultFuzzyGraphCreate) {
 						saveGraphData(arr);
+					} else if (name === defaultFuzzyMSA) {
+						saveMsaData(arr);
+					} else if (name === defaultFuzzyCluster) {
+						saveClusterData(arr);
 					}
-				} catch(e) {
+				} catch (e) {
 					alert("Ошибка парсинга json");
 				}
-				
+
 
 			} else {
 				alert('Файл пуст');

@@ -4,7 +4,9 @@ import { store } from '../../redux/store';
 import { setCsvData } from '../../redux/reducers/OptimizationReducers/LinearOptSlice';
 import { setX } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { useState } from 'react';
-import { defaultFuzzyLinearOptName, defaultFuzzyMetaOptNameCSV } from '../../blocks/FuzzyEntityComponents/consts';
+import { defaultFuzzyLinearOptName, defaultFuzzyMetaOptNameCSV, defaultFuzzyClusterCsv, defaultFuzzyClusterCsvTest } from '../../blocks/FuzzyEntityComponents/consts';
+import { setTrainData, setTestData } from '../../redux/reducers/FileReducers/FuzzyClusterSlice';
+
 
 export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 
@@ -26,8 +28,18 @@ export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 					return 'Загружено';
 				}
 				return n;
-	}
-};
+			case defaultFuzzyClusterCsv:
+				if (status) {
+					return 'Загружено';
+				}
+				return n;
+			case defaultFuzzyClusterCsvTest:
+				if (status) {
+					return 'Загружено';
+				}
+				return n;
+		}
+	};
 
 	const handleChange = async (e: React.ChangeEvent) => {
 		const target = e.target as HTMLInputElement;
@@ -46,6 +58,10 @@ export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 					dispatch(setCsvData(res));
 				} else if (name == defaultFuzzyMetaOptNameCSV) {
 					dispatch(setX(res));
+				} else if (name == defaultFuzzyClusterCsv) {
+					dispatch(setTrainData(res));
+				} else if (name == defaultFuzzyClusterCsvTest) {
+					dispatch(setTestData(res));
 				}
 			} else {
 				alert('Файл пуст');

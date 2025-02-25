@@ -6,6 +6,10 @@ export const defaultFuzzyLinearOptName = "LinearOpt";
 export const defaultFuzzyMetaOptName = "MetaOpt";
 export const defaultFuzzyMetaOptNameCSV = "MetaOptCSV";
 export const defaultGraphAssignment = "GraphAssignment";
+export const defaultFuzzyMSA = "createMSA";
+export const defaultFuzzyCluster = "fuzzyCluster";
+export const defaultFuzzyClusterCsv = "fuzzyClusterCsv";
+export const defaultFuzzyClusterCsvTest = "fuzzyClusterCsvTest";
 
 export const paginationParams = { currentPage: 0, points: 75 };
 
@@ -38,3 +42,4 @@ export const example = JSON.stringify([1, 10, 20], null, 4);
 export const edge_type = ["Неориентированный", "Ориентированный"];
 export const edge_number_math_type = ["Максимум", "Минимум", "Среднее", "Сумма"];
 export const equals_type = ["Базовый", "Максимум", "Минимум"];
+export const task_type = ["Граница Паретто", "Взвешенная сумма"];

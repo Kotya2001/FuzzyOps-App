@@ -14,6 +14,8 @@ import MetaOptReducer from './reducers/OptimizationReducers/MetaOptSlice';
 import MetaOptResultReducer  from './reducers/ResultReducers/FuzzuMetaOptResultSlice';
 import AddAssignmentsReducer from './reducers/FileReducers/AddAssignmentsSlice';
 import AssignmenstReducer from './reducers/ResultReducers/AssignmenstSlice';
+import CreateMSAReducer from './reducers/FileReducers/CreateMSASlice';
+import FuzzyClusterReducer from './reducers/FileReducers/FuzzyClusterSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -31,7 +33,9 @@ export const store = configureStore({
 		MetaOptReducer,
 		MetaOptResultReducer,
 		AddAssignmentsReducer,
-		AssignmenstReducer
+		AssignmenstReducer,
+		CreateMSAReducer,
+		FuzzyClusterReducer
 	}
 });
 
