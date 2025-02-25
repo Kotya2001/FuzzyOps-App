@@ -1,7 +1,7 @@
 import { FileLoaderProps } from './FileLoader.props';
 import styles from './FileLoader.module.css';
 import { store } from '../../redux/store';
-import { setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
+import { fNum, setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
 import { setGraphData, Root } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
 import { setJsonData, MsaParams } from '../../redux/reducers/FileReducers/CreateMSASlice';
@@ -20,22 +20,37 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 	const { params } = useAppSelector(state => state.FuzzyClusterReducer);
 	const [fileStatus, setFileStatus] = useState(false);
 
-	const sateToStore = (data: number[]) => {
-		const values = Object.values(data);
+	const sateToStore = (data: number[] | object) => {
+		// const values = Object.values(data);
 		switch (name) {
-			case defaultFuzzyLoaderNumberName:
-				if (JSON.stringify(data) === JSON.stringify(values)) {
-					dispatch(setFuzzyNumberUnity(data));
-					return;
-				} else {
-					alert('Неверный формат файла, необходимо загрузить массив чисел в файле');
-					return;
-				}
+			// case defaultFuzzyLoaderNumberName:
+			// 	if (JSON.stringify(data) === JSON.stringify(values)) {
+			// 		dispatch(setFuzzyNumberUnity(data));
+			// 		return;
+			// 	} else {
+			// 		alert('Неверный формат файла, необходимо загрузить массив чисел в файле');
+			// 		return;
+			// 	}
 
 			case defaultFuzzyNumber:
 				dispatch(setFuzzyNumber(data));
 				return;
 
+		}
+	};
+
+	const saveFnumData = (data: fNum) => {
+		switch (name) {
+			case defaultFuzzyLoaderNumberName:
+				if ('data' in data && data.data.length !== 0
+					&& 'defuzz_type' in data && data.defuzz_type &&
+					'use_gpu' in data && data.use_gpu &&
+					'method' in data && data.method) {
+					dispatch(setFuzzyNumberUnity(data));
+				} else {
+					alert('Неверный формат файла, проверьте наличие всех ключей и данных в файле');
+					return;
+				}
 		}
 	};
 
@@ -54,7 +69,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 	const changeName = (status: boolean, n: string, name: string) => {
 		switch (name) {
 			case defaultFuzzyLoaderNumberName:
-				if (status && fuzzyNumberUnity.length !== 0) {
+				if (status && fuzzyNumberUnity.data.length !== 0) {
 					return 'Загружено';
 				}
 				return n;
@@ -102,9 +117,12 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 			if (typeof res === 'string') {
 				try {
 					const arr = JSON.parse(res);
-					if (name === defaultFuzzyLoaderNumberName || name === defaultFuzzyNumber) {
+					if (name === defaultFuzzyLoaderNumberName) {
+						saveFnumData(arr);
+					} else if (name === defaultFuzzyNumber) {
 						sateToStore(arr);
-					} else if (name === defaultFuzzyGraphCreate) {
+					}
+					else if (name === defaultFuzzyGraphCreate) {
 						saveGraphData(arr);
 					} else if (name === defaultFuzzyMSA) {
 						saveMsaData(arr);

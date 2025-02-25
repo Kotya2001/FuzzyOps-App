@@ -75,7 +75,7 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 			localStorage.setItem("data", JSON.stringify(data));
 
 		} else {
-			alert(response.data.msg);
+			alert(response.data.message);
 		}
 	};
 
@@ -125,6 +125,7 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 
 		if (response.data.status === 200) {
 			const data = response.data.data.file;
+			console.log(response.data)
 			const str = JSON.stringify(data);
 			const blob = new Blob([str]);
 			const url = URL.createObjectURL(blob);
@@ -170,14 +171,19 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 			localStorage.setItem("data", JSON.stringify(data));
 
 		} else {
-			alert(resp.data.msg);
+			alert(resp.data.message);
 		}
 	};
 
 	const openCommon = () => {
 		setCommonBtnActive(!comminBtnActive);
 		setFuzzyBntActive(false);
-		dispatch(setFuzzyNumberUnity([]));
+		dispatch(setFuzzyNumberUnity({
+			data: [],
+			defuzz_type: "",
+			use_gpu: false,
+			method: ""
+		}));
 		dispatch(setKeyFuzz(""));
 		dispatch(setNumbersFuzz(""));
 	};
@@ -260,7 +266,7 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 									<FileLoader name={defaultFuzzyLoaderNumberName} i={defaultFuzzyLoaderNumberName} f={defaultFuzzyLoaderNumberName} n="Загрузить" />
 								}
 								{
-									fuzzyBtnActive && fuzzyNumberUnity.length !== 0 && numbersFuzz && keyFuzz &&
+									fuzzyBtnActive && fuzzyNumberUnity.data.length !== 0 && numbersFuzz && keyFuzz &&
 									<Button appearance='primary' onClick={calc}>Посчитать</Button>
 								}
 							</div>

@@ -10,6 +10,8 @@ import { DownloaderProps } from './Downloader.props';
 
 export const Downloader = ({ file, forWhat }: DownloaderProps) => {
 
+	console.log(file)
+
 	const dispatch = store.dispatch;
 
 	const createBlob = () => {
@@ -30,7 +32,12 @@ export const Downloader = ({ file, forWhat }: DownloaderProps) => {
 
 		switch (forWhat) {
 			case (defaultFuzzyLoaderNumberName):
-				dispatch(setFuzzyNumberUnity([]));
+				dispatch(setFuzzyNumberUnity({
+					data: [],
+					defuzz_type: "",
+					use_gpu: false,
+					method: ""
+				}));
 				dispatch(setKeyFuzz(""));
 				dispatch(setNumbersFuzz(""));
 				dispatch(setLingVar(""));

@@ -23,6 +23,7 @@ export const FuzzuNumberLoader = ({ header, tag }: FuzzyProps) => {
 	const { kindOfNumber, kind, isLingVar, lingVar, isName, name } = useAppSelector(state => state.methodsReducer);
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { numbersFuzz, keyFuzz } = useAppSelector(state => state.createKindReducer);
+	console.log(fuzzyNumberUnity)
 
 	const [loadData, setLoadData] = useState(false);
 
@@ -74,11 +75,14 @@ export const FuzzuNumberLoader = ({ header, tag }: FuzzyProps) => {
 							</div>
 
 							<FileLoader name={defaultFuzzyLoaderNumberName} i={defaultFuzzyLoaderNumberName} f={defaultFuzzyLoaderNumberName} n="Загрузить" />
-							{fuzzyNumberUnity.length !== 0 && numbersFuzz && keyFuzz && name && <Downloader file={{
-								data: fuzzyNumberUnity,
+							{fuzzyNumberUnity.data.length !== 0 && numbersFuzz && keyFuzz && name && <Downloader file={{
+								data: fuzzyNumberUnity.data,
 								key: [numbersFuzz, keyFuzz],
 								name,
-								ling: lingVar
+								ling: lingVar,
+								defuzz_type: fuzzyNumberUnity.defuzz_type,
+								use_gpu: fuzzyNumberUnity.use_gpu,
+								method: fuzzyNumberUnity.method
 							}} forWhat={defaultFuzzyLoaderNumberName} />}
 						</div>
 						:
