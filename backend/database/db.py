@@ -8,7 +8,6 @@ from redis import Redis
 import json
 from typing import Union, Dict, List
 
-# print(REDIS_HOST, REDIS_PORT, DB)
 
 redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=DB)
 

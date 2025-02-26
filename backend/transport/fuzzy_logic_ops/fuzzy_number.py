@@ -66,7 +66,7 @@ def fuzzy_number_handler():
     all_pages = math.ceil(array.shape[0] / points)
     m, mi = np.max(array), np.min(array)
 
-    processed_unity, defuz_value = get_fuzzy_number(file_hash=file_hash,
+    processed_unity, defuz_value, msg = get_fuzzy_number(file_hash=file_hash,
                                                     array=array,
                                                     name=name,
                                                     unity_number=unity_number,
@@ -77,10 +77,11 @@ def fuzzy_number_handler():
     if isinstance(processed_unity, bool):
         response = create_response(
             status=status.HTTP_409_CONFLICT,
-            message=Message.assertion_error,
+            message=msg,
             data=None
         )
         return response
+    
     array = array[currentPage * points: (currentPage + 1) * points]
     processed_unity = processed_unity[currentPage * points: (currentPage + 1) * points]
     result = np.vstack((array, processed_unity)).transpose()
