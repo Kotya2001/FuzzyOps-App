@@ -1,6 +1,6 @@
 from app import app
 from utils import Message, create_response, parse_json_from_request, validate_data
-from service import get_fuzzy_number
+from service import get_fuzzy_number, get_fuzzy_number_from_db
 
 from flask import request
 from flask_api import status
@@ -10,8 +10,55 @@ import numpy as np
 from typing import List
 
 
+@app.route('/api/fnum/get/<key>', methods=['GET'])
+def api_fuzzy_number_handler_get(key):
+
+    if (request.method != "GET"):
+        response = create_response(
+            status=status.HTTP_404_NOT_FOUND,
+            message="Доступен только метод GET",
+            data=None
+        )
+        return response, 404
+    
+    processed_unity, defuz_value, arr, msg = get_fuzzy_number_from_db(key)
+
+    if msg:
+        response = create_response(
+            status=status.HTTP_409_CONFLICT,
+            message=msg,
+            data=None
+        )
+        return response, 409
+    
+    result = np.vstack((np.array(arr), processed_unity)).transpose()
+    res = [{"x": elem[0], "y": elem[1]} for elem in result.tolist()]
+    defuz_value = defuz_value if not np.isnan(defuz_value) else None
+
+    response = create_response(
+        status=status.HTTP_200_OK,
+        message='ok',
+        data={"result": res,
+              "defuz_value": defuz_value}
+    )
+    return response, 200
+    
+
+
+
+
+
 @app.route('/api/fnum/create', methods=['POST'])
 def api_fuzzy_number_handler():
+
+    if (request.method != "POST"):
+        response = create_response(
+            status=status.HTTP_404_NOT_FOUND,
+            message="Доступен только метод POST",
+            data=None
+        )
+        return response, 404
+    
     (full_data, error) = parse_json_from_request(request)
     if error:
         response = create_response(
@@ -81,5 +128,4 @@ def api_fuzzy_number_handler():
               "file_hash": file_hash,
               "defuz_value": defuz_value}
     )
-    print(result)
     return response, 200

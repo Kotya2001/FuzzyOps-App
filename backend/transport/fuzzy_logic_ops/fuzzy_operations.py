@@ -42,6 +42,8 @@ def fuzzy_ops_handler():
             data=None
         )
         return response
+    
+    print(full_data)
     pagination_params: dict = full_data.get("paginationParams")
     currentPage, points = pagination_params.get("currentPage"), pagination_params.get("points")
     file_hash: str = full_data.get("file_hash")
