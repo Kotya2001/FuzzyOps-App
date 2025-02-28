@@ -29,11 +29,12 @@ def get_fuzzy_number(file_hash: str, array: np.ndarray, name: str,
     if not f:
         try:
             domain = Domain(torch.Tensor(array.tolist()), name=name, method=method)
-            if use_gpu:
-                domain.to("cuda")
-            print(domain)
+            try:
+                if use_gpu:
+                    domain.to("cuda")
+            except Exception as e:
+                return False, False, "Ошибка использования CUDA, проверьте ее наличие в системе"
             fnum = domain.create_number(memberships[type_of_number], *unity_number)
-            print(fnum)
             processed_unity = fnum.values.tolist()
             defuz_value = np.round(fnum.defuzz(), 1)
             try:

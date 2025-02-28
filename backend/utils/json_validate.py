@@ -122,6 +122,75 @@ fuzzy_number_create_schema = {
     "required": ["data", "key", "name", "ling", "defuzz_type", "use_gpu", "method"]
 }
 
+fuzzy_number_ops_with_number_scheme = {
+    "type": "object",
+    "properties": {
+        "value": {
+            "type": "string"
+        },
+        "file_hash": {
+            "type": "string"
+        },
+        "operation": {
+            "type": "string",
+            "enum": ["+", "-", "*"]  # Допустимые операции
+        },
+        "use_gpu": {
+            "type": "boolean"
+        }
+    },
+    "required": ["value", "file_hash", "operation", "use_gpu"]  # Обязательные поля
+}
+
+fuzzy_number_ops_with_fnum_scheme = {
+    "type": "object",
+    "properties": {
+        "value": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                        "defuzz_type": {
+                            "type": "string"
+                        },
+                        "use_gpu": {
+                            "type": "boolean"
+                        },
+                        "method": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["data", "defuzz_type", "use_gpu", "method"]
+                },
+                "key": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["data", "key"]
+        },
+        "file_hash": {
+            "type": "string"
+        },
+        "operation": {
+            "type": "string",
+            "enum": ["+", "-", "*"]  # Допустимые операции
+        }
+    },
+    "required": ["value", "file_hash", "operation"]
+}
+
+
+
 
 params_schema = {
     "type": "object",
@@ -156,6 +225,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = schema_fuzzy_sum
         elif task_type == "Создание нечеткого числа":
             schema = fuzzy_number_create_schema
+        elif task_type == "Операции Нечеткое Четкое":
+            schema = fuzzy_number_ops_with_number_scheme
+        elif task_type == "Операции Нечеткое Нечеткое":
+            schema = fuzzy_number_ops_with_fnum_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

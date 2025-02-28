@@ -1,5 +1,5 @@
 from app import app
-from utils import Message, create_response, parse_json_from_request
+from utils import Message, create_response, parse_json_from_request, validate_data
 from service import calc_number_with_fuzzy_number, calc_fnum_with_fnum
 
 import numpy as np
@@ -43,20 +43,36 @@ def fuzzy_ops_handler():
         )
         return response
     
-    print(full_data)
     pagination_params: dict = full_data.get("paginationParams")
     currentPage, points = pagination_params.get("currentPage"), pagination_params.get("points")
     file_hash: str = full_data.get("file_hash")
     operation: str = full_data.get("operation")
     value: Union[str, dict] = full_data.get("value")
     is_paginate: bool = full_data.get("isPagination")
+    use_gpu: bool = full_data.get("use_gpu")
+
+    print(full_data)
 
     if not isinstance(value, dict):
-        error, cached_res = calc_number_with_fuzzy_number(file_hash, float(value), operation, is_paginate)
+
+        err, msg = validate_data({"value": value,
+                                  "file_hash": file_hash,
+                                  "operation": operation,
+                                  "use_gpu": use_gpu}, "Операции Нечеткое Четкое")
+        if err:
+            response = create_response(
+                status=status.HTTP_400_BAD_REQUEST,
+                message=msg + " Проверьте типы данных в файле",
+                data=None
+            )
+            return response
+
+        error, cached_res, msg, new_file_hash = calc_number_with_fuzzy_number(file_hash, float(value),
+                                                           operation, is_paginate, use_gpu)
         if error:
             response = create_response(
                 status=status.HTTP_400_BAD_REQUEST,
-                message=Message.file_hash_or_operation_err,
+                message=msg,
                 data=None
             )
             return response
@@ -65,7 +81,7 @@ def fuzzy_ops_handler():
                                               cached_res['defuz_value']
 
         result = create_resp(array, processed_unity, defuz_value,
-                             currentPage, points, file_hash)
+                             currentPage, points, new_file_hash)
 
         response = create_response(
             status=status.HTTP_200_OK,
@@ -74,12 +90,34 @@ def fuzzy_ops_handler():
         )
         return response
     else:
+        d = full_data.copy()
+        d.pop('paginationParams', None)
+        d.pop('isPagination', None)
+        d.pop('useGpu', None)
+
+        print(d)
+
+        err, msg = validate_data(d, "Операции Нечеткое Нечеткое")
+        if err:
+            response = create_response(
+                status=status.HTTP_400_BAD_REQUEST,
+                message=msg + " Проверьте типы данных в файле",
+                data=None
+            )
+            return response
+
         data: dict = value.get("data")
+        new_x = data.get("data")
+        defuzz_type = data.get("defuzz_type")
+        use_gpu = data.get("use_gpu")
+        method = data.get("method")
+
         unity: List[str] = value.get('key')
         unity_number: List[float] = [float(u) for u in unity[0].split(" ")]
         type_of_number = unity[1]
-        error, cached_res = calc_fnum_with_fnum(file_hash, operation, is_paginate,
-                                                unity_number, type_of_number, data)
+        error, cached_res, msg, new_file_hash = calc_fnum_with_fnum(file_hash, operation, is_paginate,
+                                                unity_number, type_of_number, 
+                                                new_x, defuzz_type, use_gpu, method)
         if error:
             response = create_response(
                 status=status.HTTP_400_BAD_REQUEST,

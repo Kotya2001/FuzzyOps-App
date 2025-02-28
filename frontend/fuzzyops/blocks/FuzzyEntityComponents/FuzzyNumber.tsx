@@ -39,8 +39,10 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 	const [fuzzyBtnActive, setFuzzyBntActive] = useState(false);
 	const [isPagination, setIsPagination] = useState(false);
 	const [isCalc, setIsCalc] = useState(false);
+	const [useGpu, setUseGpu] = useState(false);
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { numbersFuzz, keyFuzz } = useAppSelector(state => state.createKindReducer);
+	console.log(useGpu);
 
 
 	const setData = (data: FuzzyNumberResultSlice) => {
@@ -51,6 +53,10 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 		dispatch(setLing(data));
 		dispatch(setName(data));
 		dispatch(setDefuzValue(data));
+	};
+
+	const handleGpuState = () => {
+		setUseGpu(!useGpu);
 	};
 
 	const apiBody = async () => {
@@ -154,7 +160,8 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 			file_hash,
 			operation,
 			paginationParams,
-			isPagination
+			isPagination,
+			use_gpu: useGpu
 		};
 		const resp = await fuzzynumberOps(formData);
 		if (resp.data.status === 200) {
@@ -251,6 +258,7 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 							<div className={styles.btnsModal}>
 								<Button appearance='primary' onClick={openCommon}>Обычное число</Button>
 								{comminBtnActive && <Input keyValue={["number", "Число"]} />}
+								{comminBtnActive && <Button appearance='primary' onClick={handleGpuState}>{useGpu ? "Использовать ГПУ" : "Использовать ЦПУ"}</Button>}
 								{isNum(n) && <Button appearance='primary' onClick={calc}>Посчитать</Button>}
 								<Button appearance='primary' onClick={openFuzzy}>Нечеткое число</Button>
 								{
