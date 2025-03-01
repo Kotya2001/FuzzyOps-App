@@ -36,15 +36,28 @@ export const FuzzyGraphCreate = ({ header, tag }: FuzzyProps) => {
 			graph_data
 		};
 		const response = await fuzzyGraphCreate(formData);
+		console.log(response);
 		if (response.data.status === 200) {
 			const file_hash = response.data.data;
 			localStorage.setItem("file_hash", file_hash);
 			alert("Граф сохранен");
+
+			const str = JSON.stringify({ file_hash });
+			const blob = new Blob([str]);
+			const url = URL.createObjectURL(blob);
+			const anchor = document.createElement('a');
+			anchor.href = url;
+			anchor.download = 'fuzzyGraphHash.json';
+			document.body.append(anchor);
+			anchor.click();
+			anchor.remove();
+
+			URL.revokeObjectURL(url);
 		} else {
-			alert(response.data.msg);
+			alert(response.data.message);
 		}
 	};
-	
+
 	return (
 		<div className={styles.wrapper}>
 			<div>
@@ -86,14 +99,14 @@ export const FuzzyGraphCreate = ({ header, tag }: FuzzyProps) => {
 
 							{graph_data.length !== 0 && graphSettings.edgeType && graphSettings.edgeNumberEqType &&
 								graphSettings.edgeNumberMathType && <Button appearance='primary' onClick={getResult}>Получить</Button>}
-							
+
 						</div>
 						:
 						<div className={styles.LoadContent}>
 							<div className={styles.Prompt}>
 							</div>
 						</div>
-						}		
+					}
 				</Box>
 			</div>
 		</div>

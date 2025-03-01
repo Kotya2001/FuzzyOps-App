@@ -13,6 +13,7 @@ import { defaultGraphAssignment } from './consts';
 import { P } from '../../components/P/P';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 import { setAssResult, setCostResult } from '../../redux/reducers/ResultReducers/AssignmenstSlice';
+import { InputPath } from '../../components/Input/InputPath';
 
 
 export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
@@ -29,10 +30,21 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
 	const apiBody = async (data: string, fileHash: string) => {
 		if (data == "path") {
-			const response = await shortestPath({path, fileHash});
+			const response = await shortestPath({ path, fileHash });
 			if (response.data.status === 200) {
 				const data = response.data.data;
-				dispatch(setPathLoop(data.path.join()));
+				const str = JSON.stringify({ ...data });
+				const blob = new Blob([str]);
+				const url = URL.createObjectURL(blob);
+				const anchor = document.createElement('a');
+				anchor.href = url;
+				anchor.download = 'shortest_path_res.json';
+				document.body.append(anchor);
+				anchor.click();
+				anchor.remove();
+
+				URL.revokeObjectURL(url);
+				// dispatch(setPathLoop(data.path.join()));
 			} else {
 				alert(response.data.message);
 			}
@@ -53,7 +65,7 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 				alert(response.data.message);
 			}
 		} else if (data == "assignment") {
-			const response = await getAssignment({graphSettings: graphSettings, tasks: tasks, workers: workers, fuzzyCosts: fuzzyCosts});
+			const response = await getAssignment({ graphSettings: graphSettings, tasks: tasks, workers: workers, fuzzyCosts: fuzzyCosts });
 			if (response.data.status == 200) {
 				const data = response.data.data;
 				console.log(data);
@@ -62,9 +74,9 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
 			} else {
 				alert(response.data.message);
+			}
 		}
-	}
-};
+	};
 
 
 	const calc = async (data: string) => {
@@ -92,13 +104,13 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
 						<div className={styles.LoadContent}>
 							<Button appearance='primary' onClick={() => setIsOpendPath(!isOpendPath)}>Кратчайший путь</Button>
-							{isOpendPath && <GraphInput keyValue={["path", "Start End"]}/>}
+							{isOpendPath && <InputPath keyValue={["path", "Start End"]} />}
 							{path && <Button appearance='primary' onClick={() => calc("path")}>Посчитать</Button>}
-							{pathLoop && <P size='m'> {pathLoop} </P>}
+							{/* {pathLoop && <P size='m'> {pathLoop} </P>} */}
 
 						</div>
 					</div>
-					
+
 					<div className={styles.blockBoxHeader}>
 
 						<div className={styles.LoadContent}>

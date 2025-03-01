@@ -123,6 +123,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 						sateToStore(arr);
 					}
 					else if (name === defaultFuzzyGraphCreate) {
+						console.log(arr);
 						saveGraphData(arr);
 					} else if (name === defaultFuzzyMSA) {
 						saveMsaData(arr);

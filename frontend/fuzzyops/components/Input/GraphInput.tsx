@@ -14,10 +14,11 @@ export const GraphInput = ({ keyValue }: InputProps): JSX.Element => {
 	const value = keyValue[1];
 
 	const [data, setData] = useState("");
-	console.log(data);
+	// const [path, setPathState] = useState("");
+	// const [cluster, setClustersState] = useState("");
+	// const [dominating, setClustersState] = useState("");
 
-	const dataHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+	const Create = () => {
 		const re = /^[0-9\s]*$/;
 		if (re.test(e.target.value)) {
 			setData(e.target.value);
@@ -32,6 +33,14 @@ export const GraphInput = ({ keyValue }: InputProps): JSX.Element => {
 				}
 				dispatch(setNclusters(data));
 			}
+		}
+	}
+
+	const dataHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+		const re = /^[0-9\s]*$/;
+		if (re.test(e.target.value)) {
+			setData(e.target.value);
 		}
 	};
 

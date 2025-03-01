@@ -42,7 +42,6 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 	const [useGpu, setUseGpu] = useState(false);
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { numbersFuzz, keyFuzz } = useAppSelector(state => state.createKindReducer);
-	console.log(useGpu);
 
 
 	const setData = (data: FuzzyNumberResultSlice) => {
