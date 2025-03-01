@@ -130,8 +130,9 @@ export const FuzzyNumber = ({ header, tag }: FuzzyProps) => {
 		const response = await getFile(file_hash);
 
 		if (response.data.status === 200) {
-			const data = response.data.data.file;
-			console.log(response.data)
+			const data = {
+				...response.data.data.file, file_hash: response.data.data.file_hash
+			};
 			const str = JSON.stringify(data);
 			const blob = new Blob([str]);
 			const url = URL.createObjectURL(blob);

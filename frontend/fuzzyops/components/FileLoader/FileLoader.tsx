@@ -44,7 +44,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 			case defaultFuzzyLoaderNumberName:
 				if ('data' in data && data.data.length !== 0
 					&& 'defuzz_type' in data && data.defuzz_type &&
-					'use_gpu' in data && data.use_gpu &&
+					'use_gpu' in data &&
 					'method' in data && data.method) {
 					dispatch(setFuzzyNumberUnity(data));
 				} else {
