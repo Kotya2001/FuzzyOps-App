@@ -163,7 +163,7 @@ def api_fuzzy_number_ops_handler():
             message=Message.bad_json,
             data=None
         )
-        return response
+        return response, 409
         
     file_hash: str = full_data.get("file_hash")
     operation: str = full_data.get("operation")
@@ -183,7 +183,7 @@ def api_fuzzy_number_ops_handler():
                 message=msg + " Проверьте типы данных в файле",
                 data=None
             )
-            return response
+            return response, 400
 
         error, cached_res, msg, new_file_hash = calc_number_with_fuzzy_number(file_hash, float(value),
                                                            operation, is_paginate, use_gpu)
@@ -193,7 +193,7 @@ def api_fuzzy_number_ops_handler():
                 message=msg,
                 data=None
             )
-            return response
+            return response, 400
         array, processed_unity, defuz_value = np.array(cached_res['x']), \
                                               np.array(cached_res['result']['result']), \
                                               cached_res['defuz_value']
@@ -205,7 +205,7 @@ def api_fuzzy_number_ops_handler():
             message='ok',
             data=result
         )
-        return response
+        return response, 200
     else:
         d = full_data.copy()
 
@@ -216,7 +216,7 @@ def api_fuzzy_number_ops_handler():
                 message=msg + " Проверьте типы данных в файле",
                 data=None
             )
-            return response
+            return response, 400
 
         data: dict = value.get("data")
         new_x = data.get("data")
@@ -237,7 +237,7 @@ def api_fuzzy_number_ops_handler():
                 message=Message.file_hash_or_operation_err,
                 data=None
             )
-            return response
+            return response, 400
         array, processed_unity, defuz_value = np.array(cached_res['x']), \
                                               np.array(cached_res['result']['result']), \
                                               cached_res['defuz_value']
@@ -248,4 +248,4 @@ def api_fuzzy_number_ops_handler():
             message='ok',
             data=result
         )
-        return response
+        return response, 200

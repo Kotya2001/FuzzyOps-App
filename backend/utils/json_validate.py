@@ -190,6 +190,54 @@ fuzzy_number_ops_with_fnum_scheme = {
 }
 
 
+fuzzy_graph_create_scheme = {
+    "type": "object",
+    "properties": {
+        "graphSettings": {
+            "type": "object",
+            "properties": {
+                "edgeType": { "type": "string" },
+                "edgeNumberType": { "type": "string" },
+                "edgeNumberMathType": { "type": "string" },
+                "edgeNumberEqType": { "type": "string" }
+            },
+            "required": ["edgeType", "edgeNumberType", "edgeNumberMathType", "edgeNumberEqType"]
+        },
+        "graph_data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start": { "type": "integer" },
+                    "end": { "type": "integer" },
+                    "values": {
+                        "type": "array",
+                        "items": { "type": "integer" }
+                    }
+                },
+                "required": ["start", "end", "values"]
+            }
+        }
+    },
+    "required": ["graphSettings", "graph_data"]
+}
+
+shortest_path_scheme = {
+    "type": "object",
+    "properties": {
+        "path": {
+            "type": "string",
+            "pattern": r"^\d+ \d+$"
+        },
+        "fileHash": {
+            "type": "string",
+        }
+    },
+    "required": ["path", "fileHash"]
+}
+
+
+
 
 
 params_schema = {
@@ -229,6 +277,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = fuzzy_number_ops_with_number_scheme
         elif task_type == "Операции Нечеткое Нечеткое":
             schema = fuzzy_number_ops_with_fnum_scheme
+        elif task_type == "Создание нечеткого графа":
+            schema = fuzzy_graph_create_scheme
+        elif task_type == "shortest_path":
+            schema = shortest_path_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

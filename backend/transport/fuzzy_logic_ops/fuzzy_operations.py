@@ -51,7 +51,6 @@ def fuzzy_ops_handler():
     is_paginate: bool = full_data.get("isPagination")
     use_gpu: bool = full_data.get("use_gpu")
 
-    print(full_data)
 
     if not isinstance(value, dict):
 

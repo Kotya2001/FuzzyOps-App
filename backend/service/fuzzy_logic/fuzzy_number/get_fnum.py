@@ -14,11 +14,16 @@ def get_fuzzy_number_from_db(key: str) -> Union[tuple[np.ndarray, str], tuple[bo
 	
 	if not f:
 		return False, False, False, "Нет такого ключа в базе данных, Создайте число заново"
-	processed_unity = f['result']['result']
-	arr = f['x']
-	defuz_value = np.round(f['defuz_value'], 1)
-	processed_unity = np.array(processed_unity)
-	processed_unity = np.round(processed_unity, 3)
-	return processed_unity, defuz_value, arr, ""
+	try:
+
+		processed_unity = f['result']['result']
+		arr = f['x']
+		defuz_value = np.round(f['defuz_value'], 1)
+		processed_unity = np.array(processed_unity)
+		processed_unity = np.round(processed_unity, 3)
+		return processed_unity, defuz_value, arr, ""
+	except Exception as e:
+		logger.error(f'Ошибка получения данных, {e}')
+		return False, False, False, "Ошибка получения данных"
 
 
