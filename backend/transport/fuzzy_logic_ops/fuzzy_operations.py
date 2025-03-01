@@ -95,8 +95,6 @@ def fuzzy_ops_handler():
         d.pop('isPagination', None)
         d.pop('useGpu', None)
 
-        print(d)
-
         err, msg = validate_data(d, "Операции Нечеткое Нечеткое")
         if err:
             response = create_response(
@@ -130,7 +128,7 @@ def fuzzy_ops_handler():
                                               cached_res['defuz_value']
 
         result = create_resp(array, processed_unity, defuz_value,
-                             currentPage, points, file_hash)
+                             currentPage, points, new_file_hash)
         response = create_response(
             status=status.HTTP_200_OK,
             message='ok',

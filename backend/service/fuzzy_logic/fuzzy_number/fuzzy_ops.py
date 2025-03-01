@@ -135,4 +135,4 @@ def calc_fnum_with_fnum(file_hash: str,
         logger.error(f'{e}')
         return True, {}, "Ошибка подключения к базе Redis", ""
 
-    return error, new_res, "", ""
+    return error, new_res, "", new_file_hash

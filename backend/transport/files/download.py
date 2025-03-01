@@ -15,7 +15,7 @@ def download_file(file_hash: str):
         response = create_response(
             status=status.HTTP_200_OK,
             message='ok',
-            data={"file": file}
+            data={"file": file, "file_hash": file_hash}
         )
         return response
     response = create_response(
