@@ -6,7 +6,7 @@ from app import logger
 
 from fuzzyops.graphs.algorithms.transport import shortest_path
 from fuzzyops.graphs.algorithms.factoring import mle_clusterization_factors
-from fuzzyops.graphs.algorithms.dominating import is_dominating
+from fuzzyops.graphs.algorithms.dominating import is_dominating, dominating_set, fuzzy_dominating_set
 from fuzzyops.graphs.fuzzgraph import FuzzyGraph
 
 
@@ -21,15 +21,6 @@ def get_graph(file_hash: str):
         return {}, "Данных нет в кэше, создайте граф заново"
     
     return f, ""
-    
-    # f = get_cache(file_hash)
-    # if not f:
-    #     return False, None
-    # else:
-    #     data = f["result"]
-    #     graph = base64.b64decode(data)
-    #     graph = pickle.loads(graph)
-    #     return True, graph
 
 
 def _make_graph(data: dict):
@@ -84,7 +75,7 @@ def calc_clusters(data, n_clusters: int) -> list:
         return [], str(e)
 
 
-def check_dominating_set(data, dominating_set: list[int], is_api: bool = False) -> bool:
+def check_dominating_set(data, dominating_set: list[int], is_api: bool = False):
     try:
         graph = _make_graph(data)
     except Exception as e:
@@ -101,3 +92,29 @@ def check_dominating_set(data, dominating_set: list[int], is_api: bool = False) 
             return result, ""
     except Exception as e:
         return "", str(e)
+
+def get_any_dominating(data):
+    try:
+        graph = _make_graph(data)
+    except Exception as e:
+        return [], str(e)
+    
+    try:
+        res = dominating_set(graph)
+        return list(res), ""
+
+    except Exception as e:
+        return [], str(e)
+    
+def get_dominating(data, values):
+    try:
+        graph = _make_graph(data)
+    except Exception as e:
+        return [], str(e)
+    
+    try:
+        res = fuzzy_dominating_set(graph, values)
+        return list(res), ""
+
+    except Exception as e:
+        return [], str(e)

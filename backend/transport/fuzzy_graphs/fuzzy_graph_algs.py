@@ -33,7 +33,6 @@ def get_shortest_path():
 
     file_hash = full_data["fileHash"]
     path = full_data["path"]
-    print(path)
 
     graph_data, err = get_graph(file_hash)
     if err:

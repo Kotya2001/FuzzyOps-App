@@ -8,7 +8,8 @@ export interface GraphAlgsSlice {
 	cluster: string,
 	pathLoop: string,
 	groups: object,
-	dominatingRes: string
+	dominatingRes: string,
+	domitatingSet: string
 
 
 }
@@ -19,7 +20,8 @@ const InitialAlgState: GraphAlgsSlice = {
 	cluster: "",
 	pathLoop: "",
 	groups: {},
-	dominatingRes: ""
+	dominatingRes: "",
+	domitatingSet: ""
 };
 
 export const FuzzyGraphAlgSlice = createSlice({
@@ -43,12 +45,16 @@ export const FuzzyGraphAlgSlice = createSlice({
 		},
 		setDominatingRes: (state, action: PayloadAction<string>) => {
 			state.dominatingRes = action.payload;
-		}
+		},
+		setDominatingSet: (state, action: PayloadAction<string>) => {
+			state.domitatingSet = action.payload;
+		},
 
 
 	}
 });
 
-export const { setPath, setSet, setNclusters, setPathLoop, setGroups, setDominatingRes } = FuzzyGraphAlgSlice.actions;
+export const { setPath, setSet, setNclusters, setPathLoop,
+	setGroups, setDominatingRes, setDominatingSet } = FuzzyGraphAlgSlice.actions;
 
 export default FuzzyGraphAlgSlice.reducer;

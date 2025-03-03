@@ -4,11 +4,10 @@ import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
 import { FuzzyProps } from './FuzzyEntityComponents.props';
 import { Button } from '../../components/Button/Button';
-import { GraphInput } from '../../components/Input/GraphInput';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { setPath, setPathLoop, setGroups, setDominatingRes } from '../../redux/reducers/ResultReducers/FuzzyGraphAlgsSlice';
-import { getClusters, shortestPath, chechDominating, getAssignment } from '../../http/FuzzyGraphApi';
+import { getClusters, shortestPath, chechDominating, getAssignment, getAnyDominating, getDominating } from '../../http/FuzzyGraphApi';
 import { defaultGraphAssignment } from './consts';
 import { P } from '../../components/P/P';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
@@ -16,6 +15,7 @@ import { setAssResult, setCostResult } from '../../redux/reducers/ResultReducers
 import { InputPath } from '../../components/Input/InputPath';
 import { ClusterInput } from '../../components/Input/ClusterInput';
 import { CheckDominating } from '../../components/Input/CheckDominating';
+import { Fnum } from '../../components/Input/Fnum';
 
 
 export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
@@ -24,7 +24,8 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 	const [isOpendPath, setIsOpendPath] = useState(false);
 	const [isOpendCluster, setIsOpendCluster] = useState(false);
 	const [isOpendDomin, setIsOpendDomin] = useState(false);
-	const { path, dominating, cluster, pathLoop, groups, dominatingRes } = useAppSelector(state => state.FuzzyGraphAlgsReducer);
+	const [isOpendDominSet, setIsOpendDominSet] = useState(false);
+	const { path, dominating, cluster, pathLoop, groups, dominatingRes, domitatingSet } = useAppSelector(state => state.FuzzyGraphAlgsReducer);
 	const { graphSettings } = useAppSelector(state => state.CreateFuzzyGraphReducer);
 	const { tasks, workers, fuzzyCosts } = useAppSelector(state => state.AddAssignmentsReducer);
 	const { assignments, costs } = useAppSelector(state => state.AssignmenstReducer);
@@ -88,6 +89,44 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 			} else {
 				alert(response.data.message);
 			}
+		} else if (data == "any_dominating") {
+			const response = await getAnyDominating({ fileHash });
+			if (response.data.status == 200) {
+				const data = response.data.data;
+				const str = JSON.stringify({ ...data });
+				const blob = new Blob([str]);
+				const url = URL.createObjectURL(blob);
+				const anchor = document.createElement('a');
+				anchor.href = url;
+				anchor.download = 'any_dominating.json';
+				document.body.append(anchor);
+				anchor.click();
+				anchor.remove();
+
+				URL.revokeObjectURL(url);
+
+			} else {
+				alert(response.data.message);
+			}
+		} else if (data == "dominating_set") {
+			const response = await getDominating({ domitatingSet, fileHash });
+			if (response.data.status == 200) {
+				const data = response.data.data;
+				const str = JSON.stringify({ ...data });
+				const blob = new Blob([str]);
+				const url = URL.createObjectURL(blob);
+				const anchor = document.createElement('a');
+				anchor.href = url;
+				anchor.download = 'dominating_set.json';
+				document.body.append(anchor);
+				anchor.click();
+				anchor.remove();
+
+				URL.revokeObjectURL(url);
+
+			} else {
+				alert(response.data.message);
+			}
 		}
 	};
 
@@ -118,7 +157,7 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 						<div className={styles.LoadContent}>
 							<Button appearance='primary' onClick={() => setIsOpendPath(!isOpendPath)}>Кратчайший путь</Button>
 							{isOpendPath && <InputPath keyValue={["path", "Start End"]} />}
-							{path && isOpendDomin && <Button appearance='primary' onClick={() => calc("path")}>Посчитать</Button>}
+							{path && isOpendPath && <Button appearance='primary' onClick={() => calc("path")}>Посчитать</Button>}
 							{/* {pathLoop && <P size='m'> {pathLoop} </P>} */}
 
 						</div>
@@ -130,7 +169,7 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 							<Button appearance='primary' onClick={() => setIsOpendCluster(!isOpendCluster)}>Найти кластеры</Button>
 							{isOpendCluster && <ClusterInput keyValue={["cluster", "Number of clusters"]} />}
 							{/* {isOpendCluster && <GraphInput keyValue={["cluster", "Number of clusters"]} />} */}
-							{cluster && isOpendDomin && <Button appearance='primary' onClick={() => calc("cluster")}>Найти</Button>}
+							{cluster && isOpendCluster && <Button appearance='primary' onClick={() => calc("cluster")}>Найти</Button>}
 							{/* {Object.keys(groups).length !== 0 && <P size='m'> {JSON.stringify(groups, null, 4)} </P>} */}
 
 						</div>
@@ -145,6 +184,23 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 							{dominating && isOpendDomin && <Button appearance='primary' onClick={() => calc("dominating")}>Проверить</Button>}
 							{dominatingRes && <P size='m'>{dominatingRes}</P>}
 
+						</div>
+					</div>
+
+					<div className={styles.blockBoxHeader}>
+
+						<div className={styles.LoadContent}>
+							<Button appearance='primary' onClick={() => calc("any_dominating")}>Найти любое доминирующее множестов</Button>
+
+						</div>
+					</div>
+
+					<div className={styles.blockBoxHeader}>
+
+						<div className={styles.LoadContent}>
+							<Button appearance='primary' onClick={() => setIsOpendDominSet(!isOpendDominSet)}>Найти доминирующее множестов</Button>
+							{isOpendDominSet && <Fnum keyValue={["dominating_set", "right, left, middle"]} />}
+							{domitatingSet && isOpendDominSet && <Button appearance='primary' onClick={() => calc("dominating_set")}>Найти</Button>}
 						</div>
 					</div>
 

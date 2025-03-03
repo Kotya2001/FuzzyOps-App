@@ -5,7 +5,7 @@ export const fuzzyGraphCreate = async (uploadedFile: object) => {
 	return response;
 };
 
-export const shortestPath = async(uploadedFile: object) => {
+export const shortestPath = async (uploadedFile: object) => {
 	const response = await $host.post('/main/fuzzyGraph/shortestPath/Get', uploadedFile);
 	return response;
 };
@@ -22,5 +22,15 @@ export const getClusters = async (uploadedFile: object) => {
 
 export const getAssignment = async (uploadedFile: object) => {
 	const response = await $host.post('/main/fuzzyGraph/Assignment/Get', uploadedFile);
+	return response;
+};
+
+export const getAnyDominating = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyGraph/AnyDominating/Get', uploadedFile);
+	return response;
+};
+
+export const getDominating = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyGraph/Dominating/Get', uploadedFile);
 	return response;
 };

@@ -368,7 +368,23 @@ is_dominationg_api_scheme = {
             "type": "array",
             "items": {"type": "number"}
         }
-    }
+    },
+     "required": ["dominating"]
+
+}
+
+dominating_api_scheme = {
+    "type": "object",
+    "properties": {
+        "values": {
+            "type": "array",
+            "items": {"type": "number"},
+            "minItems": 3,
+            "maxItems": 3
+
+        }
+    },
+    "required": ["values"]
 }
 
 
@@ -426,6 +442,8 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = clusters_scheme_api
         elif task_type == "is_dominating":
             schema = is_dominationg_api_scheme
+        elif task_type == "dominating":
+            schema = dominating_api_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)
