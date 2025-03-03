@@ -17,6 +17,9 @@ def get_graph(file_hash: str):
         logger.error(f'Error while setting cache in Redis: {e}')
         return {}, "Ошибка подключения к базе Redis"
     
+    if not f:
+        return {}, "Данных нет в кэше, создайте граф заново"
+    
     return f, ""
     
     # f = get_cache(file_hash)
@@ -62,13 +65,18 @@ def calc_shortest_path(data, start: int, end: int) -> dict:
 
     try:
         res = shortest_path(graph, start, end)
-        print(res)
         return res, ""
     except Exception as e:
         return {}, str(e)
 
 
-def calc_clusters(graph, n_clusters: int) -> list:
+def calc_clusters(data, n_clusters: int) -> list:
+
+    try:
+        graph = _make_graph(data)
+    except Exception as e:
+        return {}, str(e)
+
     try:
         res = mle_clusterization_factors(graph, n_clusters)
         return res, ""
@@ -76,10 +84,20 @@ def calc_clusters(graph, n_clusters: int) -> list:
         return [], str(e)
 
 
-def check_dominating_set(graph, dominating_set: list[int]) -> bool:
+def check_dominating_set(data, dominating_set: list[int], is_api: bool = False) -> bool:
     try:
-        is_dom = is_dominating(graph, set(dominating_set))
-        result = "Доминирующее множество" if is_dom else "Множество недоминирующее"
-        return result, ""
+        graph = _make_graph(data)
+    except Exception as e:
+        return "", str(e)
+    
+    try:
+        if not is_api:
+            is_dom = is_dominating(graph, set(dominating_set))
+            result = "Доминирующее множество" if is_dom else "Множество недоминирующее"
+            return result, ""
+        else:
+            is_dom = is_dominating(graph, set(dominating_set))
+            result = {"is_dominating": is_dom}
+            return result, ""
     except Exception as e:
         return "", str(e)

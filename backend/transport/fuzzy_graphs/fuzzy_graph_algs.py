@@ -1,6 +1,6 @@
 from app import app
 from utils import Message, create_response, parse_json_from_request, validate_data
-from service import get_graph, calc_shortest_path, calc_clusters
+from service import get_graph, calc_shortest_path
 from flask import request
 from flask_api import status
 
@@ -33,6 +33,7 @@ def get_shortest_path():
 
     file_hash = full_data["fileHash"]
     path = full_data["path"]
+    print(path)
 
     graph_data, err = get_graph(file_hash)
     if err:

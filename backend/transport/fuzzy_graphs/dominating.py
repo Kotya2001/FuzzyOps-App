@@ -21,17 +21,17 @@ def check_dominating():
     file_hash = full_data["fileHash"]
     dominating = full_data["dominating"]
 
-    err, graph = get_graph(file_hash)
-    if not err:
+    graph_data, err = get_graph(file_hash)
+    if err:
         response = create_response(
             status=status.HTTP_409_CONFLICT,
-            message="Граф отсутствует, необходимо создать",
-            data=None
+            message=err,
+            data=graph_data
         )
         return response
 
     dominating_set = [int(i) for i in dominating.split()]
-    res, err = check_dominating_set(graph, dominating_set)
+    res, err = check_dominating_set(graph_data, dominating_set)
     if err:
         response = create_response(
             status=status.HTTP_409_CONFLICT,

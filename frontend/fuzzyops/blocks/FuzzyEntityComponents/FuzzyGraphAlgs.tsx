@@ -14,6 +14,8 @@ import { P } from '../../components/P/P';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 import { setAssResult, setCostResult } from '../../redux/reducers/ResultReducers/AssignmenstSlice';
 import { InputPath } from '../../components/Input/InputPath';
+import { ClusterInput } from '../../components/Input/ClusterInput';
+import { CheckDominating } from '../../components/Input/CheckDominating';
 
 
 export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
@@ -26,6 +28,7 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 	const { graphSettings } = useAppSelector(state => state.CreateFuzzyGraphReducer);
 	const { tasks, workers, fuzzyCosts } = useAppSelector(state => state.AddAssignmentsReducer);
 	const { assignments, costs } = useAppSelector(state => state.AssignmenstReducer);
+
 
 
 	const apiBody = async (data: string, fileHash: string) => {
@@ -44,7 +47,6 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 				anchor.remove();
 
 				URL.revokeObjectURL(url);
-				// dispatch(setPathLoop(data.path.join()));
 			} else {
 				alert(response.data.message);
 			}
@@ -52,6 +54,17 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 			const response = await getClusters({ cluster, fileHash });
 			if (response.data.status == 200) {
 				const data = response.data.data;
+				const str = JSON.stringify({ ...data });
+				const blob = new Blob([str]);
+				const url = URL.createObjectURL(blob);
+				const anchor = document.createElement('a');
+				anchor.href = url;
+				anchor.download = 'clusters.json';
+				document.body.append(anchor);
+				anchor.click();
+				anchor.remove();
+
+				URL.revokeObjectURL(url);
 				dispatch(setGroups(data));
 			} else {
 				alert(response.data.message);
@@ -105,7 +118,7 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 						<div className={styles.LoadContent}>
 							<Button appearance='primary' onClick={() => setIsOpendPath(!isOpendPath)}>Кратчайший путь</Button>
 							{isOpendPath && <InputPath keyValue={["path", "Start End"]} />}
-							{path && <Button appearance='primary' onClick={() => calc("path")}>Посчитать</Button>}
+							{path && isOpendDomin && <Button appearance='primary' onClick={() => calc("path")}>Посчитать</Button>}
 							{/* {pathLoop && <P size='m'> {pathLoop} </P>} */}
 
 						</div>
@@ -115,9 +128,10 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
 						<div className={styles.LoadContent}>
 							<Button appearance='primary' onClick={() => setIsOpendCluster(!isOpendCluster)}>Найти кластеры</Button>
-							{isOpendCluster && <GraphInput keyValue={["cluster", "Number of clusters"]} />}
-							{cluster && <Button appearance='primary' onClick={() => calc("cluster")}>Найти</Button>}
-							{Object.keys(groups).length !== 0 && <P size='m'> {JSON.stringify(groups, null, 4)} </P>}
+							{isOpendCluster && <ClusterInput keyValue={["cluster", "Number of clusters"]} />}
+							{/* {isOpendCluster && <GraphInput keyValue={["cluster", "Number of clusters"]} />} */}
+							{cluster && isOpendDomin && <Button appearance='primary' onClick={() => calc("cluster")}>Найти</Button>}
+							{/* {Object.keys(groups).length !== 0 && <P size='m'> {JSON.stringify(groups, null, 4)} </P>} */}
 
 						</div>
 					</div>
@@ -126,8 +140,9 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 
 						<div className={styles.LoadContent}>
 							<Button appearance='primary' onClick={() => setIsOpendDomin(!isOpendDomin)}>Проверка на доминантность</Button>
-							{isOpendDomin && <GraphInput keyValue={["dominating", "Indexes of nodes"]} />}
-							{dominating && <Button appearance='primary' onClick={() => calc("dominating")}>Проверить</Button>}
+							{/* {isOpendDomin && <GraphInput keyValue={["dominating", "Indexes of nodes"]} />} */}
+							{isOpendDomin && <CheckDominating keyValue={["dominating", "Indexes of nodes"]} />}
+							{dominating && isOpendDomin && <Button appearance='primary' onClick={() => calc("dominating")}>Проверить</Button>}
 							{dominatingRes && <P size='m'>{dominatingRes}</P>}
 
 						</div>

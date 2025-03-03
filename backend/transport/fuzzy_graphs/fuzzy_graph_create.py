@@ -30,8 +30,6 @@ def fuzzy_graph_create():
         )
         return response
 
-    # graph_settings = full_data["graphSettings"]
-    # graph_data = full_data["graph_data"]
     hash_str = str(full_data) + 'create_graph'
     file_hash = sha256(bytes(hash_str, 'UTF-8')).hexdigest()
 

@@ -222,6 +222,96 @@ fuzzy_graph_create_scheme = {
     "required": ["graphSettings", "graph_data"]
 }
 
+fuzzy_graph_create_api_scheme = {
+    "type": "object",
+    "properties": {
+        "graphSettings": {
+            "type": "object",
+            "properties": {
+                "edgeType": {"enum": ["undirected", "directed"]},
+                "edgeNumberMathType": {"enum": ["max", "min", "mean", "sum"]},
+                "edgeNumberEqType": {"enum": ["max", "min", "base"]}
+            },
+            "required": [
+                "edgeType",
+                "edgeNumberMathType",
+                "edgeNumberEqType"
+            ]
+        },
+        "graph_data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start": {"type": "integer"},
+                    "end": {"type": "integer"},
+                    "values": {
+                        "type": "array",
+                        "items": {"type": "number"}
+                    }
+                },
+                "required": [
+                    "start",
+                    "end",
+                    "values"
+                ],
+                "additionalProperties": False
+            }
+        }
+    },
+    "required": [
+        "graphSettings",
+        "graph_data"
+    ],
+    "additionalProperties": False
+}
+
+fuzzy_graph_create_api_scheme_check = {
+    "type": "object",
+    "properties": {
+        "graphSettings": {
+            "type": "object",
+            "properties": {
+                "edgeType": {"enum": ["undirected", "directed"]},
+                "edgeNumberMathType": {"enum": ["max", "min", "mean", "sum"]},
+                "edgeNumberEqType": {"enum": ["max", "min", "base"]},
+                "edgeNumberType": {"const": "triangle"},
+            },
+            "required": [
+                "edgeType",
+                "edgeNumberType",
+                "edgeNumberMathType",
+                "edgeNumberEqType"
+            ]
+        },
+        "graph_data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start": {"type": "integer"},
+                    "end": {"type": "integer"},
+                    "values": {
+                        "type": "array",
+                        "items": {"type": "number"}
+                    }
+                },
+                "required": [
+                    "start",
+                    "end",
+                    "values"
+                ],
+                "additionalProperties": False
+            }
+        }
+    },
+    "required": [
+        "graphSettings",
+        "graph_data"
+    ],
+    "additionalProperties": False
+}
+
 shortest_path_scheme = {
     "type": "object",
     "properties": {
@@ -236,7 +326,50 @@ shortest_path_scheme = {
     "required": ["path", "fileHash"]
 }
 
+shortest_path_api_scheme = {
+    "type": "object",
+    "properties": {
+        "path": {
+            "type": "string",
+            "pattern": r"^\d+ \d+$"
+        },
+    },
+    "required": ["path"]
+}
 
+clusters_scheme = {
+    "type": "object",
+    "properties": {
+        "cluster": {
+            "type": "string",
+            "pattern": r"^\d+$"
+        },
+        "fileHash": {
+            "type": "string",
+        }
+    },
+    "required": ["cluster", "fileHash"]
+}
+
+clusters_scheme_api = {
+    "type": "object",
+    "properties": {
+        "cluster": {
+            "type": "number",
+        },
+    },
+    "required": ["cluster"]
+}
+
+is_dominationg_api_scheme = {
+    "type": "object",
+    "properties": {
+        "dominating": {
+            "type": "array",
+            "items": {"type": "number"}
+        }
+    }
+}
 
 
 
@@ -281,6 +414,18 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = fuzzy_graph_create_scheme
         elif task_type == "shortest_path":
             schema = shortest_path_scheme
+        elif task_type == "create_graph_api":
+            schema = fuzzy_graph_create_api_scheme
+        elif task_type == "shortest_path_api":
+            schema = shortest_path_api_scheme
+        elif task_type == "check_graph":
+            schema = fuzzy_graph_create_api_scheme_check
+        elif task_type == "clusters":
+            schema = clusters_scheme
+        elif task_type == "clusters_api":
+            schema = clusters_scheme_api
+        elif task_type == "is_dominating":
+            schema = is_dominationg_api_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

@@ -24,6 +24,6 @@ def get_fuzzy_number_from_db(key: str) -> Union[tuple[np.ndarray, str], tuple[bo
 		return processed_unity, defuz_value, arr, ""
 	except Exception as e:
 		logger.error(f'Ошибка получения данных, {e}')
-		return False, False, False, "Ошибка получения данных"
+		return False, False, False, "Ошибка получения данных, Возможно вы передели ключ не от тех данных"
 
 

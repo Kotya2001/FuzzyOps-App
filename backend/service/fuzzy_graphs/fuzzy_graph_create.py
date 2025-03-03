@@ -6,7 +6,7 @@ from app import logger
 
 
 def create_fuzzy_graph(full_data: dict,
-                       file_hash: str) -> str:
+                       file_hash: str, is_api=False) -> str:
     
     try:
         f = get_cache(file_hash)
@@ -16,11 +16,12 @@ def create_fuzzy_graph(full_data: dict,
     
 
     if not f:
-        graph_settings = full_data["graphSettings"]
+        if not is_api:
+            graph_settings = full_data["graphSettings"]
 
-        full_data["graphSettings"]["edgeType"] = edge_types[graph_settings["edgeType"]]
-        full_data["graphSettings"]["edgeNumberMathType"] = edge_number_math_types[graph_settings["edgeNumberMathType"]]
-        full_data["graphSettings"]["edgeNumberEqType"] = edge_number_eq_types[graph_settings["edgeNumberEqType"]]
+            full_data["graphSettings"]["edgeType"] = edge_types[graph_settings["edgeType"]]
+            full_data["graphSettings"]["edgeNumberMathType"] = edge_number_math_types[graph_settings["edgeNumberMathType"]]
+            full_data["graphSettings"]["edgeNumberEqType"] = edge_number_eq_types[graph_settings["edgeNumberEqType"]]
 
         # edge_type = edge_types[graph_settings["edgeType"]]
 
@@ -41,6 +42,7 @@ def create_fuzzy_graph(full_data: dict,
         # encoded_graph = base64.b64encode(pickled_graph)
 
         # set_cache(file_hash, {"result": encoded_graph.decode("utf-8")})
+        print(full_data)
         try:
             set_cache(file_hash, full_data)
         except Exception as e:
