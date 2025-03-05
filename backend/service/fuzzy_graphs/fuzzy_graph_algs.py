@@ -8,6 +8,7 @@ from fuzzyops.graphs.algorithms.transport import shortest_path
 from fuzzyops.graphs.algorithms.factoring import mle_clusterization_factors
 from fuzzyops.graphs.algorithms.dominating import is_dominating, dominating_set, fuzzy_dominating_set
 from fuzzyops.graphs.fuzzgraph import FuzzyGraph
+from fuzzyops.sequencing_assignment import FuzzySASolver
 
 
 def get_graph(file_hash: str):
@@ -34,7 +35,8 @@ def _make_graph(data: dict):
     edge_number_eq_type = graph_settings["edgeNumberEqType"]
 
     graph = FuzzyGraph(edge_type=edge_type,
-                       edge_number_eq_type=edge_number_eq_type, edge_number_math_type=edge_number_math_type)
+                       edge_number_eq_type=edge_number_eq_type,
+                       edge_number_math_type=edge_number_math_type)
     max_node_start = max([max(e["start"], e["end"]) for e in graph_data])
 
 
@@ -118,3 +120,35 @@ def get_dominating(data, values):
 
     except Exception as e:
         return [], str(e)
+    
+
+def get_assignment_result(graph_data,
+                          tasks: list[str],
+                          workers: list[str],
+                          fuzzy_costs: list[dict]):
+
+    graph_settings = graph_data["graphSettings"]
+
+
+
+    graph = FuzzyGraph(
+        node_number_math_type="min",
+        node_number_eq_type="max",
+        edge_number_math_type=graph_settings["edgeNumberMathType"],
+        edge_number_eq_type=graph_settings["edgeNumberEqType"],
+    )
+
+    solver = FuzzySASolver()
+    solver.load_graph(graph)
+
+    solver.load_tasks_workers(tasks, workers)
+    for _, value in enumerate(fuzzy_costs):
+        solver.load_task_worker_pair_value(value["task"], value["worker"], value["fuzzyCost"])
+
+    try:
+        result = solver.solve()
+        r = result['cost']._value
+        result['cost'] = r
+        return result, ""
+    except Exception as e:
+        return {}, str(e)

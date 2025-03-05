@@ -1,7 +1,7 @@
 from app import app
 from utils import Message, create_response, parse_json_from_request, validate_data
 from service import create_fuzzy_graph, get_graph, calc_shortest_path, \
-    calc_clusters, check_dominating_set, get_any_dominating, get_dominating
+    calc_clusters, check_dominating_set, get_any_dominating, get_dominating, get_assignment_result
 from flask import request
 from flask_api import status
 from hashlib import sha256
@@ -336,5 +336,76 @@ def fuzzy_graph_api_dominating(key: str):
             status=status.HTTP_200_OK,
             message="ok",
             data={"dominating_set": res}
+        )
+        return response
+    
+
+@app.route('/api/fgraph/assignment/<key>', methods=['GET'])
+def fuzzy_assignment_api(key):
+    """
+    Функция для решения задачи о назначении
+    """
+
+    if (request.method != "GET"):
+        response = create_response(
+            status=status.HTTP_404_NOT_FOUND,
+            message="Доступен только метод GET",
+            data=None
+        )
+        return response, 404
+    
+    (full_data, error) = parse_json_from_request(request)
+    if error:
+        response = create_response(
+            status=status.HTTP_400_BAD_REQUEST,
+            message=Message.bad_json,
+            data=None
+        )
+        return response
+    
+    error, msg = validate_data(full_data, "assignment_api")
+    if error:
+        response = create_response(
+            status=status.HTTP_400_BAD_REQUEST,
+            message=msg + " Проверьте типы данных в файле",
+            data=""
+        )
+        return response
+    
+    tasks, workers, fuzzy_costs = full_data["tasks"], full_data["workers"], full_data["fuzzyCosts"]
+
+    graph_data, err = get_graph(key)
+    if err:
+        response = create_response(
+            status=status.HTTP_409_CONFLICT,
+            message=err,
+            data=graph_data
+        )
+        return response
+    
+    error, msg = validate_data(graph_data, "check_graph")
+    if error:
+        response = create_response(
+            status=status.HTTP_400_BAD_REQUEST,
+            message=msg + " Проверьте типы данных в файле, возможно перепутили ключи",
+            data=None
+        )
+        return response, 400
+
+    result, error = get_assignment_result(graph_data, tasks, workers, fuzzy_costs)
+
+    if error:
+        response = create_response(
+            status=status.HTTP_400_BAD_REQUEST,
+            message=error,
+            data=None
+        )
+        return response
+    else:
+        result["assignments"] = [{"worker": elem[0], "task": elem[1]} for elem in result["assignments"]]
+        response = create_response(
+            status=status.HTTP_200_OK,
+            message='ok',
+            data=result
         )
         return response

@@ -413,6 +413,72 @@ params_schema = {
     "additionalProperties": False  # Запретить любые дополнительные свойства
 }
 
+assignment_scheme = schema = {
+    "type": "object",
+    "properties": {
+        "fileHash": {"type": "string"},
+        "tasks": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "workers": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "fuzzyCosts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "task": {"type": "string"},
+                    "worker": {"type": "string"},
+                    "fuzzyCost": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "minItems": 3,
+                        "maxItems": 3
+                    }
+                },
+                "required": ["task", "worker", "fuzzyCost"]
+            }
+        }
+    },
+    "required": ["fileHash", "tasks", "workers", "fuzzyCosts"]
+}
+
+assignment_api_scheme = schema = {
+    "type": "object",
+    "properties": {
+        "tasks": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "workers": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "fuzzyCosts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "task": {"type": "string"},
+                    "worker": {"type": "string"},
+                    "fuzzyCost": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "minItems": 3,
+                        "maxItems": 3
+                    }
+                },
+                "required": ["task", "worker", "fuzzyCost"]
+            }
+        }
+    },
+    "required": ["tasks", "workers", "fuzzyCosts"]
+}
+
+
 
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
     try:
@@ -444,6 +510,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = is_dominationg_api_scheme
         elif task_type == "dominating":
             schema = dominating_api_scheme
+        elif task_type == "assignment":
+            schema = assignment_scheme
+        elif task_type == "assignment_api":
+            schema = assignment_api_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

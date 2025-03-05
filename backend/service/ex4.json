@@ -1,0 +1,68 @@
+{
+	"tasks": [
+		"A",
+		"B",
+		"C"
+	],
+	"executor": [
+		"X",
+		"Y",
+		"Z"
+	],
+	"fuzzyCosts": [
+		{
+			"task": "A",
+			"executor": "X",
+			"fuzzyCost": [
+				6,
+				1,
+				2
+			]
+		},
+		{
+			"task": "A",
+			"executor": "Y",
+			"fuzzyCost": [
+				3,
+				1,
+				1
+			]
+		},
+		{
+			"task": "B",
+			"executor": "Z",
+			"fuzzyCost": [
+				3,
+				1,
+				2
+			]
+		},
+		{
+			"task": "C",
+			"executor": "X",
+			"fuzzyCost": [
+				2,
+				1,
+				1
+			]
+		},
+		{
+			"task": "C",
+			"executor": "Y",
+			"fuzzyCost": [
+				3,
+				2,
+				1
+			]
+		},
+		{
+			"task": "C",
+			"executor": "Z",
+			"fuzzyCost": [
+				1,
+				1,
+				1
+			]
+		}
+	]
+}

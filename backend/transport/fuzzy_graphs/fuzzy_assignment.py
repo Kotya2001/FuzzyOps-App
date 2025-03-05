@@ -1,6 +1,6 @@
 from app import app
-from utils import Message, create_response, parse_json_from_request
-from service import get_assignment_result
+from utils import Message, create_response, parse_json_from_request, validate_data
+from service import get_assignment_result, get_graph
 from flask import request
 from flask_api import status
 
@@ -18,10 +18,30 @@ def fuzzy_assignment():
             data=None
         )
         return response
-    graph_settings = full_data["graphSettings"]
+    
+    error, msg = validate_data(full_data, "assignment")
+    if error:
+        response = create_response(
+            status=status.HTTP_400_BAD_REQUEST,
+            message=msg + " Проверьте типы данных в файле",
+            data=""
+        )
+        return response
+    
+    file_hash = full_data["fileHash"]
     tasks, workers, fuzzy_costs = full_data["tasks"], full_data["workers"], full_data["fuzzyCosts"]
 
-    result, error = get_assignment_result(graph_settings, tasks, workers, fuzzy_costs)
+    graph_data, err = get_graph(file_hash)
+    if err:
+        response = create_response(
+            status=status.HTTP_409_CONFLICT,
+            message=err,
+            data=graph_data
+        )
+        return response
+
+    result, error = get_assignment_result(graph_data, tasks, workers, fuzzy_costs)
+
 
     if error:
         response = create_response(
@@ -30,9 +50,11 @@ def fuzzy_assignment():
             data=None
         )
         return response
-    response = create_response(
-        status=status.HTTP_200_OK,
-        message='ok',
-        data=result
-    )
-    return response
+    else:
+        result["assignments"] = [{"worker": elem[0], "task": elem[1]} for elem in result["assignments"]]
+        response = create_response(
+            status=status.HTTP_200_OK,
+            message='ok',
+            data=result
+        )
+        return response

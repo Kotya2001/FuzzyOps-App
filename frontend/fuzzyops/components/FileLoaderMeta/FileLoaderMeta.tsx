@@ -1,4 +1,4 @@
-import { FileLoaderMetaProps } from './FileLoaderMeta.props'; 
+import { FileLoaderMetaProps } from './FileLoaderMeta.props';
 import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
 import { defaultFuzzyMetaOptName, defaultGraphAssignment } from '../../blocks/FuzzyEntityComponents/consts';
@@ -53,10 +53,10 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 						dispatch(setFuzzyCosts(arr.fuzzyCosts));
 
 					}
-				} catch(e) {
+				} catch (e) {
 					alert("Ошибка парсинга json");
 				}
-				
+
 
 			} else {
 				alert('Файл пуст');

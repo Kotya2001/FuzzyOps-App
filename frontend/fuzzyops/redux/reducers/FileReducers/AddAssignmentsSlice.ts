@@ -37,7 +37,7 @@ export const AddAssignmentsSlice = createSlice({
 	}
 });
 
-export const { setTasks, setWorkers, setFuzzyCosts} = AddAssignmentsSlice.actions;
+export const { setTasks, setWorkers, setFuzzyCosts } = AddAssignmentsSlice.actions;
 
 
 export default AddAssignmentsSlice.reducer;
