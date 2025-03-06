@@ -2,7 +2,7 @@ import { ExelFileLoaderProps } from './ExelFileLoader.props';
 import styles from './ExelFileLoader.module.css';
 import { store } from '../../redux/store';
 import { setCsvData } from '../../redux/reducers/OptimizationReducers/LinearOptSlice';
-import { setX } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
+import { setIsLoadCsv, setX } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { useState } from 'react';
 import { defaultFuzzyLinearOptName, defaultFuzzyMetaOptNameCSV, defaultFuzzyClusterCsv, defaultFuzzyClusterCsvTest } from '../../blocks/FuzzyEntityComponents/consts';
 import { setTrainData, setTestData } from '../../redux/reducers/FileReducers/FuzzyClusterSlice';
@@ -58,6 +58,7 @@ export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 					dispatch(setCsvData(res));
 				} else if (name == defaultFuzzyMetaOptNameCSV) {
 					dispatch(setX(res));
+					dispatch(setIsLoadCsv(true));
 				} else if (name == defaultFuzzyClusterCsv) {
 					dispatch(setTrainData(res));
 				} else if (name == defaultFuzzyClusterCsvTest) {

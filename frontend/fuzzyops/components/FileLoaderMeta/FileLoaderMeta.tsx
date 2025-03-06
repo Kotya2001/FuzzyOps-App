@@ -3,7 +3,7 @@ import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
 import { defaultFuzzyMetaOptName, defaultGraphAssignment } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
-import { setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
+import { setIsLoadParams, setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { setTasks, setWorkers, setFuzzyCosts } from '../../redux/reducers/FileReducers/AddAssignmentsSlice';
 
 export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
@@ -18,7 +18,7 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 		switch (name) {
 			case defaultFuzzyMetaOptName:
 				if (status) {
-					return 'Загружено';
+					return 'json Загружен';
 				}
 				return n;
 
@@ -47,6 +47,7 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					const arr = JSON.parse(res);
 					if (name == defaultFuzzyMetaOptName) {
 						dispatch(setParams(arr));
+						dispatch(setIsLoadParams(true));
 					} else if (name == defaultGraphAssignment) {
 						dispatch(setTasks(arr.tasks));
 						dispatch(setWorkers(arr.workers));

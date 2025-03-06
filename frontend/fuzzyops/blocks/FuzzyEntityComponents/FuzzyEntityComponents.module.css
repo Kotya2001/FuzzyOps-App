@@ -1,5 +1,3 @@
-
-
 .headerH1 {
 
 	font-weight: 500;
@@ -14,7 +12,7 @@
 	font-size: 18px;
 	line-height: 27px;
 	cursor: pointer;
-		
+
 }
 
 .headerH2Active,
@@ -78,11 +76,28 @@
 	display: grid;
 	grid-template-columns: repeat(var(--repeat), 150px);
 	gap: 20px
-	
 }
 
 .btnsModal {
 	display: grid;
 	grid-template-columns: 150px;
 	gap: 20px
+}
+
+.loadingMessage {
+	color: var(--primary);
+	/* Цвет текста для загрузки */
+	font-weight: bold;
+}
+
+.errorMessage {
+	color: red;
+	/* Цвет текста для сообщений об ошибках */
+	font-weight: bold;
+}
+
+.successMessage {
+	color: green;
+	/* Цвет текста для успешного сообщения */
+	font-weight: bold;
 }

@@ -10,25 +10,69 @@ import { fuzzymetaopt } from '../../http/FuzzyMetaOptApi';
 import { setTheta, setStatus } from '../../redux/reducers/ResultReducers/FuzzuMetaOptResultSlice';
 import { Downloader } from '../../components/Downloader/Downloader';
 import { defaultFuzzyMetaOptName } from './consts';
+import { useEffect, useState } from 'react';
 
 
 export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
 
-	const dispatch = store.dispatch;
 	const { csvX, params } = useAppSelector(state => state.MetaOptReducer);
-	const { theta, status } = useAppSelector(state => state.MetaOptResultReducer);
+	const { isLoadCsv, isLoadParams } = useAppSelector(state => state.MetaOptReducer);
+
+	const [loading, setLoading] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [successMessage, setSuccessMessage] = useState('');
 
 
-	const calc = async (data: object) => {
-		const response = await fuzzymetaopt({data});
-		if (response.data.status == 200) {
-			const data = response.data.data;
-			dispatch(setTheta(data.theta));
-			dispatch(setStatus(true));
-		} else {
-			alert(response.data.message);
+
+
+
+	const getParams = async () => {
+		setIsDisabled(true);
+		setLoading(true); // Устанавливаем состояние загрузки
+		setErrorMessage(''); // Сбрасываем предыдущее сообщение об ошибке
+
+		try {
+			const response = await fuzzymetaopt(params, csvX);
+
+			if (response.data.status === 200) {
+				const data = response.data.data;
+				const str = JSON.stringify({ ...data });
+				const blob = new Blob([str]);
+				const url = URL.createObjectURL(blob);
+				const anchor = document.createElement('a');
+				anchor.href = url;
+				anchor.download = 'triangular_params.json';
+				document.body.append(anchor);
+				anchor.click();
+				anchor.remove();
+
+				URL.revokeObjectURL(url);
+				setSuccessMessage('Файл успешно загружен!');
+				setIsDisabled(false);
+			} else {
+				setErrorMessage(response.data.message);
+				setIsDisabled(false); // Устанавливаем сообщение об ошибке
+			}
+		} catch (error) {
+			setErrorMessage('Произошла ошибка при вычислении.'); // Обработка ошибок сети
+			setIsDisabled(false);
+		} finally {
+			setLoading(false);
+			setIsDisabled(false);  // Сбрасываем состояние загрузки независимо от результата
 		}
 	};
+
+	useEffect(() => {
+		if (successMessage) {
+			const timer = setTimeout(() => {
+				setSuccessMessage('');
+			}, 5000);
+			return () => clearTimeout(timer); // Очищаем таймер при размонтировании компонента или изменении successMessage
+		}
+	}, [successMessage]);
+
+
 
 
 
@@ -46,10 +90,10 @@ export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
 					<div className={styles.blockBoxHeader}>
 
 						<div className={styles.LoadContent}>
-	
-							{csvX && params && <Button appearance='primary' onClick={() => calc({params: params, X: csvX})}>Посчитать</Button>}
-							{status && <Downloader file={{ theta: theta }} 
-								forWhat={defaultFuzzyMetaOptName}/>}
+							{isLoadCsv && isLoadParams && <Button appearance='primary' onClick={() => getParams()} disabled={isDisabled}>Найти</Button>}
+							{loading && <div className={styles.loadingMessage}>Идет вычисление...</div>}
+							{errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+							{successMessage && <div className={styles.successMessage}>{successMessage}</div>}
 
 						</div>
 					</div>

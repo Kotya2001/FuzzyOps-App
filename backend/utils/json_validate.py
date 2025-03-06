@@ -478,6 +478,32 @@ assignment_api_scheme = schema = {
     "required": ["tasks", "workers", "fuzzyCosts"]
 }
 
+metaev_schema = {
+    "type": "object",
+    "properties": {
+        "k": {"type": "integer"},
+        "q": {"type": "number"},
+        "epsilon": {"type": "number"},
+        "n_iter": {"type": "integer"},
+        "ranges": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "start": {"type": "number"},
+                    "step": {"type": "number"},
+                    "end": {"type": "number"}
+                },
+                "required": ["name", "start", "step", "end"]
+            }
+        },
+        "n_ant": {"type": "integer"},
+        "target": {"type": "string"}
+    },
+    "required": ["k", "q", "epsilon", "n_iter", "ranges", "n_ant", "target"]
+}
+
 
 
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
@@ -514,6 +540,8 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = assignment_scheme
         elif task_type == "assignment_api":
             schema = assignment_api_scheme
+        elif task_type == "metaev":
+            schema = metaev_schema
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

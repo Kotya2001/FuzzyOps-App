@@ -2,11 +2,14 @@ import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
 import { FuzzyProps } from './FuzzyEntityComponents.props';
+import { Button } from '../../components/Button/Button';
 import cn from 'classnames';
 import { defaultFuzzyMetaOptName, defaultFuzzyMetaOptNameCSV } from './consts';
 import { useState } from 'react';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 import { ExelFileLoader } from '../../components/ExelFileLoader/ExelFileLoader';
+import { useAppSelector } from '../../redux/hooks';
+import { fuzzymetaopt } from '../../http/FuzzyMetaOptApi';
 
 
 
@@ -14,9 +17,20 @@ import { ExelFileLoader } from '../../components/ExelFileLoader/ExelFileLoader';
 export const FuzzyMetaOptLoader = ({ header, tag }: FuzzyProps) => {
 
 	const [loadData, setLoadData] = useState(false);
+	const { params, csvX, isLoadCsv, isLoadParams } = useAppSelector(state => state.MetaOptReducer);
 
 	const onHeaderClick = () => {
 		setLoadData(!loadData);
+	};
+
+	const getParams = async () => {
+		const response = await fuzzymetaopt(params, csvX);
+		if (response.data.status === 200) {
+			const data = response.data.data;
+		} else {
+			alert(response.data.message);
+
+		}
 	};
 
 
@@ -42,9 +56,9 @@ export const FuzzyMetaOptLoader = ({ header, tag }: FuzzyProps) => {
 					{loadData ?
 						<div className={styles.LoadContent}>
 							<FileLoaderMeta name={defaultFuzzyMetaOptName} i={defaultFuzzyMetaOptName} f={defaultFuzzyMetaOptName} n="Загрузить json" />
-							<ExelFileLoader name={defaultFuzzyMetaOptNameCSV} i={defaultFuzzyMetaOptNameCSV} f={defaultFuzzyMetaOptNameCSV} n="Загрузить csv"/>
+							<ExelFileLoader name={defaultFuzzyMetaOptNameCSV} i={defaultFuzzyMetaOptNameCSV} f={defaultFuzzyMetaOptNameCSV} n="Загрузить csv" />
 						</div>
-					
+
 						:
 						<div className={styles.LoadContent}>
 							<div className={styles.Prompt}>
