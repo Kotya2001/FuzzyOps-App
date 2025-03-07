@@ -3,17 +3,18 @@ import { FuzzyProps } from './FuzzyEntityComponents.props';
 import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
+import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { Button } from '../../components/Button/Button';
-import { fuzzymetaopt } from '../../http/FuzzyMetaOptApi';
+import { fuzzrules } from '../../http/FuzzyMetaOptApi';
 import { Downloader } from '../../components/Downloader/Downloader';
 import { defaultFuzzyMetaOptName } from './consts';
 import { useEffect, useState } from 'react';
 
 
-export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
+export const FuzzyLogicRes = ({ header, tag }: FuzzyProps) => {
 
-	const { csvX, params, isLoadCsv, isLoadParams } = useAppSelector(state => state.MetaOptReducer);
+	const { data, isLoadRules } = useAppSelector(state => state.FuzzyLogicReducer);
 
 	const [loading, setLoading] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -30,7 +31,7 @@ export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
 		setErrorMessage(''); // Сбрасываем предыдущее сообщение об ошибке
 
 		try {
-			const response = await fuzzymetaopt(params, csvX);
+			const response = await fuzzrules(data);
 
 			if (response.data.status === 200) {
 				const data = response.data.data;
@@ -39,7 +40,7 @@ export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
 				const url = URL.createObjectURL(blob);
 				const anchor = document.createElement('a');
 				anchor.href = url;
-				anchor.download = 'triangular_params.json';
+				anchor.download = 'output.json';
 				document.body.append(anchor);
 				anchor.click();
 				anchor.remove();
@@ -87,7 +88,7 @@ export const FuzzyMetaOptResult = ({ header, tag }: FuzzyProps) => {
 					<div className={styles.blockBoxHeader}>
 
 						<div className={styles.LoadContent}>
-							{isLoadCsv && isLoadParams && <Button appearance='primary' onClick={() => getParams()} disabled={isDisabled}>Найти</Button>}
+							{isLoadRules && <Button appearance='primary' onClick={() => getParams()} disabled={isDisabled}>Найти</Button>}
 							{loading && <div className={styles.loadingMessage}>Идет вычисление...</div>}
 							{errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
 							{successMessage && <div className={styles.successMessage}>{successMessage}</div>}

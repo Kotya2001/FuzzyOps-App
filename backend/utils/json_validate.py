@@ -504,6 +504,177 @@ metaev_schema = {
     "required": ["k", "q", "epsilon", "n_iter", "ranges", "n_ant", "target"]
 }
 
+singleton_scheme = {
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "domains": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "range": {
+                        "type": "array",
+                        "items": {"type": "number"},
+                        "minItems": 3,
+                        "maxItems": 3
+                    }
+                },
+                "required": ["name", "range"]
+            }
+        },
+        "rules": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "antecedents": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "domain": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"}
+                                    },
+                                    "required": ["name"]
+                                },
+                                "term": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"},
+                                        "mfType": {"type": "string"},
+                                        "params": {
+                                            "type": "array",
+                                            "items": {"type": "number"}
+                                        }
+                                    },
+                                    "required": ["name", "mfType", "params"]
+                                }
+                            },
+                            "required": ["domain", "term"]
+                        }
+                    },
+                    "consequent": {
+                        "type": "object",
+                        "properties": {
+                            "value": {"type": "number"}
+                        },
+                        "required": ["value"]
+                    }
+                },
+                "required": ["antecedents", "consequent"]
+            }
+        },
+        "inputData": {
+            "type": "object",
+            "properties": {
+                "service": {"type": "number"},
+                "food": {"type": "number"}
+            },
+            "required": ["service", "food"]
+        }
+    },
+    "required": ["type", "domains", "rules", "inputData"]
+}
+
+mamdani_scheme =  {
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "domains": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "range": {
+                        "type": "array",
+                        "items": {"type": "number"},
+                        "minItems": 3,
+                        "maxItems": 3
+                    }
+                },
+                "required": ["name", "range"]
+            }
+        },
+        "rules": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "antecedents": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "domain": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"}
+                                    },
+                                    "required": ["name"]
+                                },
+                                "term": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"},
+                                        "mfType": {"type": "string"},
+                                        "params": {
+                                            "type": "array",
+                                            "items": {"type": "number"}
+                                        }
+                                    },
+                                    "required": ["name", "mfType", "params"]
+                                }
+                            },
+                            "required": ["domain", "term"]
+                        }
+                    },
+                    "consequent": {
+                        "type": "object",
+                        "properties": {
+                            "domain": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"}
+                                },
+                                "required": ["name"]
+                            },
+                            "term": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "mfType": {"type": "string"},
+                                    "params": {
+                                        "type": "array",
+                                        "items": {"type": "number"}
+                                    }
+                                },
+                                "required": ["name", "mfType", "params"]
+                            }
+
+
+                        },
+                        "required": ["domain", "term"]
+                    }
+                },
+                "required": ["antecedents", "consequent"]
+            }
+        },
+        "inputData": {
+            "type": "object",
+            "properties": {
+                "service": {"type": "number"},
+                "food": {"type": "number"}
+            },
+            "required": ["service", "food"]
+        }
+    },
+    "required": ["type", "domains", "rules", "inputData"]
+}
 
 
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
@@ -542,6 +713,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = assignment_api_scheme
         elif task_type == "metaev":
             schema = metaev_schema
+        elif task_type == "mamdani":
+            schema = mamdani_scheme
+        elif task_type == "singleton":
+            schema = singleton_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

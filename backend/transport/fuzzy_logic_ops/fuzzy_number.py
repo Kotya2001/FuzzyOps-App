@@ -30,7 +30,6 @@ def fuzzy_number_handler():
     data: dict = full_data.get("fuzzyNumber")
 
     error, msg = validate_data(data, "Создание нечеткого числа")
-    print(error, msg)
     if error:
         response = create_response(
             status=status.HTTP_400_BAD_REQUEST,

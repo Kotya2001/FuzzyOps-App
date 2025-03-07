@@ -10,6 +10,7 @@ export const defaultFuzzyMSA = "createMSA";
 export const defaultFuzzyCluster = "fuzzyCluster";
 export const defaultFuzzyClusterCsv = "fuzzyClusterCsv";
 export const defaultFuzzyClusterCsvTest = "fuzzyClusterCsvTest";
+export const defaultFuzzyLogicData = "defaultFuzzyLogicData";
 
 export const paginationParams = { currentPage: 0, points: 75 };
 

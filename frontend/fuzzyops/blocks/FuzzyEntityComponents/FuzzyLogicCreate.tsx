@@ -3,16 +3,14 @@ import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
 import { FuzzyProps } from './FuzzyEntityComponents.props';
 import cn from 'classnames';
-import { defaultFuzzyMetaOptName, defaultFuzzyMetaOptNameCSV } from './consts';
+import { defaultFuzzyLogicData } from './consts';
 import { useState } from 'react';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
-import { ExelFileLoader } from '../../components/ExelFileLoader/ExelFileLoader';
 
 
 
 
-
-export const FuzzyMetaOptLoader = ({ header, tag }: FuzzyProps) => {
+export const FuzzyLogicCreate = ({ header, tag }: FuzzyProps) => {
 
 	const [loadData, setLoadData] = useState(false);
 
@@ -42,15 +40,13 @@ export const FuzzyMetaOptLoader = ({ header, tag }: FuzzyProps) => {
 					</div>
 					{loadData ?
 						<div className={styles.LoadContent}>
-							<FileLoaderMeta name={defaultFuzzyMetaOptName} i={defaultFuzzyMetaOptName} f={defaultFuzzyMetaOptName} n="Загрузить json" />
-							<ExelFileLoader name={defaultFuzzyMetaOptNameCSV} i={defaultFuzzyMetaOptNameCSV} f={defaultFuzzyMetaOptNameCSV} n="Загрузить csv" />
+							<FileLoaderMeta name={defaultFuzzyLogicData} i={defaultFuzzyLogicData} f={defaultFuzzyLogicData} n="Загрузить json" />
 						</div>
 
 						:
 						<div className={styles.LoadContent}>
 							<div className={styles.Prompt}>
-								<p className={styles.Par}>Загрузите параметры алгоритма .json</p>
-								<p className={styles.Par}>Загрузите выборку .csv</p>
+								<p className={styles.Par}>Загрузите данные для составления базы правил.json</p>
 							</div>
 						</div>
 					}

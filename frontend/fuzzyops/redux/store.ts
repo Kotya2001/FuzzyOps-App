@@ -11,11 +11,12 @@ import FuzzyGraphAlgsReducer from './reducers/ResultReducers/FuzzyGraphAlgsSlice
 import LinearOptReducer from './reducers/OptimizationReducers/LinearOptSlice';
 import LinOptResultReducer from './reducers/ResultReducers/FuzzuLinOptResult';
 import MetaOptReducer from './reducers/OptimizationReducers/MetaOptSlice';
-import MetaOptResultReducer  from './reducers/ResultReducers/FuzzuMetaOptResultSlice';
+import MetaOptResultReducer from './reducers/ResultReducers/FuzzuMetaOptResultSlice';
 import AddAssignmentsReducer from './reducers/FileReducers/AddAssignmentsSlice';
 import AssignmenstReducer from './reducers/ResultReducers/AssignmenstSlice';
 import CreateMSAReducer from './reducers/FileReducers/CreateMSASlice';
 import FuzzyClusterReducer from './reducers/FileReducers/FuzzyClusterSlice';
+import FuzzyLogicReducer from './reducers/FileReducers/FuzzyLogicSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -35,7 +36,8 @@ export const store = configureStore({
 		AddAssignmentsReducer,
 		AssignmenstReducer,
 		CreateMSAReducer,
-		FuzzyClusterReducer
+		FuzzyClusterReducer,
+		FuzzyLogicReducer
 	}
 });
 

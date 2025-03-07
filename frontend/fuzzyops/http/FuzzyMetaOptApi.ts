@@ -14,3 +14,8 @@ export const fuzzymetaopt = async (data: object, csvData: string) => {
 	});
 	return response;
 };
+
+export const fuzzrules = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyLogic/Rules', uploadedFile);
+	return response;
+}
