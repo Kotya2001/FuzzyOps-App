@@ -1,14 +1,11 @@
 from app import app
 from utils import Message, create_response, parse_json_from_request, validate_data
-from service import get_fuzzy_number
+from service import get_fuzzy_inference
 
 from flask import request
 from flask_api import status
-from hashlib import sha256
 
-import numpy as np
-import math
-from typing import List
+
 
 
 @app.route('/main/fuzzyLogic/Rules', methods=['POST'])
@@ -29,30 +26,60 @@ def fuzzy_logic_rules_handler():
                    data=None
         )
         if rule_type == "mamdani":
-               error, msg = validate_data(full_data, "mamdani")
-               response = create_response(
-                      status=status.HTTP_400_BAD_REQUEST,
-                    message=msg + " Проверьте типы данных в файле",
-                                   data=None
-                                                           )
-               return response
+            error, msg = validate_data(full_data, "mamdani")
+            if error:
+                response = create_response(
+                        status=status.HTTP_400_BAD_REQUEST,
+                        message=msg + " Проверьте типы данных в файле",
+                        data=None
+                    )
+                return response
+            ans, err = get_fuzzy_inference(full_data)
+            if err:
+                 response = create_response(
+                        status=status.HTTP_409_CONFLICT,
+                        message=err,
+                        data=None
+                    )
+                 return response
+            response = create_response(
+                 status=status.HTTP_200_OK,
+                 message='ok',
+                data=ans)
+            return response
+            
+            
         elif rule_type == "singleton":
-               error, msg = validate_data(full_data, "singleton")
-               response = create_response(
-                      status=status.HTTP_400_BAD_REQUEST,
+            error, msg = validate_data(full_data, "singleton")
+            if error:
+                response = create_response(
+                    status=status.HTTP_400_BAD_REQUEST,
                     message=msg + " Проверьте типы данных в файле",
-                                   data=None
-                                                           )
-               return response
+                    data=None
+                    )
+                return response
+            ans, err = get_fuzzy_inference(full_data)
+            if err:
+                 response = create_response(
+                        status=status.HTTP_409_CONFLICT,
+                        message=err,
+                        data=None
+                    )
+                 return response
+            response = create_response(
+                 status=status.HTTP_200_OK,
+                 message='ok',
+                data=ans)
+            return response
         else:
              response = create_response(
                       status=status.HTTP_400_BAD_REQUEST,
                     message="Неизвестный тип задачи",
                                    data=None
                                                            )
-             return response  
+             return response
         
-		
+
 
 
         

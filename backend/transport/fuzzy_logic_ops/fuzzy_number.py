@@ -24,8 +24,6 @@ def fuzzy_number_handler():
         )
         return response
     
-    print(full_data)
-
     pagination_params: dict = full_data.get("paginationParams")
     data: dict = full_data.get("fuzzyNumber")
 

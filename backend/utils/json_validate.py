@@ -569,18 +569,23 @@ singleton_scheme = {
             }
         },
         "inputData": {
-            "type": "object",
-            "properties": {
-                "service": {"type": "number"},
-                "food": {"type": "number"}
-            },
-            "required": ["service", "food"]
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value": {"type": "number"}
+                },
+                "required": ["name", "value"]
+            }
         }
+
     },
     "required": ["type", "domains", "rules", "inputData"]
 }
 
-mamdani_scheme =  {
+
+mamdani_scheme = {
     "type": "object",
     "properties": {
         "type": {"type": "string"},
@@ -654,9 +659,9 @@ mamdani_scheme =  {
                                     }
                                 },
                                 "required": ["name", "mfType", "params"]
+
+
                             }
-
-
                         },
                         "required": ["domain", "term"]
                     }
@@ -665,17 +670,20 @@ mamdani_scheme =  {
             }
         },
         "inputData": {
-            "type": "object",
-            "properties": {
-                "service": {"type": "number"},
-                "food": {"type": "number"}
-            },
-            "required": ["service", "food"]
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value": {"type": "number"}
+                },
+                "required": ["name", "value"]
+            }
         }
+
     },
     "required": ["type", "domains", "rules", "inputData"]
 }
-
 
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
     try:
