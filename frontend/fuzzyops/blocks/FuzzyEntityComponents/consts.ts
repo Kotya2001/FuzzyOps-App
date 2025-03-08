@@ -11,6 +11,9 @@ export const defaultFuzzyCluster = "fuzzyCluster";
 export const defaultFuzzyClusterCsv = "fuzzyClusterCsv";
 export const defaultFuzzyClusterCsvTest = "fuzzyClusterCsvTest";
 export const defaultFuzzyLogicData = "defaultFuzzyLogicData";
+export const defaultFuzzyNN1 = "defaultFuzzyNN1";
+export const defaultFuzzyNN1Csv = "defaultFuzzyNN1Csv";
+export const defaultFuzzyNNInp = "defaultFuzzyNNInp";
 
 export const paginationParams = { currentPage: 0, points: 75 };
 

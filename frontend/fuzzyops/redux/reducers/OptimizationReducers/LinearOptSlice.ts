@@ -3,26 +3,31 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 export interface LinearOptState {
-	csvData: string
+	data: object,
+	isLoadLinOpt: boolean
 }
 
 const InitialData: LinearOptState = {
-	csvData: "",
+	data: {},
+	isLoadLinOpt: false
 };
 
 export const LinearOptSlice = createSlice({
 	name: 'csvDataForLinearOpt',
 	initialState: InitialData,
 	reducers: {
-		setCsvData: (state, action: PayloadAction<string>) => {
-			state.csvData = action.payload;
+		setLinOptData: (state, action: PayloadAction<object>) => {
+			state.data = action.payload;
 		},
+		setLoadLinOpt: (state, action: PayloadAction<boolean>) => {
+			state.isLoadLinOpt = action.payload;
+		}
 
 
 	}
 });
 
-export const { setCsvData } = LinearOptSlice.actions;
+export const { setLinOptData, setLoadLinOpt } = LinearOptSlice.actions;
 
 
 export default LinearOptSlice.reducer;

@@ -1,291 +1,191 @@
 {
-  "type": "mamdani",
-  "domains": [
-    {
-      "name": "service",
-      "range": [
-        0,
-        10,
-        1
+  "task_type": "fuzzy",
+  "use_gpu": false,
+  "optimization_type": "max",
+  "domain": {
+    "start": -20,
+    "end": 50,
+    "step": 1
+  },
+  "data": {
+    "C": [
+      [
+        [
+          4,
+          1,
+          7
+        ],
+        [
+          2,
+          0,
+          5
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          3
+        ],
+        [
+          4,
+          2,
+          6
+        ]
+      ],
+      [
+        [
+          3,
+          -1,
+          4
+        ],
+        [
+          9,
+          5,
+          12
+        ]
+      ],
+      [
+        [
+          4,
+          3,
+          8
+        ],
+        [
+          -1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          3,
+          1,
+          6
+        ],
+        [
+          -2,
+          -4,
+          2
+        ]
       ]
-    },
-    {
-      "name": "food",
-      "range": [
-        0,
-        10,
-        1
+    ],
+    "A": [
+      [
+        2,
+        3
+      ],
+      [
+        -1,
+        3
+      ],
+      [
+        2,
+        -1
       ]
-    },
-    {
-      "name": "tip",
-      "range": [
-        0,
-        30,
-        1
+    ],
+    "B": [
+      18,
+      9,
+      10
+    ]
+  }
+}
+
+{
+  "task_type": "common",
+  "use_gpu": false,
+  "optimization_type": "max",
+  "data": {
+    "C": [
+      [
+        4,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        9
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        3,
+        -2
       ]
-    }
+    ],
+    "A": [
+      [
+        2,
+        3
+      ],
+      [
+        -1,
+        3
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    "B": [
+      18,
+      9,
+      10
+    ]
+  }
+}
+
+{
+  "features": [
+    "SepalLengthCm",
+    "SepalWidthCm"
   ],
-  "rules": [
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "poor",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              0
-            ]
-          }
-        },
-        {
-          "domain": {
-            "name": "food"
-          },
-          "term": {
-            "name": "bad",
-            "mfType": "trapezoidal",
-            "params": [
-              -9,
-              -1,
-              1,
-              9
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "domain": {
-          "name": "tip"
-        },
-        "term": {
-          "name": "cheap",
-          "mfType": "triangular",
-          "params": [
-            0,
-            5,
-            10
-          ]
-        }
-      }
-    },
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "good",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              5
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "domain": {
-          "name": "tip"
-        },
-        "term": {
-          "name": "average",
-          "mfType": "triangular",
-          "params": [
-            10,
-            15,
-            20
-          ]
-        }
-      }
-    },
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "excellent",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              10
-            ]
-          }
-        },
-        {
-          "domain": {
-            "name": "food"
-          },
-          "term": {
-            "name": "good",
-            "mfType": "trapezoidal",
-            "params": [
-              7,
-              9,
-              10,
-              10
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "domain": {
-          "name": "tip"
-        },
-        "term": {
-          "name": "generous",
-          "mfType": "triangular",
-          "params": [
-            20,
-            25,
-            30
-          ]
-        }
-      }
-    }
+  "target": [
+    "Species"
   ],
-  "inputData": [
-    {
-      "name": "service",
-      "value": 3
-    },
-    {
-      "name": "food",
-      "value": 10
-    }
+  "task_type": "classification",
+  "n_terms": [
+    5,
+    5
+  ],
+  "lr": 3e-4,
+  "batch_size": 8,
+  "member_func_type": "gauss",
+  "epochs": 100,
+  "use_gpu": false
+}
+
+{
+  "input": [
+    [
+      5.1,
+      3.5
+    ]
   ]
 }
+
 {
-  "type": "singleton",
-  "domains": [
-    {
-      "name": "service",
-      "range": [
-        0,
-        10,
-        1
-      ]
-    },
-    {
-      "name": "food",
-      "range": [
-        0,
-        10,
-        1
-      ]
-    },
-    {
-      "name": "tip",
-      "range": [
-        0,
-        30,
-        1
-      ]
-    }
+  "features": [
+    "PRICE",
+    "ADV"
   ],
-  "rules": [
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "poor",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              0
-            ]
-          }
-        },
-        {
-          "domain": {
-            "name": "food"
-          },
-          "term": {
-            "name": "bad",
-            "mfType": "trapezoidal",
-            "params": [
-              -9,
-              -1,
-              1,
-              9
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "value": 20
-      }
-    },
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "good",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              5
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "value": 10
-      }
-    },
-    {
-      "antecedents": [
-        {
-          "domain": {
-            "name": "service"
-          },
-          "term": {
-            "name": "excellent",
-            "mfType": "gauss",
-            "params": [
-              2.123,
-              10
-            ]
-          }
-        },
-        {
-          "domain": {
-            "name": "food"
-          },
-          "term": {
-            "name": "good",
-            "mfType": "trapezoidal",
-            "params": [
-              7,
-              9,
-              10,
-              10
-            ]
-          }
-        }
-      ],
-      "consequent": {
-        "value": 3
-      }
-    }
+  "target": [
+    "SALES"
   ],
-  "inputData": [
-    {
-      "name": "service",
-      "value": 3
-    }
-  ]
+  "task_type": "regression",
+  "n_terms": [
+    5,
+    5
+  ],
+  "lr": 3e-4,
+  "batch_size": 8,
+  "member_func_type": "gauss",
+  "epochs": 100,
+  "use_gpu": false
 }

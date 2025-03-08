@@ -17,6 +17,7 @@ import AssignmenstReducer from './reducers/ResultReducers/AssignmenstSlice';
 import CreateMSAReducer from './reducers/FileReducers/CreateMSASlice';
 import FuzzyClusterReducer from './reducers/FileReducers/FuzzyClusterSlice';
 import FuzzyLogicReducer from './reducers/FileReducers/FuzzyLogicSlice';
+import FuzzyNN1Reducer from './reducers/FileReducers/FuzzyNN1Slice';
 
 export const store = configureStore({
 	reducer: {
@@ -37,7 +38,8 @@ export const store = configureStore({
 		AssignmenstReducer,
 		CreateMSAReducer,
 		FuzzyClusterReducer,
-		FuzzyLogicReducer
+		FuzzyLogicReducer,
+		FuzzyNN1Reducer
 	}
 });
 

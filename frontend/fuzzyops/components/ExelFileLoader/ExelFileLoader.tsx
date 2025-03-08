@@ -1,11 +1,11 @@
 import { ExelFileLoaderProps } from './ExelFileLoader.props';
 import styles from './ExelFileLoader.module.css';
 import { store } from '../../redux/store';
-import { setCsvData } from '../../redux/reducers/OptimizationReducers/LinearOptSlice';
 import { setIsLoadCsv, setX } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { useState } from 'react';
-import { defaultFuzzyLinearOptName, defaultFuzzyMetaOptNameCSV, defaultFuzzyClusterCsv, defaultFuzzyClusterCsvTest } from '../../blocks/FuzzyEntityComponents/consts';
+import { defaultFuzzyLinearOptName, defaultFuzzyMetaOptNameCSV, defaultFuzzyClusterCsv, defaultFuzzyClusterCsvTest, defaultFuzzyNN1Csv } from '../../blocks/FuzzyEntityComponents/consts';
 import { setTrainData, setTestData } from '../../redux/reducers/FileReducers/FuzzyClusterSlice';
+import { setIsLoadTrain, setTrain } from '../../redux/reducers/FileReducers/FuzzyNN1Slice';
 
 
 export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
@@ -38,6 +38,11 @@ export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 					return 'Загружено';
 				}
 				return n;
+			case defaultFuzzyNN1Csv:
+				if (status) {
+					return 'Загружено';
+				}
+				return n;
 		}
 	};
 
@@ -54,15 +59,17 @@ export const ExelFileLoader = ({ name, i, f, n }: ExelFileLoaderProps) => {
 		reader.onload = function () {
 			const res = reader.result;
 			if (typeof res === 'string') {
-				if (name == defaultFuzzyLinearOptName) {
-					dispatch(setCsvData(res));
-				} else if (name == defaultFuzzyMetaOptNameCSV) {
+				if (name == defaultFuzzyMetaOptNameCSV) {
 					dispatch(setX(res));
 					dispatch(setIsLoadCsv(true));
 				} else if (name == defaultFuzzyClusterCsv) {
 					dispatch(setTrainData(res));
 				} else if (name == defaultFuzzyClusterCsvTest) {
 					dispatch(setTestData(res));
+				} else if (name == defaultFuzzyNN1Csv) {
+					console.log(res);
+					dispatch(setTrain(res));
+					dispatch(setIsLoadTrain(true));
 				}
 			} else {
 				alert('Файл пуст');

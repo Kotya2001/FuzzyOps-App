@@ -1,11 +1,13 @@
 import { FileLoaderMetaProps } from './FileLoaderMeta.props';
 import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
-import { defaultFuzzyLogicData, defaultFuzzyMetaOptName, defaultGraphAssignment } from '../../blocks/FuzzyEntityComponents/consts';
+import { defaultFuzzyLogicData, defaultFuzzyMetaOptName, defaultGraphAssignment, defaultFuzzyLinearOptName, defaultFuzzyNN1, defaultFuzzyNNInp } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { setIsLoadParams, setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { setTasks, setWorkers, setFuzzyCosts } from '../../redux/reducers/FileReducers/AddAssignmentsSlice';
 import { setData, setIsLoadRules } from '../../redux/reducers/FileReducers/FuzzyLogicSlice';
+import { setLinOptData, setLoadLinOpt } from '../../redux/reducers/OptimizationReducers/LinearOptSlice';
+import { setConfig, setIsLoadCfg, setInputData, setIsInput } from '../../redux/reducers/FileReducers/FuzzyNN1Slice';
 
 export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 
@@ -31,6 +33,21 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 			case defaultFuzzyLogicData:
 				if (status) {
 					return 'Загружено';
+				}
+				return n;
+			case defaultFuzzyLinearOptName:
+				if (status) {
+					return 'Загружено';
+				}
+				return n;
+			case defaultFuzzyNN1:
+				if (status) {
+					return 'json Загружен';
+				}
+				return n;
+			case defaultFuzzyNNInp:
+				if (status) {
+					return 'json Загружен';
 				}
 				return n;
 		}
@@ -62,6 +79,15 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					} else if (name == defaultFuzzyLogicData) {
 						dispatch(setData(arr));
 						dispatch(setIsLoadRules(true));
+					} else if (name == defaultFuzzyLinearOptName) {
+						dispatch(setLinOptData(arr));
+						dispatch(setLoadLinOpt(true));
+					} else if (name == defaultFuzzyNN1) {
+						dispatch(setConfig(arr));
+						dispatch(setIsLoadCfg(true));
+					} else if (name == defaultFuzzyNNInp) {
+						dispatch(setInputData(arr));
+						dispatch(setIsInput(true));
 					}
 				} catch (e) {
 					alert("Ошибка парсинга json");

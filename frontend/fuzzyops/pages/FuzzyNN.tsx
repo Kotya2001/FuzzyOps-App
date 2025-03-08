@@ -1,5 +1,5 @@
-import { FuzzyMetaOptLoader } from '../blocks/FuzzyEntityComponents/FuzzyMetaOptLoader';
-import { FuzzyMetaOptResult } from '../blocks/FuzzyEntityComponents/FuzzyMetaOptResult';
+import { FuzzyNN1Create } from '../blocks/FuzzyEntityComponents/FuzzyNN1Create';
+import { FuzzyNN1Get } from '../blocks/FuzzyEntityComponents/FuzzyNN1Get';
 import { withLayout } from '../layout/Layout';
 
 
@@ -7,8 +7,8 @@ import { withLayout } from '../layout/Layout';
 const FuzzyNN = () => {
 
 	return <div>
-		<FuzzyMetaOptLoader header='Параметры для обучения' tag='h1' />;
-		<FuzzyMetaOptResult header='Результат' tag='h1' />
+		<FuzzyNN1Create header='Параметры для обучения' tag='h1' />
+		<FuzzyNN1Get header='Результат' tag='h1' />
 	</div>;
 };
 

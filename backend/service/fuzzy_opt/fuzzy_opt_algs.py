@@ -1,8 +1,98 @@
 from database import set_cache, get_cache
 from app import logger
-from fuzzyops.fuzzy_optimization import AntOptimization, FuzzyBounds
+from fuzzyops.fuzzy_optimization import AntOptimization, FuzzyBounds, LinearOptimization, calc_total_functions,\
+    get_interaction_matrix, check_LR_type, calc_total_functions
+from fuzzyops.fuzzy_numbers import Domain
 import pandas as pd
 import numpy as np
+
+
+def get_linear_opt_res(data):
+	task_type = data["task_type"]
+
+	use_gpu = data["use_gpu"]
+	if data["optimization_type"] == "max":
+		optimization_type = "max"
+	elif data["optimization_type"] == "min":
+		optimization_type = "min"
+	else:
+		return None, "Неверный тип задачи оптимизации, доступны 'min', 'max'"
+
+	if task_type == "fuzzy":
+		coefs_dom = Domain((data["domain"]["start"], data["domain"]["end"], data["domain"]["step"]), name="coefs")
+		f_num_params = np.array(data["data"]["C"])
+		C = f_num_params[:, :, 0]
+		n = C.shape[0]
+		m = C.shape[1]
+		C_f = []
+
+		print(f_num_params)
+
+		try:
+			for i in range(len(f_num_params)):
+				lst = []
+				for j in range(len(f_num_params[i])):
+					coefs = [f_num_params[i][j].tolist()[1], f_num_params[i][j].tolist()[0], f_num_params[i][j].tolist()[2]]
+					lst.append(coefs_dom.create_number('triangular', *coefs, name=f"c{i}{j}"))
+				C_f.append(np.array(lst))
+			C_f = np.array(C_f)
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у нечетких коэффициентов критериев"
+		
+		print(C_f)
+		assert check_LR_type(C_f)
+
+		# try:
+		# 	assert check_LR_type(C_f)
+		# except Exception as e:
+		# 	return None, "Ошибка, нечеткие коэффициенты критериев не соответствуют LR-типу"
+		
+		try:
+			A = np.array(data["data"]["A"])
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у матрицы коэффициентов ограничений"
+		
+		try:
+			b = np.array(data["data"]["B"])
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у вектора ограничений ограничений"
+		
+		alphas, interactions_list = get_interaction_matrix(f_num_params)
+		final_coefs = calc_total_functions(alphas, C, interactions_list, n)
+		C_new = np.array([[final_coefs[i] for i in range(m)]])
+
+		# Рещаем задачу оптмизации
+		opt = LinearOptimization(A, b, C_new, optimization_type)
+		if use_gpu:
+			result, v = opt.solve_gpu()
+		else:
+			result, v = opt.solve_cpu()
+		ans = {"value": result, "vars": v.tolist()}
+		return ans, ""
+	else:
+		try:
+			C = np.array(data["data"]["C"])
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у матрицы коэффициентов"
+		try:
+			A = np.array(data["data"]["A"])
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у матрицы коэффициентов ограничений"
+		
+		try:
+			b = np.array(data["data"]["B"])
+		except Exception as e:
+			return None, "Ошибка, проверьте полноту данных у вектора ограничений ограничений"
+		# Рещаем задачу оптмизации
+		opt = LinearOptimization(A, b, C, optimization_type)
+		if use_gpu:
+			result, v = opt.solve_gpu()
+		else:
+			result, v = opt.solve_cpu()
+		ans = {"value": result, "vars": v.tolist()}
+		return ans, ""
+		
+
 
 
 

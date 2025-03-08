@@ -3,14 +3,15 @@ import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
 import { FuzzyProps } from './FuzzyEntityComponents.props';
 import cn from 'classnames';
-import { defaultFuzzyLinearOptName } from './consts';
+import { defaultFuzzyNN1, defaultFuzzyNN1Csv } from './consts';
 import { useState } from 'react';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
+import { ExelFileLoader } from '../../components/ExelFileLoader/ExelFileLoader';
 
 
 
 
-export const FuzzyLinOptLoader = ({ header, tag }: FuzzyProps) => {
+export const FuzzyNN1Create = ({ header, tag }: FuzzyProps) => {
 
 	const [loadData, setLoadData] = useState(false);
 
@@ -40,13 +41,15 @@ export const FuzzyLinOptLoader = ({ header, tag }: FuzzyProps) => {
 					</div>
 					{loadData ?
 						<div className={styles.LoadContent}>
-							<FileLoaderMeta name={defaultFuzzyLinearOptName} i={defaultFuzzyLinearOptName} f={defaultFuzzyLinearOptName} n="Загрузить json" />
+							<FileLoaderMeta name={defaultFuzzyNN1} i={defaultFuzzyNN1} f={defaultFuzzyNN1} n="Загрузить json" />
+							<ExelFileLoader name={defaultFuzzyNN1Csv} i={defaultFuzzyNN1Csv} f={defaultFuzzyNN1Csv} n="Загрузить csv" />
 						</div>
 
 						:
 						<div className={styles.LoadContent}>
 							<div className={styles.Prompt}>
-								<p className={styles.Par}>Загрузите для задачи линейной многоцелевой оптимизации .json</p>
+								<p className={styles.Par}>Загрузите параметры алгоритма .json</p>
+								<p className={styles.Par}>Загрузите выборку .csv</p>
 							</div>
 						</div>
 					}

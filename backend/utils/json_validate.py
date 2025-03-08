@@ -685,6 +685,91 @@ mamdani_scheme = {
     "required": ["type", "domains", "rules", "inputData"]
 }
 
+fuzzy_linear_opt_scheme = {
+    "type": "object",
+    "properties": {
+        "task_type": {"type": "string"},
+        "use_gpu": {"type": "boolean"},
+        "optimization_type": {"type": "string"},
+        "domain": {
+            "type": "object",
+            "properties": {
+                "start": {"type": "integer"},
+                "end": {"type": "integer"},
+                "step": {"type": "integer"}
+            },
+            "required": ["start", "end", "step"]
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "C": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {"type": "integer"},
+                            "minItems": 3,
+                            "maxItems": 3
+
+                        }
+                    }
+                },
+                "A": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "integer"}
+                    }
+                },
+                "B": {
+                    "type": "array",
+                    "items": {"type": "integer"}
+                }
+            },
+            "required": ["C", "A", "B"]
+        }
+    },
+    "required": ["task_type", "use_gpu", "optimization_type", "domain", "data"]
+}
+
+linear_opt_scheme = {
+    "type": "object",
+    "properties": {
+        "task_type": {"type": "string"},
+        "use_gpu": {"type": "boolean"},
+        "optimization_type": {"type": "string"},
+        "data": {
+            "type": "object",
+            "properties": {
+                "C": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                    }
+                },
+                "A": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                    }
+                },
+                "B": {
+                    "type": "array",
+                    "items": {"type": "integer"}
+                }
+            },
+            "required": ["C", "A", "B"]
+        }
+    },
+    "required": ["task_type", "use_gpu", "optimization_type", "data"]
+}
+
+
+
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
     try:
         if task_type == "Граница Паретто":
@@ -725,6 +810,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = mamdani_scheme
         elif task_type == "singleton":
             schema = singleton_scheme
+        elif task_type == "fuzzy":
+            schema = fuzzy_linear_opt_scheme
+        elif task_type == "common":
+            schema = linear_opt_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

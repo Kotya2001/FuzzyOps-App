@@ -90,7 +90,7 @@ def get_fuzzy_inference(data):
 		inp = {elem["name"]: elem["value"] for elem in input_data}
 
 		try:
-			result = inference_system.compute(input_data)
+			result = inference_system.compute(inp)
 		except Exception as e:
 			return None, "Ошибка нечеткого логического вывода, проверьте корректность названий переменных во входных данных или число переменных не совпадает во всех правилах"
 		
