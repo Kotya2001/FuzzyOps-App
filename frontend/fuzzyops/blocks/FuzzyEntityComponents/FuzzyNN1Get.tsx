@@ -15,8 +15,7 @@ import { fuzzynn, fuzzynnGet } from '../../http/FuzzyNNApi';
 
 export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 
-	const { isLoadConfig, isLoadTrain, file_hash, isInput, config, csvTrain, input_data } = useAppSelector(state => state.FuzzyNN1Reducer);
-	const dispatch = store.dispatch;
+	const { isLoadConfig, isLoadTrain, isInput, config, csvTrain, input_data } = useAppSelector(state => state.FuzzyNN1Reducer);
 
 	const [loading, setLoading] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -42,8 +41,8 @@ export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 
 			if (response.data.status === 200) {
 				const data = response.data.data;
-				const file_hash = data.file_hash;
-				const str = JSON.stringify({ ...data });
+				console.log(data);
+				const str = JSON.stringify({ data });
 				const blob = new Blob([str]);
 				const url = URL.createObjectURL(blob);
 				const anchor = document.createElement('a');
@@ -55,7 +54,6 @@ export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 
 				URL.revokeObjectURL(url);
 				setSuccessMessage('Файл успешно загружен!');
-				dispatch(setFileHash(file_hash));
 				setIsDisabled(false);
 			} else {
 				setErrorMessage(response.data.message);
@@ -76,7 +74,7 @@ export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 		setErrorMessageAns(''); // Сбрасываем предыдущее сообщение об ошибке
 
 		try {
-			const dataToSend = { file_hash, input_data }
+			const dataToSend = { ...input_data };
 			const response = await fuzzynnGet(dataToSend);
 
 			if (response.data.status === 200) {
@@ -86,7 +84,7 @@ export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 				const url = URL.createObjectURL(blob);
 				const anchor = document.createElement('a');
 				anchor.href = url;
-				anchor.download = 'model_hash.json';
+				anchor.download = 'prediction.json';
 				document.body.append(anchor);
 				anchor.click();
 				anchor.remove();
@@ -148,11 +146,11 @@ export const FuzzyNN1Get = ({ header, tag }: FuzzyProps) => {
 							{errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
 							{successMessage && <div className={styles.successMessage}>{successMessage}</div>}
 
-							{file_hash && <FileLoaderMeta name={defaultFuzzyNNInp} i={defaultFuzzyNNInp} f={defaultFuzzyNNInp} n="Загрузить входные данные .json" />}
+							{<FileLoaderMeta name={defaultFuzzyNNInp} i={defaultFuzzyNNInp} f={defaultFuzzyNNInp} n="Загрузить входные данные .json" />}
 							{isInput && <Button appearance='primary' onClick={() => getAns()} disabled={isDisabledAns}>Получить ответ</Button>}
 							{loadingAns && <div className={styles.loadingMessage}>Получение ответа...</div>}
-							{errorMessageAns && <div className={styles.errorMessage}>{errorMessage}</div>}
-							{successMessageAns && <div className={styles.successMessage}>{successMessage}</div>}
+							{errorMessageAns && <div className={styles.errorMessage}>{errorMessageAns}</div>}
+							{successMessageAns && <div className={styles.successMessage}>{successMessageAns}</div>}
 
 						</div>
 					</div>

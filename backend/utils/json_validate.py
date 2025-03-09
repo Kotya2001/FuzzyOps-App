@@ -768,6 +768,85 @@ linear_opt_scheme = {
     "required": ["task_type", "use_gpu", "optimization_type", "data"]
 }
 
+fuzzy_nn_params_scheme = {
+    "type": "object",
+    "properties": {
+        "features": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+        },
+        "target": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1
+        },
+        "task_type": {
+            "type": "string",
+            "enum": ["classification", "regression"]
+        },
+        "n_terms": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "minimum": 1
+            }
+        },
+        "lr": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "batch_size": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "member_func_type": {
+            "type": "string",
+            "enum": ["gauss", "bell"]
+        },
+        "epochs": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "use_gpu": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "features",
+        "target",
+        "task_type",
+        "n_terms",
+        "lr",
+        "batch_size",
+        "member_func_type",
+        "epochs",
+        "use_gpu"
+    ]
+}
+
+fuzzy_nn_get_scheme = {
+    "type": "object",
+    "properties": {
+        "file_hash": {"type": "string"},
+        "input": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                }
+            }
+        }
+    },
+    "required": ["file_hash", "input"]
+}
+
+
+
 
 
 def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
@@ -814,6 +893,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = fuzzy_linear_opt_scheme
         elif task_type == "common":
             schema = linear_opt_scheme
+        elif task_type == "fuzzy_nn":
+            schema = fuzzy_nn_params_scheme
+        elif task_type == "fuzzy_nn_get":
+            schema = fuzzy_nn_get_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)
