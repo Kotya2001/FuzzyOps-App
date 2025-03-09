@@ -1,192 +1,77 @@
 {
-  "task_type": "fuzzy",
-  "use_gpu": false,
-  "optimization_type": "max",
-  "domain": {
-    "start": -20,
-    "end": 50,
-    "step": 1
+  "X": {
+    "domain": {
+      "start": 0,
+      "end": 110,
+      "step": 1,
+      "name": "Temperature"
+    },
+    "data": [
+      {
+        "a": 18,
+        "b": 20,
+        "c": 22
+      },
+      {
+        "a": 38,
+        "b": 40,
+        "c": 42
+      },
+      {
+        "a": 58,
+        "b": 60,
+        "c": 62
+      },
+      {
+        "a": 78,
+        "b": 80,
+        "c": 82
+      },
+      {
+        "a": 98,
+        "b": 100,
+        "c": 102
+      }
+    ]
   },
-  "data": {
-    "C": [
-      [
-        [
-          4,
-          1,
-          7
-        ],
-        [
-          2,
-          0,
-          5
-        ]
-      ],
-      [
-        [
-          2,
-          1,
-          3
-        ],
-        [
-          4,
-          2,
-          6
-        ]
-      ],
-      [
-        [
-          3,
-          -1,
-          4
-        ],
-        [
-          9,
-          5,
-          12
-        ]
-      ],
-      [
-        [
-          4,
-          3,
-          8
-        ],
-        [
-          -1,
-          -2,
-          1
-        ]
-      ],
-      [
-        [
-          3,
-          1,
-          6
-        ],
-        [
-          -2,
-          -4,
-          2
-        ]
-      ]
-    ],
-    "A": [
-      [
-        2,
-        3
-      ],
-      [
-        -1,
-        3
-      ],
-      [
-        2,
-        -1
-      ]
-    ],
-    "B": [
-      18,
-      9,
-      10
+  "Y": {
+    "domain": {
+      "start": 1,
+      "end": 2,
+      "step": 0.01,
+      "name": "Transcalency"
+    },
+    "data": [
+      {
+        "a": 1.2,
+        "b": 1.25,
+        "c": 1.3
+      },
+      {
+        "a": 1.28,
+        "b": 1.35,
+        "c": 1.42
+      },
+      {
+        "a": 1.35,
+        "b": 1.45,
+        "c": 1.55
+      },
+      {
+        "a": 1.5,
+        "b": 1.62,
+        "c": 1.74
+      },
+      {
+        "a": 1.65,
+        "b": 1.8,
+        "c": 1.95
+      }
     ]
+  },
+  "input": {
+    "a": 41,
+    "b": 50,
+    "c": 52
   }
-}
-
-{
-  "task_type": "common",
-  "use_gpu": false,
-  "optimization_type": "max",
-  "data": {
-    "C": [
-      [
-        4,
-        2
-      ],
-      [
-        2,
-        4
-      ],
-      [
-        3,
-        9
-      ],
-      [
-        4,
-        -1
-      ],
-      [
-        3,
-        -2
-      ]
-    ],
-    "A": [
-      [
-        2,
-        3
-      ],
-      [
-        -1,
-        3
-      ],
-      [
-        2,
-        -1
-      ]
-    ],
-    "B": [
-      18,
-      9,
-      10
-    ]
-  }
-}
-
-{
-  "features": [
-    "SepalLengthCm",
-    "SepalWidthCm"
-  ],
-  "target": [
-    "Species"
-  ],
-  "task_type": "classification",
-  "n_terms": [
-    5,
-    5
-  ],
-  "lr": 3e-4,
-  "batch_size": 8,
-  "member_func_type": "gauss",
-  "epochs": 100,
-  "use_gpu": false
-}
-
-{
-  "file_hash": "6fb6db2605f0e862a53e93785cb4ea4931d52922d96c88bde38b3f1bb2842181",
-  "input": [
-    [
-      59,
-      200
-    ]
-  ]
-}
-
-{
-  "features": [
-    "PRICE",
-    "ADV"
-  ],
-  "target": [
-    "SALES"
-  ],
-  "task_type": "regression",
-  "n_terms": [
-    5,
-    5
-  ],
-  "lr": 3e-4,
-  "batch_size": 8,
-  "member_func_type": "gauss",
-  "epochs": 100,
-  "use_gpu": false
 }

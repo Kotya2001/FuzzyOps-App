@@ -1,13 +1,18 @@
 import { FileLoaderMetaProps } from './FileLoaderMeta.props';
 import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
-import { defaultFuzzyLogicData, defaultFuzzyMetaOptName, defaultGraphAssignment, defaultFuzzyLinearOptName, defaultFuzzyNN1, defaultFuzzyNNInp } from '../../blocks/FuzzyEntityComponents/consts';
+import {
+	defaultFuzzyLogicData, defaultFuzzyMetaOptName, defaultGraphAssignment, defaultFuzzyLinearOptName, defaultFuzzyNN1,
+	defaultFuzzyNNInp, defaultFuzzyNN2, defaultFpred
+} from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { setIsLoadParams, setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
 import { setTasks, setWorkers, setFuzzyCosts } from '../../redux/reducers/FileReducers/AddAssignmentsSlice';
 import { setData, setIsLoadRules } from '../../redux/reducers/FileReducers/FuzzyLogicSlice';
 import { setLinOptData, setLoadLinOpt } from '../../redux/reducers/OptimizationReducers/LinearOptSlice';
 import { setConfig, setIsLoadCfg, setInputData, setIsInput } from '../../redux/reducers/FileReducers/FuzzyNN1Slice';
+import { setIsLoadXtrain, setXTrain } from '../../redux/reducers/FileReducers/FuzzyNN2Slice';
+import { setPredData, setIsLoadX } from '../../redux/reducers/FileReducers/FuzzyPredSlice';
 
 export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 
@@ -50,6 +55,16 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					return 'json Загружен';
 				}
 				return n;
+			case defaultFuzzyNN2:
+				if (status) {
+					return 'json Загружен';
+				}
+				return n;
+			case defaultFpred:
+				if (status) {
+					return 'json Загружен';
+				}
+				return n;
 		}
 	};
 
@@ -88,6 +103,12 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					} else if (name == defaultFuzzyNNInp) {
 						dispatch(setInputData(arr));
 						dispatch(setIsInput(true));
+					} else if (name == defaultFuzzyNN2) {
+						dispatch(setXTrain(arr));
+						dispatch(setIsLoadXtrain(true));
+					} else if (name == defaultFpred) {
+						dispatch(setPredData(arr));
+						dispatch(setIsLoadX(true));
 					}
 				} catch (e) {
 					alert("Ошибка парсинга json");

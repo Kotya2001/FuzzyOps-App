@@ -845,6 +845,151 @@ fuzzy_nn_get_scheme = {
     "required": ["file_hash", "input"]
 }
 
+fuzzy_nn2_scheme = {
+    "type": "object",
+    "properties": {
+        "config": {
+            "type": "object",
+            "properties": {
+                "layerSize": {
+                    "type": "array",
+                    "items": {"type": "integer"}
+                },
+                "domainValues": {
+                    "type": "array",
+                    "items": {"type": "number"}
+                },
+                "method": {"type": "string"},
+                "fuzzyType": {"type": "string"},
+                "actiovationType": {"type": "string"},
+            },
+            "required": ["layerSize", "domainValues", "method", "fuzzyType", "actiovationType"]
+        },
+        "X_Train": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "params": {
+                            "type": "array",
+                            "items": {"type": "number"}
+                        },
+                    },
+                    "required": ["name", "params"]
+                }
+            }
+        },
+        "y_train": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "params": {
+                            "type": "array",
+                            "items": {"type": "number"}
+                        },
+                    },
+                    "required": ["name", "params"]
+                }
+            }
+        },
+        "input_data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "params": {
+                        "type": "array",
+                        "items": {"type": "number"}
+                    },
+                },
+                "required": ["name", "params"]
+            }
+        }
+    },
+    "required": ["config", "X_Train", "y_train", "input_data"]
+}
+
+
+fuzzy_pred_scheme = {
+    "type": "object",
+    "properties": {
+        "X": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "object",
+                    "properties": {
+                        "start": {"type": "number"},
+                        "end": {"type": "number"},
+                        "step": {"type": "number"},
+                        "name": {"type": "string"}
+                    },
+                    "required": ["start", "end", "step", "name"]
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "a": {"type": "number"},
+                            "b": {"type": "number"},
+                            "c": {"type": "number"}
+                        },
+                        "required": ["a", "b", "c"]
+                    }
+                }
+            },
+            "required": ["domain", "data"]
+        },
+        "Y": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "object",
+                    "properties": {
+                        "start": {"type": "number"},
+                        "end": {"type": "number"},
+                        "step": {"type": "number"},
+                        "name": {"type": "string"}
+                    },
+                    "required": ["start", "end", "step", "name"]
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "a": {"type": "number"},
+                            "b": {"type": "number"},
+                            "c": {"type": "number"}
+                        },
+                        "required": ["a", "b", "c"]
+                    }
+                }
+            },
+            "required": ["domain", "data"]
+        },
+        "input": {
+            "type": "object",
+            "properties": {
+                "a": {"type": "number"},
+                "b": {"type": "number"},
+                "c": {"type": "number"}
+            },
+            "required": ["a", "b", "c"]
+        }
+    },
+    "required": ["X", "Y"]
+}
+
 
 
 
@@ -897,6 +1042,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = fuzzy_nn_params_scheme
         elif task_type == "fuzzy_nn_get":
             schema = fuzzy_nn_get_scheme
+        elif task_type == "fuzzy_nn_2":
+            schema = fuzzy_nn2_scheme
+        elif task_type == "fuzzy_pred":
+            schema = fuzzy_pred_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)

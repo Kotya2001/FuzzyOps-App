@@ -5,5 +5,6 @@ from .fuzzy_graphs import app
 from .fuzzy_msa import app
 from .fuzzy_opt import app
 from .fuzzy_nn import app
+from .fuzzy_pred import app
 
 __all__ = ['app']

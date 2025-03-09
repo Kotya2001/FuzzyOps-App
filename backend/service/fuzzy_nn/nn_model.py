@@ -2,6 +2,8 @@ from database import set_cache, get_cache
 from app import logger
 import pickle
 from fuzzyops.fuzzy_nn import Model
+from fuzzyops.fuzzy_neural_net import FuzzyNNetwork
+from fuzzyops.fuzzy_numbers import Domain
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -107,7 +109,65 @@ def train_model(df, params, file_hash):
 			return "Ошибка подключения к базе Redis"
 		return ""
 	return ""
+
+
+def fuzzy_nn2_inference(data):
+	# try:
+
+		cfg = data["config"]
+		l_size = cfg["layerSize"]
+		domain_vals = tuple(cfg["domainValues"])
+		method = cfg["method"]
+		fuzzyType = cfg["fuzzyType"]
+		activationType = cfg["actiovationType"]
+		epochs = cfg["epochs"]
+
+		nn = FuzzyNNetwork(
+		l_size,
+		domain_vals,
+		method,
+		fuzzyType,
+		activationType
+	)
+		test_domain = Domain(domain_vals, name='test_domain', method=method)
+		X = []
+		X_train = data["X_Train"]
+		for x in X_train:
+			inner_x = []
+			for params in x:
+				name = params["name"]
+				test_domain.create_number(fuzzyType, *params["params"], name=name)
+				f_n = test_domain.get(name)
+				inner_x.append(f_n)
+			X.append(inner_x)
+		Y = []
+		y_train = data["y_train"]
+		for y in y_train:
+			inner_y = []
+			for parms in y:
+				name = params["name"]
+				test_domain.create_number(fuzzyType, *params["params"], name=name)
+				f_n = test_domain.get(name)
+				inner_y.append(f_n)
+			Y.append(inner_y)
+		input_data = []
+		X_test = data["input_data"]
+		for x_test in X_test:
+			name = x_test["name"]
+			test_domain.create_number(fuzzyType, *x_test["params"], name=name)
+			input_data.append(test_domain.get(name))
+	
 		
+		nn.fit(X, Y, epochs)
+		result = nn.predict(input_data)
+		return {"res": result}, ""
+	# except Exception as e:
+	# 	return {}, "Произошла ошибка, проверьте данные"
+
+
+
+
+
 
 
 

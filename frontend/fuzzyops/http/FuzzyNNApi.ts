@@ -18,3 +18,13 @@ export const fuzzynnGet = async (uploadedFile: object) => {
 	const response = await $host.post('/main/fuzzyNN/get', uploadedFile);
 	return response;
 };
+
+export const fuzzynn2 = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyNN2/calc', uploadedFile);
+	return response;
+};
+
+export const fuzzypred = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fuzzyPred/calc', uploadedFile);
+	return response;
+};

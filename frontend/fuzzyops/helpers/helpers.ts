@@ -10,5 +10,7 @@ export const firstLevelMenu: FirstLevelMenuItem[] = [
 	{ route: 'FuzzyNN', name: 'Нечеткие сети', id: 5 },
 	{ route: 'FuzzyNN2', name: 'Нечеткие сети (алг. 2)', id: 6 },
 	{ route: 'FuzzyMSA', name: 'Методы Многокритериального анализа', id: 7 },
+	{ route: 'FuzzyPred', name: "Нечеткая линейная регрессия", id: 8 },
+	{ route: 'Fan', name: "Нечеткие аналитические сети", id: 9 },
 	// { route: 'FuzzyCluster', name: 'Нечеткая кластеризация', id: 8 }
 ];
