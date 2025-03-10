@@ -16,6 +16,7 @@ export const defaultFuzzyNN1Csv = "defaultFuzzyNN1Csv";
 export const defaultFuzzyNNInp = "defaultFuzzyNNInp";
 export const defaultFuzzyNN2 = "defaultFuzzyNN2";
 export const defaultFpred = "defaultFpred";
+export const defaultFan = "defaultFan";
 
 export const paginationParams = { currentPage: 0, points: 75 };
 

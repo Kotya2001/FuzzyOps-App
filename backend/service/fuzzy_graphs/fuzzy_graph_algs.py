@@ -1,6 +1,4 @@
 from database import get_cache
-import base64
-import pickle
 
 from app import logger
 
@@ -10,6 +8,21 @@ from fuzzyops.graphs.algorithms.dominating import is_dominating, dominating_set,
 from fuzzyops.graphs.fuzzgraph import FuzzyGraph
 from fuzzyops.sequencing_assignment import FuzzySASolver
 
+from fuzzyops.fan import Graph
+
+
+def get_fan(data):
+    graph = Graph()
+    # try:
+
+    for elem in data:
+        start, end, score = elem["start"], elem["end"], elem["score"]
+        graph.add_edge(start, end, score)
+    most_feasible_path = graph.find_most_feasible_path(data[0]["start"], data[-1]["end"])
+    best_alternative, _ = graph.macro_algorithm_for_best_alternative()
+# except Exception as e:
+    #     return {}, "Произошла ошибка, проверьте данные"
+    return {"most_feasible_path": most_feasible_path, "best_alternative": best_alternative}, ""
 
 def get_graph(file_hash: str):
     try:

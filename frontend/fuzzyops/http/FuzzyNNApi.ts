@@ -28,3 +28,8 @@ export const fuzzypred = async (uploadedFile: object) => {
 	const response = await $host.post('/main/fuzzyPred/calc', uploadedFile);
 	return response;
 };
+
+export const fanhandler = async (uploadedFile: object) => {
+	const response = await $host.post('/main/fan/calc', uploadedFile);
+	return response;
+};

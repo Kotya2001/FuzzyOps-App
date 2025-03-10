@@ -20,6 +20,7 @@ import FuzzyLogicReducer from './reducers/FileReducers/FuzzyLogicSlice';
 import FuzzyNN1Reducer from './reducers/FileReducers/FuzzyNN1Slice';
 import FuzzyNN2Reducer from './reducers/FileReducers/FuzzyNN2Slice';
 import FuzzyPredReducer from './reducers/FileReducers/FuzzyPredSlice';
+import FanReducer from './reducers/FileReducers/FanSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -43,7 +44,8 @@ export const store = configureStore({
 		FuzzyLogicReducer,
 		FuzzyNN1Reducer,
 		FuzzyNN2Reducer,
-		FuzzyPredReducer
+		FuzzyPredReducer,
+		FanReducer
 
 	}
 });

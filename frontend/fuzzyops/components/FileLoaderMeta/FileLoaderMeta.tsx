@@ -3,7 +3,7 @@ import styles from './FileLoaderMeta.module.css';
 import { store } from '../../redux/store';
 import {
 	defaultFuzzyLogicData, defaultFuzzyMetaOptName, defaultGraphAssignment, defaultFuzzyLinearOptName, defaultFuzzyNN1,
-	defaultFuzzyNNInp, defaultFuzzyNN2, defaultFpred
+	defaultFuzzyNNInp, defaultFuzzyNN2, defaultFpred, defaultFan
 } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { setIsLoadParams, setParams } from '../../redux/reducers/OptimizationReducers/MetaOptSlice';
@@ -13,6 +13,7 @@ import { setLinOptData, setLoadLinOpt } from '../../redux/reducers/OptimizationR
 import { setConfig, setIsLoadCfg, setInputData, setIsInput } from '../../redux/reducers/FileReducers/FuzzyNN1Slice';
 import { setIsLoadXtrain, setXTrain } from '../../redux/reducers/FileReducers/FuzzyNN2Slice';
 import { setPredData, setIsLoadX } from '../../redux/reducers/FileReducers/FuzzyPredSlice';
+import { setFanData, setIsFan } from '../../redux/reducers/FileReducers/FanSlice';
 
 export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 
@@ -65,6 +66,11 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					return 'json Загружен';
 				}
 				return n;
+			case defaultFan:
+				if (status) {
+					return 'json Загружен';
+				}
+				return n;
 		}
 	};
 
@@ -109,6 +115,9 @@ export const FileLoaderMeta = ({ name, i, f, n }: FileLoaderMetaProps) => {
 					} else if (name == defaultFpred) {
 						dispatch(setPredData(arr));
 						dispatch(setIsLoadX(true));
+					} else if (name == defaultFan) {
+						dispatch(setFanData(arr));
+						dispatch(setIsFan(true));
 					}
 				} catch (e) {
 					alert("Ошибка парсинга json");

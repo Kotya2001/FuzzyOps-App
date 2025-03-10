@@ -990,6 +990,20 @@ fuzzy_pred_scheme = {
     "required": ["X", "Y"]
 }
 
+fan_scheme = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "start": {"type": "string"},
+            "end": {"type": "string"},
+            "score": {"type": "number"}
+        },
+        "required": ["start", "end", "score"]
+    }
+}
+
+
 
 
 
@@ -1046,6 +1060,8 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = fuzzy_nn2_scheme
         elif task_type == "fuzzy_pred":
             schema = fuzzy_pred_scheme
+        elif task_type == "fan":
+            schema = fan_scheme
         else:
             schema = params_schema
         validate(instance=data, schema=schema)
