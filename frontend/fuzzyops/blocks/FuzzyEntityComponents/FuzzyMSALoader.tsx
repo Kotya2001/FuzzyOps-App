@@ -11,8 +11,8 @@ import { useAppSelector } from '../../redux/hooks';
 import { setIsChoosen, setResult } from '../../redux/reducers/FileReducers/CreateMSASlice';
 import { task_type, defaultFuzzyMSA } from './consts';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
-import { FileLoader } from '../../components/FileLoader/FileLoader';
 import { fuzzyMsaCalc } from '../../http/FuzzyMsaApi';
+import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 
 
 
@@ -68,9 +68,8 @@ export const FuzzyMSALoader = ({ header, tag }: FuzzyProps) => {
 								{isChoosen && <Dropdown elems={task_type} forWhat={'Msa'} />}
 							</div>
 
-							<FileLoader name={defaultFuzzyMSA} i={defaultFuzzyMSA} f={defaultFuzzyMSA} n="Загрузить" />
+							<FileLoaderMeta name={defaultFuzzyMSA} i={defaultFuzzyMSA} f={defaultFuzzyMSA} n="Загрузить" />
 
-							{taskType !== "" && msa_data && <Button appearance='primary' onClick={getResult}>Получить</Button>}
 						</div>
 
 						:

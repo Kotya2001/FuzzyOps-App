@@ -18,6 +18,7 @@ def fuzzy_msa_handler():
 
     task_type = full_data.get("taskType")
     data = full_data.get("msa_data")
+    
     error, _ = validate_data(data, task_type)
     if error:
         response = create_response(

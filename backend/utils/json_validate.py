@@ -1004,6 +1004,108 @@ fan_scheme = {
 }
 
 
+pair_scheme = schema = {
+    "type": "object",
+    "properties": {
+        "domain": {
+            "type": "object",
+            "properties": {
+                "start": {"type": "integer"},
+                "stop": {"type": "integer"},
+                "step": {"type": "integer"}
+            },
+            "required": ["start", "stop", "step"]
+        },
+        "numType": {"type": "string"},
+        "alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "criteria": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "pairwise_matrices": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "range": {
+                                "type": "array",
+                                "items": {"type": "integer"}
+                            },
+                            "name": {"type": "string"}
+                        },
+                        "required": ["range", "name"]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["domain", "numType", "alternatives", "criteria", "pairwise_matrices"]
+}
+
+hier_shceme = {
+    "type": "object",
+    "properties": {
+        "domain": {
+            "type": "object",
+            "properties": {
+                "start": {"type": "integer"},
+                "stop": {"type": "integer"},
+                "step": {"type": "integer"}
+            },
+            "required": ["start", "stop", "step"]
+        },
+        "numType": {"type": "string"},
+        "criteria_weights": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "range": {
+                            "type": "array",
+                            "items": {"type": "integer"}
+                        },
+                        "name": {"type": "string"}
+                    },
+                    "required": ["range", "name"]
+                }
+            }
+        },
+        "comparassions": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "range": {
+                                "type": "array",
+                                "items": {"type": "integer"}
+                            },
+                            "name": {"type": "string"}
+                        },
+                        "required": ["range", "name"]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["domain", "numType", "criteria_weights", "comparassions"]
+}
+
+
+
+
 
 
 
@@ -1016,6 +1118,10 @@ def validate_data(data: dict, task_type: str) -> tuple[bool, str]:
             schema = schema_fuzzy_sum
         elif task_type == "Создание нечеткого числа":
             schema = fuzzy_number_create_schema
+        elif task_type == "Нечеткие попарные сравнения":
+            schema = pair_scheme
+        elif task_type == "Нечеткая аналитическая иерархия":
+            schema = hier_shceme
         elif task_type == "Операции Нечеткое Четкое":
             schema = fuzzy_number_ops_with_number_scheme
         elif task_type == "Операции Нечеткое Нечеткое":

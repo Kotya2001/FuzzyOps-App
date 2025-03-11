@@ -49,4 +49,4 @@ export const example = JSON.stringify([1, 10, 20], null, 4);
 export const edge_type = ["Неориентированный", "Ориентированный"];
 export const edge_number_math_type = ["Максимум", "Минимум", "Среднее", "Сумма"];
 export const equals_type = ["Базовый", "Максимум", "Минимум"];
-export const task_type = ["Граница Паретто", "Взвешенная сумма"];
+export const task_type = ["Граница Паретто", "Взвешенная сумма", "Нечеткие попарные сравнения", "Нечеткая аналитическая иерархия"];

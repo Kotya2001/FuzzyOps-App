@@ -4,7 +4,7 @@ import { store } from '../../redux/store';
 import { fNum, setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
 import { setGraphData, Root } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
-import { setJsonData, MsaParams } from '../../redux/reducers/FileReducers/CreateMSASlice';
+import { setJsonData, setIsData } from '../../redux/reducers/FileReducers/CreateMSASlice';
 import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber, defaultFuzzyGraphCreate, defaultFuzzyMSA, defaultFuzzyCluster } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
@@ -16,7 +16,6 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 	const { fuzzyNumberUnity } = useAppSelector(state => state.createUnityReducer);
 	const { fuzzyNumber } = useAppSelector(state => state.CreateFuzzyNumberReducer);
 	const { graph_data } = useAppSelector(state => state.CreateFuzzyGraphReducer);
-	const { msa_data } = useAppSelector(state => state.CreateMSAReducer);
 	const { params } = useAppSelector(state => state.FuzzyClusterReducer);
 	const [fileStatus, setFileStatus] = useState(false);
 
@@ -58,9 +57,9 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 		dispatch(setGraphData(data));
 	};
 
-	const saveMsaData = (data: MsaParams) => {
-		dispatch(setJsonData(data));
-	};
+	// const saveMsaData = (data: any) => {
+	// 	dispatch(setJsonData(data));
+	// };
 
 	const saveClusterData = (data: ClusterParams) => {
 		dispatch(setClusterParams(data));
@@ -88,8 +87,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 				return n;
 
 			case defaultFuzzyMSA:
-				if (status && Object.keys(msa_data.domain).length > 0 &&
-					msa_data.numType !== "" && msa_data.data) {
+				if (status) {
 					return 'Загружено';
 				}
 				return n;
@@ -123,10 +121,7 @@ export const FileLoader = ({ name, i, f, n }: FileLoaderProps) => {
 						sateToStore(arr);
 					}
 					else if (name === defaultFuzzyGraphCreate) {
-						console.log(arr);
 						saveGraphData(arr);
-					} else if (name === defaultFuzzyMSA) {
-						saveMsaData(arr);
 					} else if (name === defaultFuzzyCluster) {
 						saveClusterData(arr);
 					}
