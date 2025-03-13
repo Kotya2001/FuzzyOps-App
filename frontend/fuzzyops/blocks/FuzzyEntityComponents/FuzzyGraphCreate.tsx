@@ -10,7 +10,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { edge_type, edge_number_math_type, equals_type, defaultFuzzyGraphCreate } from './consts';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { setIsEdgeType, setIsEdgeNumberEqType, setIsEdgeNumberMathType, setFileHash } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
+import { setIsEdgeType, setIsEdgeNumberEqType, setIsEdgeNumberMathType } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
 import { FileLoader } from '../../components/FileLoader/FileLoader';
 import { fuzzyGraphCreate } from '../../http/FuzzyGraphApi';
 

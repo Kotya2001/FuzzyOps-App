@@ -27,7 +27,6 @@ export const FanGet = ({ header, tag }: FuzzyProps) => {
 		setLoading(true); // Устанавливаем состояние загрузки
 		setErrorMessage(''); // Сбрасываем предыдущее сообщение об ошибке
 
-		console.log(fanGraph);
 		try {
 			const response = await fanhandler(fanGraph);
 

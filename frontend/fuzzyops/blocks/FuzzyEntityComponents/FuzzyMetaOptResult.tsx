@@ -6,8 +6,6 @@ import styles from './FuzzyEntityComponents.module.css';
 import { useAppSelector } from '../../redux/hooks';
 import { Button } from '../../components/Button/Button';
 import { fuzzymetaopt } from '../../http/FuzzyMetaOptApi';
-import { Downloader } from '../../components/Downloader/Downloader';
-import { defaultFuzzyMetaOptName } from './consts';
 import { useEffect, useState } from 'react';
 
 

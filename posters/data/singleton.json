@@ -1,0 +1,89 @@
+{
+  "type": "singleton",
+  "domains": [
+    {
+      "name": "service",
+      "range": [
+        0,
+        10,
+        1
+      ]
+    },
+    {
+      "name": "tip",
+      "range": [
+        0,
+        30,
+        1
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "antecedents": [
+        {
+          "domain": {
+            "name": "service"
+          },
+          "term": {
+            "name": "poor",
+            "mfType": "gauss",
+            "params": [
+              2.123,
+              0
+            ]
+          }
+        }
+      ],
+      "consequent": {
+        "value": 20
+      }
+    },
+    {
+      "antecedents": [
+        {
+          "domain": {
+            "name": "service"
+          },
+          "term": {
+            "name": "good",
+            "mfType": "gauss",
+            "params": [
+              2.123,
+              5
+            ]
+          }
+        }
+      ],
+      "consequent": {
+        "value": 10
+      }
+    },
+    {
+      "antecedents": [
+        {
+          "domain": {
+            "name": "service"
+          },
+          "term": {
+            "name": "excellent",
+            "mfType": "gauss",
+            "params": [
+              2.123,
+              10
+            ]
+          }
+        }
+      ],
+      "consequent": {
+        "value": 3
+      }
+    }
+  ],
+  "inputData": [
+    {
+      "name": "service",
+      "value": 3
+    }
+  ]
+}

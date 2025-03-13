@@ -9,20 +9,20 @@ import { setIsEdgeType, setIsEdgeNumberEqType, setIsEdgeNumberMathType } from '.
 import { setIsChoosen, setTaskType } from '../../redux/reducers/FileReducers/CreateMSASlice';
 
 
-export const Dropdown = ({elems, forWhat}: DropdownProps): JSX.Element => {
+export const Dropdown = ({ elems, forWhat }: DropdownProps): JSX.Element => {
 
 	const dispatch = store.dispatch;
 	const { kindOfNumber } = useAppSelector(state => state.methodsReducer);
 
 	const { isEdgeType, isEdgeNumberEqType, isEdgeNumberMathType } = useAppSelector(state => state.CreateFuzzyGraphReducer);
-	const {isChoosen} = useAppSelector(state => state.CreateMSAReducer)
+	const { isChoosen } = useAppSelector(state => state.CreateMSAReducer);
 
 	const click = (flag: boolean, setter: ActionCreatorWithPayload<boolean>) => {
 		dispatch(setter(!flag));
 	};
 
 	const func = (elem: string) => {
-		
+
 		switch (forWhat) {
 			case 'kind':
 				dispatch(setKindOfNumber(!kindOfNumber));
@@ -46,7 +46,7 @@ export const Dropdown = ({elems, forWhat}: DropdownProps): JSX.Element => {
 				return;
 			default:
 				return;
-			
+
 		}
 	};
 	return (

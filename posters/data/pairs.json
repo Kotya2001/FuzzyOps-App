@@ -1,0 +1,182 @@
+{
+	"task_type": "pairs",
+	"msa_data": {
+		"domain": {
+			"start": 0,
+			"stop": 101,
+			"step": 1
+		},
+		"numType": "triangular",
+		"alternatives": [
+			"Produc1",
+			"Product2",
+			"Product3"
+		],
+		"criteria": [
+			"Cost",
+			"Quality"
+		],
+		"pairwise_matrices": [
+			[
+				[
+					{
+						"range": [
+							1,
+							2,
+							3
+						],
+						"name": "Cost11"
+					},
+					{
+						"range": [
+							1,
+							1,
+							3
+						],
+						"name": "Cost12"
+					},
+					{
+						"range": [
+							1,
+							2,
+							5
+						],
+						"name": "Cost13"
+					}
+				],
+				[
+					{
+						"range": [
+							1,
+							2,
+							4
+						],
+						"name": "Cost21"
+					},
+					{
+						"range": [
+							1,
+							2,
+							5
+						],
+						"name": "Cost22"
+					},
+					{
+						"range": [
+							2,
+							3,
+							3
+						],
+						"name": "Cost23"
+					}
+				],
+				[
+					{
+						"range": [
+							1,
+							2,
+							3
+						],
+						"name": "Cost31"
+					},
+					{
+						"range": [
+							2,
+							2,
+							2
+						],
+						"name": "Cost32"
+					},
+					{
+						"range": [
+							1,
+							2,
+							5
+						],
+						"name": "Cost33"
+					}
+				]
+			],
+			[
+				[
+					{
+						"range": [
+							1,
+							2,
+							5
+						],
+						"name": "Quality11"
+					},
+					{
+						"range": [
+							2,
+							3,
+							4
+						],
+						"name": "Quality12"
+					},
+					{
+						"range": [
+							1,
+							2,
+							3
+						],
+						"name": "Quality13"
+					}
+				],
+				[
+					{
+						"range": [
+							1,
+							2,
+							5
+						],
+						"name": "Quality21"
+					},
+					{
+						"range": [
+							1,
+							3,
+							4
+						],
+						"name": "Quality22"
+					},
+					{
+						"range": [
+							2,
+							3,
+							3
+						],
+						"name": "Quality23"
+					}
+				],
+				[
+					{
+						"range": [
+							1,
+							3,
+							4
+						],
+						"name": "Quality31"
+					},
+					{
+						"range": [
+							2,
+							3,
+							3
+						],
+						"name": "Quality32"
+					},
+					{
+						"range": [
+							1,
+							2,
+							4
+						],
+						"name": "Quality33"
+					}
+				]
+			]
+		]
+	}
+}

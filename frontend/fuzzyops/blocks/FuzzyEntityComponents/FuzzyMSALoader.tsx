@@ -8,10 +8,9 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { useState } from 'react';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
-import { setIsChoosen, setResult } from '../../redux/reducers/FileReducers/CreateMSASlice';
+import { setIsChoosen } from '../../redux/reducers/FileReducers/CreateMSASlice';
 import { task_type, defaultFuzzyMSA } from './consts';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
-import { fuzzyMsaCalc } from '../../http/FuzzyMsaApi';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 
 
@@ -20,26 +19,13 @@ export const FuzzyMSALoader = ({ header, tag }: FuzzyProps) => {
 
 	const [loadData, setLoadData] = useState(false);
 	const dispatch = store.dispatch;
-	const { isChoosen, msa_data, taskType } = useAppSelector(state => state.CreateMSAReducer);
+	const { isChoosen } = useAppSelector(state => state.CreateMSAReducer);
 	const onHeaderClick = () => {
 		setLoadData(!loadData);
 	};
 
 	const click = (flag: boolean, setter: ActionCreatorWithPayload<boolean>) => {
 		dispatch(setter(!flag));
-	};
-
-	const getResult = async () => {
-		const formData = {
-			taskType,
-			msa_data
-		};
-		const response = await fuzzyMsaCalc(formData);
-		if (response.data.status === 200) {
-			dispatch(setResult(response.data.data))
-		} else {
-			alert(response.data.message);
-		}
 	};
 
 	return (

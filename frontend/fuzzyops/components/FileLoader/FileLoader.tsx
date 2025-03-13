@@ -4,7 +4,6 @@ import { store } from '../../redux/store';
 import { fNum, setFuzzyNumberUnity } from '../../redux/reducers/FileReducers/CreateUnitySlice';
 import { setFuzzyNumber } from '../../redux/reducers/FileReducers/CreateFuzzyNumberSlice';
 import { setGraphData, Root } from '../../redux/reducers/FileReducers/CreateFuzzyGraphSlice';
-import { setJsonData, setIsData } from '../../redux/reducers/FileReducers/CreateMSASlice';
 import { defaultFuzzyLoaderNumberName, defaultFuzzyNumber, defaultFuzzyGraphCreate, defaultFuzzyMSA, defaultFuzzyCluster } from '../../blocks/FuzzyEntityComponents/consts';
 import { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';

@@ -6,8 +6,6 @@ import styles from './FuzzyEntityComponents.module.css';
 import { useAppSelector } from '../../redux/hooks';
 import { Button } from '../../components/Button/Button';
 import { useEffect, useState } from 'react';
-import { setFileHash } from '../../redux/reducers/FileReducers/FuzzyNN1Slice';
-import { store } from '../../redux/store';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
 import { defaultFuzzyNNInp } from './consts';
 import { fuzzynn, fuzzynnGet } from '../../http/FuzzyNNApi';

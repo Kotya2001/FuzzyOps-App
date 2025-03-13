@@ -6,12 +6,10 @@ import { FuzzyProps } from './FuzzyEntityComponents.props';
 import { Button } from '../../components/Button/Button';
 import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
-import { setPath, setPathLoop, setGroups, setDominatingRes } from '../../redux/reducers/ResultReducers/FuzzyGraphAlgsSlice';
+import { setPath, setGroups, setDominatingRes } from '../../redux/reducers/ResultReducers/FuzzyGraphAlgsSlice';
 import { getClusters, shortestPath, chechDominating, getAssignment, getAnyDominating, getDominating } from '../../http/FuzzyGraphApi';
 import { defaultGraphAssignment } from './consts';
-import { P } from '../../components/P/P';
 import { FileLoaderMeta } from '../../components/FileLoaderMeta/FileLoaderMeta';
-import { setAssResult, setCostResult } from '../../redux/reducers/ResultReducers/AssignmenstSlice';
 import { InputPath } from '../../components/Input/InputPath';
 import { ClusterInput } from '../../components/Input/ClusterInput';
 import { CheckDominating } from '../../components/Input/CheckDominating';
@@ -26,14 +24,8 @@ export const FuzzyGraphAlgs = ({ header, tag }: FuzzyProps) => {
 	const [isOpendDomin, setIsOpendDomin] = useState(false);
 	const [isOpendDominSet, setIsOpendDominSet] = useState(false);
 	const [isOpendAssign, setIsOpendAssign] = useState(false);
-	const { path, dominating, cluster, pathLoop, groups, dominatingRes, domitatingSet } = useAppSelector(state => state.FuzzyGraphAlgsReducer);
-	const { graphSettings } = useAppSelector(state => state.CreateFuzzyGraphReducer);
+	const { path, dominating, cluster, domitatingSet } = useAppSelector(state => state.FuzzyGraphAlgsReducer);
 	const { tasks, workers, fuzzyCosts } = useAppSelector(state => state.AddAssignmentsReducer);
-	const { assignments, costs } = useAppSelector(state => state.AssignmenstReducer);
-
-	console.log(graphSettings);
-	console.log(tasks, workers, fuzzyCosts);
-
 
 
 

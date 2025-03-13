@@ -4,9 +4,7 @@ import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
 import { Button } from '../../components/Button/Button';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { useState } from 'react';
-import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { FileLoader } from '../../components/FileLoader/FileLoader';
 import { ExelFileLoader } from '../../components/ExelFileLoader/ExelFileLoader';
@@ -21,7 +19,6 @@ export const FuzzyClusterLoader = ({ header, tag }: FuzzyProps) => {
 
 	const [loadData, setLoadData] = useState(false);
 	const { params, train_data, test_data } = useAppSelector(state => state.FuzzyClusterReducer);
-	const dispatch = store.dispatch;
 	const onHeaderClick = () => {
 		setLoadData(!loadData);
 	};
@@ -34,7 +31,6 @@ export const FuzzyClusterLoader = ({ header, tag }: FuzzyProps) => {
 			test_data
 		};
 		const response = await fuzzyCluster(formData);
-		console.log(response)
 		if (response.status === 200) {
 			// Создаем URL для скачивания
 			const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -94,5 +90,5 @@ export const FuzzyClusterLoader = ({ header, tag }: FuzzyProps) => {
 				</Box>
 			</div>
 		</div>
-	)
-}
+	);
+};

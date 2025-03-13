@@ -3,17 +3,14 @@ import { FuzzyProps } from './FuzzyEntityComponents.props';
 import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
-import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { Button } from '../../components/Button/Button';
 import { fuzzylinopt } from '../../http/FuzzyLinOptApi';
-import { setInteractionCoefs, setInteractions, setAlphas, setStatus } from '../../redux/reducers/ResultReducers/FuzzuLinOptResult';
 import { useEffect, useState } from 'react';
 
 
 export const FuzzyLinOptResult = ({ header, tag }: FuzzyProps) => {
 
-	const dispatch = store.dispatch;
 	const { data, isLoadLinOpt } = useAppSelector(state => state.LinearOptReducer);
 	const [loading, setLoading] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);

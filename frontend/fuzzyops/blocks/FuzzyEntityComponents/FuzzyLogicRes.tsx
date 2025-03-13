@@ -3,12 +3,9 @@ import { FuzzyProps } from './FuzzyEntityComponents.props';
 import { Box } from '../../components/Box/Box';
 import { Htag } from '../../components/Htag/Htag';
 import styles from './FuzzyEntityComponents.module.css';
-import { store } from '../../redux/store';
 import { useAppSelector } from '../../redux/hooks';
 import { Button } from '../../components/Button/Button';
 import { fuzzrules } from '../../http/FuzzyMetaOptApi';
-import { Downloader } from '../../components/Downloader/Downloader';
-import { defaultFuzzyMetaOptName } from './consts';
 import { useEffect, useState } from 'react';
 
 

@@ -10,8 +10,6 @@ import { DownloaderProps } from './Downloader.props';
 
 export const Downloader = ({ file, forWhat }: DownloaderProps) => {
 
-	console.log(file)
-
 	const dispatch = store.dispatch;
 
 	const createBlob = () => {
