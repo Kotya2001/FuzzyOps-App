@@ -1,6 +1,9 @@
 import requests
+import json
 
-addr = 'http://localhost:5000'
+
+with open("sets.json", encoding="utf-8") as file:
+	addr = json.loads(file.read())["addr"]
 
 routes = ["/api/fgraph/create", "/api/fgraph/shortest_path", "/api/fgraph/clusters",
 		   "/api/fgraph/is_dominating", "/api/fgraph/any_dominating", 

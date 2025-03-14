@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend # путь к бэкенду
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/sets.json:/app/sets.json # Монтирование sets.json файла
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    depends_on:
+      - redis
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend/fuzzyops # путь к фронтенду
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/fuzzyops/.env:/app/.env # Монтирование .env файла
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"

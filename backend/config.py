@@ -3,7 +3,7 @@ import os
 import json
 
 LOG_LEVEL = logging.DEBUG
-DIRECTORY_OF_LOGS = os.path.abspath('../logs')
+DIRECTORY_OF_LOGS = os.path.abspath('./logs')
 LOG_FORMAT = "%(asctime)s: %(name)s - %(" "levelname)s  | %(message)s"
 
 

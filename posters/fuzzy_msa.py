@@ -2,6 +2,10 @@ import requests
 import json
 
 
+with open("sets.json", encoding="utf-8") as file:
+	addr = json.loads(file.read())["addr"]
+
+
 # ----------------------
 # Нечеткие методы многокритериального анализа
 

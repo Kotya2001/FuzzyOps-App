@@ -6,9 +6,9 @@ colorlog
 contourpy
 cycler
 filelock
-Flask
-Flask-API
-Flask-Cors
+Flask==2.2.2
+Flask-API==3.1
+Flask-Cors==3.0.10
 fonttools
 fuzzyops
 greenlet
@@ -39,4 +39,4 @@ threadpoolctl
 typing_extensions
 tzdata
 uncertainties
-Werkzeug
+Werkzeug==2.2.2

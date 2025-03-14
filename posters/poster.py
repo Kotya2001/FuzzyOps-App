@@ -1,6 +1,10 @@
 import requests
+import json
 
-addr = 'http://localhost:5000'
+
+with open("sets.json", encoding="utf-8") as file:
+	addr = json.loads(file.read())["addr"]
+
 
 routes = ["/api/fnum/create", "/api/fnum/get", "/api/fnum/ops"]
 
