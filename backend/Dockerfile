@@ -10,7 +10,6 @@ WORKDIR /app
 
 # Копируем файл зависимостей и устанавливаем их
 COPY requirements.txt .
-COPY fuzzyops-1.0.6-py3-none-any.whl .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копируем весь код приложения
